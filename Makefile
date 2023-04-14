@@ -6,7 +6,7 @@
 #    By: lumorale <lumorale@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 13:19:05 by lumorale          #+#    #+#              #
-#    Updated: 2023/04/14 17:23:59 by lumorale         ###   ########.fr        #
+#    Updated: 2023/04/14 18:59:13 by lumorale         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRCS			=	src/main.c \
 CYELLOW			=\033[1;33m
 CGREEN			=\033[0;32m
 CRED			=\033[0;91m
+PURPLE			=\033[0;35m
 CRESET			=\033[0m
 
 OBJS			=	$(SRCS:.c=.o)
@@ -51,7 +52,7 @@ $(LINE):
 
 $(NAME):		$(OBJS)
 				@$(CC) $(FLAGS) $(LIBFT) $(PRINTF) $(LINE) $(OBJS)   -o $(NAME)
-				@echo "\n$(CYELLOW)$(NAME) -> $(CGREEN) compiled$(CRESET)"
+				@echo "\n$(CYELLOW)$(NAME) $(PURPLE)-> $(CGREEN) compiled$(CRESET)"
 
 bonus:			$(LIBFT) $(PRINTF) $(LINE)
 
@@ -61,7 +62,7 @@ clean:
 				@make -C ./libft clean
 				@make -C ./ft_printf clean
 				@make -C ./get_next_line clean
-				@echo "${CYELLOW}${NAME} $(CGREEN) -> ${CRED} objects files were deleted.${CRESET}"
+				@echo "${CYELLOW}${NAME} $(PURPLE)-> ${CRED} objects files were deleted.${CRESET}"
 
 fclean:			clean
 				@$(RM) $(NAME)
@@ -69,7 +70,7 @@ fclean:			clean
 				@make -C ./libft fclean
 				@make -C ./ft_printf fclean
 				@make -C ./get_next_line fclean
-				@echo "${CYELLOW}${NAME} $(CGREEN) -> ${CRED} was deleted.${CRESET}"
+				@echo "${CYELLOW}${NAME} $(PURPLE)-> ${CRED} was deleted.${CRESET}"
 
 re:				fclean all
 

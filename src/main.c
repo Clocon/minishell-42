@@ -6,11 +6,13 @@
 /*   By: lumorale <lumorale@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 17:24:12 by lumorale          #+#    #+#             */
-/*   Updated: 2023/04/14 17:26:08 by lumorale         ###   ########.fr       */
+/*   Updated: 2023/04/14 18:01:13 by lumorale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	g_contador;
 
 int	main(void)
 {

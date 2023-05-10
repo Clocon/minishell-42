@@ -1,22 +1,74 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lumorale <lumorale@student.42malaga.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/20 13:51:53 by lumorale          #+#    #+#             */
-/*   Updated: 2023/04/14 17:23:38 by lumorale         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define HEADER ("\n\033[32;1m\
+███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     \n\
+████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     \n\
+██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║     \n\
+██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║     \n\
+██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗\n\
+╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝\n\
+\n\
+                A simple shell implemented in C                    \n\
+                             By                                    \n\
+                --- lumorale && jmerchan ---                       \n\
+\n\033[0m")
+
 # include "../libft/includes/libft.h"
-# include "../ft_printf/includes/ft_printf.h"
-# include "../get_next_line/includes/get_next_line.h"
+# include <stdlib.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <libgen.h>
+# include <signal.h>
+# include <fcntl.h>
 
-/*Functions for *.c*/
+# define CMD_ERROR "Command not found\n"
+# define PIPE_ERROR "Pipe error\n"
 
+typedef struct s_pipe
+{
+	//char	**path;
+	char	**envp;
+	char	**args;
+	char	*cmd;
+	int		tube[2];
+	int		fd_in;
+	int		fd_out;
+	//int		cmd_counter; Mejor pasar int aparte
+
+}	t_pipe;
+
+/* typedef struct s_cmd
+{
+	char	**infile;
+	char	**outfile;
+	int		fd_in;
+	int		fd_out;
+	int		cmd_counter;
+
+}	t_cmd;
+ */
+typedef struct s_pipes
+{
+	int		fdin;
+	int		fdout;
+	int		fdin_tmp;
+	int		fdout_tmp;
+}	t_pipes;
+
+
+char	*ft_get_text_minishell(void);
+void	ft_getline(t_pipe *pipex, char **envp);
+
+/*Functions for pipe_utils.c*/
+void	sub_dup2(int zero, int one);
+void	check_awk(t_pipe *pipex);
+int		**pipes_generator(int n_cmd);
+void	child_generator(t_pipe *pipex, int n_cmd, char **envp);
+
+/*Functions for error.c*/
+void	argc_error(char *str);
+void	err_msg(char *str);
+void	err_msg_exit(char *str);
 #endif

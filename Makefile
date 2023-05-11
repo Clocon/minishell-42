@@ -9,6 +9,7 @@ SRCS			=	src/minishell.c \
 					src/pipes.c \
 					src/pipe_utils.c \
 					src/error.c \
+					src/free.c \
 					
 					
 

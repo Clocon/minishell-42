@@ -26,18 +26,15 @@
 # define CMD_ERROR "Command not found\n"
 # define PIPE_ERROR "Pipe error\n"
 
-typedef struct s_pipe
+typedef struct s_cmd
 {
 	//char	**path;
 	char	**envp;
 	char	**args;
 	char	*cmd;
-	int		tube[2];
-	int		fd_in;
-	int		fd_out;
 	//int		cmd_counter; Mejor pasar int aparte
 
-}	t_pipe;
+}	t_cmd;
 
 /* typedef struct s_cmd
 {
@@ -49,26 +46,29 @@ typedef struct s_pipe
 
 }	t_cmd;
  */
-typedef struct s_pipes
+typedef struct s_pipe
 {
-	int		fdin;
-	int		fdout;
-	int		fdin_tmp;
-	int		fdout_tmp;
-}	t_pipes;
+	int		fd_in;
+	int		tmp_in;
+	int		fd_out;
+	int		tmp_out;
+}	t_pipe;
 
 
 char	*ft_get_text_minishell(void);
-void	ft_getline(t_pipe *pipex, char **envp);
+void	ft_getline(t_pipe *pipex, t_cmd *cmd, char **envp);
 
 /*Functions for pipe_utils.c*/
 void	sub_dup2(int zero, int one);
-void	check_awk(t_pipe *pipex);
-int		**pipes_generator(int n_cmd);
-void	child_generator(t_pipe *pipex, int n_cmd, char **envp);
+//void	check_awk(t_pipe *pipex);
+//int		**pipes_generator(int n_cmd);
+void	child_generator(t_pipe *pipex, t_cmd *cmd, int n_cmd, char **envp);
 
 /*Functions for error.c*/
 void	argc_error(char *str);
 void	err_msg(char *str);
 void	err_msg_exit(char *str);
+
+/*Functions for frre.c*/
+void	free_matrix(char **str);
 #endif

@@ -23,7 +23,7 @@ char	*ft_get_text_minishell(void)
 }
 
 
-void	ft_getline(t_pipe *pipex, char **envp)
+void	ft_getline(t_pipe *pipex, t_cmd *cmd, char **envp)
 {
 	char	*input;
 	char	*text_minishell;
@@ -35,9 +35,10 @@ void	ft_getline(t_pipe *pipex, char **envp)
 		input = readline(text_minishell);
 		free(text_minishell);
 		add_history(input);
+		printf("HOLIII\n");
 		if (ft_strncmp(input, "pitos", 5) == 0)
 		{
-			child_generator(pipex, 3, envp);
+			child_generator(pipex, cmd, 3, envp);
 			wait(&to_wait);
 		}
 		if (!ft_strncmp(input, "exit", 5) || !ft_strncmp(input, "EXIT", 5))
@@ -51,30 +52,23 @@ void	ft_getline(t_pipe *pipex, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	int		**tube;
-	t_pipe	*pipex;
+	t_pipe	pipex;
+	t_cmd	*cmd;
 
 	(void)argc;
 	(void)argv;
-	pipex = malloc(sizeof(t_pipe) * 3);
-	tube = pipes_generator(3);
-	printf("%d, %d \n",tube[0][0],tube[0][1] );
-
-	pipex[0].args = ft_split("ls -l -a", ' ');
-	pipex[0].cmd = "/bin/ls";
-	pipex[0].fd_in = open("in.txt", O_RDONLY);
-	pipex[0].fd_out = tube[0][1];
-	pipex[1].args = ft_split("cat -e", ' ');
-	pipex[1].cmd = "/bin/cat";
-	pipex[1].fd_in = tube[0][0];
-	pipex[1].fd_out = tube[1][1];
-	pipex[2].args = ft_split("wc -l", ' ');
-	pipex[2].cmd = "/usr/bin/wc";
-	pipex[2].fd_in = tube[1][0];
-	pipex[2].fd_out = open("out.txt", O_TRUNC | O_CREAT | O_RDWR, 0644);
-
+	cmd = malloc(sizeof(t_cmd) * 3);
+	pipex.fd_in = dup(0);
+	pipex.tmp_in = dup(0);
+	pipex.tmp_out = dup(1);
+	cmd[0].args = ft_split("ls -l -a", ' ');
+	cmd[0].cmd = "/bin/ls";
+	cmd[1].args = ft_split("cat -e", ' ');
+	cmd[1].cmd = "/bin/cat";
+	cmd[2].args = ft_split("wc -l", ' ');
+	cmd[2].cmd = "/usr/bin/wc";
 	//child_generator(pipex, 3);
 
 	printf("%s", (char *)&(HEADER));
-	ft_getline(pipex, envp);
+	ft_getline(&pipex, cmd, envp);
 }

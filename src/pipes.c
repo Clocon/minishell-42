@@ -1,7 +1,7 @@
 #include "../include/minishell.h"
 
 
-static void	fd_assigned(t_pipe *pipex, int n_cmd)
+/* static void	fd_assigned(t_pipe *pipex, int n_cmd)
 {
 	int	i;
 
@@ -11,39 +11,64 @@ static void	fd_assigned(t_pipe *pipex, int n_cmd)
 		pipex[i].tube[0] = pipex[i].fd_in;
 		pipex[i].tube[1] = pipex[i].fd_out;
 	}
-	
-}
+} */
 
-void	child(t_pipe pipex, char **envp)
+static void	child(t_cmd *cmd, char **envp)
 {
-	int	pid;
-
-	pid = fork();
-
-	printf("CMD == %s!\n", pipex.cmd);
-	sub_dup2(pipex.tube[0], pipex.tube[1]);
-	if (!pid)
-	{
-		//close_pipes(&pipex);
-		if (!pipex.cmd)
+		if (!cmd->cmd)
 		{
 			//free_matrix(pipex.args);
 			//free(pipex.cmd);
 			err_msg(CMD_ERROR);
 			//exit(1);
 		}
-		check_awk(&pipex);
-		execve(pipex.cmd, pipex.args, envp);
-	}
+		//check_awk(&pipex);
+		execve(cmd->cmd, cmd->args, envp);
 }
 
-void	child_generator(t_pipe *pipex, int n_cmd, char **envp)
+/* static void	close_pipes(t_pipe *pipex, int n_cmd)
 {
-	int		i;
+	int	i;
 
-	fd_assigned(pipex, n_cmd);
 	i = -1;
-	while (++i < n_cmd - 1)
-		child(pipex[i], envp);
+	while (++i < n_cmd)
+	{
+		close(pipex[i].tube[0]);
+		close(pipex[i].tube[1]);
+	}
+} */
+
+void	child_generator(t_pipe *pipex, t_cmd *cmd, int n_cmd, char **envp)
+{
+	int	i;
+	int	pid;
+	//int to_wait;
+	int	tube[2];
+	//fd_assigned(pipex, n_cmd);
+	i = -1;
+	while (++i < n_cmd)
+	{
+		printf("concha? == %s...%d\n", cmd[i].cmd, i);
+		dup2(pipex->fd_in, 0);
+		close(pipex->fd_in);
+		if (i != n_cmd -1)
+		{
+			if (pipe(tube) == -1)
+				err_msg(PIPE_ERROR);
+			pipex->fd_in = tube[0];
+			pipex->fd_out = tube[1];
+		}
+		else
+			pipex->fd_out = dup(pipex->tmp_out);
+		dup2(pipex->fd_out, 1);
+		close(pipex->fd_out);
+		pid = fork();
+		if (!pid)
+			child(&cmd[i], envp);
+		free_matrix(cmd[i].args);
+/* 		if (i == n_cmd -1)
+			waitpid(pid, &to_wait, 0); */
+	}
+	free(cmd);
 	//free_arr_int(pipex);
 }

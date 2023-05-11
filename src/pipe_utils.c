@@ -2,13 +2,13 @@
 
 void	sub_dup2(int zero, int one)
 {
-	printf("SOY CONCHA, ENTRO!\n");
+	printf("Empiezo sub_Dup!\n");
 	dup2(zero, 0);
 	dup2(one, 1);
 	printf("termino\n");
 }
 
-void	check_awk(t_pipe *pipex)
+/* void	check_awk(t_pipe *pipex)
 {
 	if (ft_strncmp(pipex->args[0], "awk", 3) == 0)
 	{	
@@ -17,9 +17,9 @@ void	check_awk(t_pipe *pipex)
 		else if (pipex->args[1][0] == '"')
 			pipex->args[1] = ft_strtrim(pipex->args[1], "\"");
 	}
-}
+} */
 
-int	**pipes_generator(int n_cmd)
+/* int	**pipes_generator(int n_cmd)
 {
 	int	i;
 	int	**tube;
@@ -42,3 +42,4 @@ int	**pipes_generator(int n_cmd)
 	}
 	return (tube);
 }
+ */

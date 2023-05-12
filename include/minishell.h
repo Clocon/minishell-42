@@ -60,12 +60,11 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd, char **envp);
 
 /*Functions for pipe_utils.c*/
 void	sub_dup2(int zero, int one);
-//void	check_awk(t_pipe *pipex);
-//int		**pipes_generator(int n_cmd);
+void	check_awk(t_cmd *cmd);
 void	child_generator(t_pipe *pipex, t_cmd *cmd, int n_cmd, char **envp);
 
 /*Functions for error.c*/
-void	argc_error(char *str);
+void	argc_error(void);
 void	err_msg(char *str);
 void	err_msg_exit(char *str);
 

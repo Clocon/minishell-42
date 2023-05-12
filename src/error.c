@@ -1,9 +1,8 @@
 #include "../include/minishell.h"
 
-void	argc_error(char *str)
+void	argc_error(void)
 {
-	printf("%s", str);
-	printf("Structure= ./pipex <input.txt> <*numbers_of_cmd> <output.txt>\n");
+	printf("Structure= ./minishell\n");
 	exit(1);
 }
 

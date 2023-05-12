@@ -7,7 +7,7 @@
 	return (*envp + 5);
 } */
 
-char	*ft_get_text_minishell(void)
+/* char	*ft_get_text_minishell(void)
 {
 	char	*text_minishell;
 	char	path[1024];
@@ -20,38 +20,45 @@ char	*ft_get_text_minishell(void)
 	text_minishell = ft_strjoin(aux, " -> \033[0m"); //Proteger
 	free(aux);
 	return (text_minishell);
-}
+} */
 
 
 void	ft_getline(t_pipe *pipex, t_cmd *cmd, char **envp)
 {
 	char	*input;
-	char	*text_minishell;
+	//char	*text_minishell;
 	int		to_wait;
 
+	//text_minishell = ft_get_text_minishell();
 	while (1)
 	{
-		text_minishell = ft_get_text_minishell();
-		input = readline(text_minishell);
-		free(text_minishell);
+		input = readline("\033[36;1mMinishell -> \033[0m");
+		printf("ME MUERO!!\n");
 		add_history(input);
-		printf("HOLIII\n");
 		if (ft_strncmp(input, "pitos", 5) == 0)
 		{
 			child_generator(pipex, cmd, 3, envp);
 			wait(&to_wait);
 		}
-		if (!ft_strncmp(input, "exit", 5) || !ft_strncmp(input, "EXIT", 5))
+		else if (!ft_strncmp(input, "exit", 5) || !ft_strncmp(input, "EXIT", 5))
 		{
+			//exit(0);
 			free(input);
 			break ;
 		}
 		free(input);
 	}
+	//free(text_minishell);
 }
+
+/* void	leaks(void)
+{
+	system("leaks -q minishell");
+} */
 
 int	main(int argc, char **argv, char **envp)
 {
+	//atexit(leaks);
 	t_pipe	pipex;
 	t_cmd	*cmd;
 
@@ -63,12 +70,13 @@ int	main(int argc, char **argv, char **envp)
 	pipex.tmp_out = dup(1);
 	cmd[0].args = ft_split("ls -l -a", ' ');
 	cmd[0].cmd = "/bin/ls";
-	cmd[1].args = ft_split("cat -e", ' ');
-	cmd[1].cmd = "/bin/cat";
-	cmd[2].args = ft_split("wc -l", ' ');
-	cmd[2].cmd = "/usr/bin/wc";
-	//child_generator(pipex, 3);
-
+	cmd[1].args = ft_split("wc -l", ' ');
+	cmd[1].cmd = "/usr/bin/wc";
+	cmd[2].args = ft_split("cat -e", ' ');
+	cmd[2].cmd = "/bin/cat";
+	if (argc != 1)
+		argc_error();
 	printf("%s", (char *)&(HEADER));
 	ft_getline(&pipex, cmd, envp);
+	exit(0);
 }

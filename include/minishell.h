@@ -28,40 +28,30 @@
 
 typedef struct s_cmd
 {
-	//char	**path;
 	char	**envp;
 	char	**args;
 	char	*cmd;
-	//int		cmd_counter; Mejor pasar int aparte
 
 }	t_cmd;
 
-/* typedef struct s_cmd
-{
-	char	**infile;
-	char	**outfile;
-	int		fd_in;
-	int		fd_out;
-	int		cmd_counter;
-
-}	t_cmd;
- */
 typedef struct s_pipe
 {
+	int		tube[2];
 	int		fd_in;
 	int		tmp_in;
 	int		fd_out;
 	int		tmp_out;
+	int		n_cmd;
 }	t_pipe;
 
 /*Functions for minishell.c*/
 char	*ft_get_text_minishell(void);
-void	ft_getline(t_pipe *pipex, t_cmd *cmd, char **envp);
+void	ft_getline(t_pipe *pipex, t_cmd *cmd);
 
 /*Functions for pipe_utils.c*/
 void	sub_dup2(int zero, int one);
 void	check_awk(t_cmd *cmd);
-void	child_generator(t_pipe *pipex, t_cmd *cmd, int n_cmd, char **envp);
+void	child_generator(t_pipe *pipex, t_cmd *cmd);
 
 /*Functions for error.c*/
 void	argc_error(void);

@@ -22,57 +22,39 @@ char	*ft_get_text_minishell(void)
 	return (text_minishell);
 }
 
-static int	ft_strncmp1(char *s1, char *s2, size_t n)
-{
-	size_t	i;
-	int		end;
-
-	i = 0;
-	end = 0;
-	if (!s1)
-		return (1);
-	while (end == 0 && (s2[i] || s1[i]) && i < n)
-	{
-		end = (unsigned char)s1[i] - (unsigned char)s2[i];
-		i++;
-	}	
-	return (end);
-}
-
-
-void	ft_getline(t_pipe *pipex, t_cmd *cmd, char **envp)
+void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 {
 	char	*input;
 	char	*text_minishell;
+
 
 	while (1)
 	{
 		text_minishell = ft_get_text_minishell();
 		input = readline(text_minishell);
-		//printf("%s\n", input);
 		add_history(input);
-		if (ft_strncmp1(input, "pitos", 5) == 0)
-			{child_generator(pipex, cmd, 3, envp);		text_minishell = ft_get_text_minishell();
-		input = readline(text_minishell);}
-		else if (!ft_strncmp1(input, "exit", 5) || !ft_strncmp1(input, "EXIT", 5))
+		if (ft_strncmp(input, "pitos", 5) == 0)
+		{
+			child_generator(pipex, cmd);
+		}
+		else if (!ft_strncmp(input, "exit", 5) || !ft_strncmp(input, "EXIT", 5))
 		{
 			free(input);
 			break ;
 		}
-		//printf("SOY CONCHA, ENTRO\n");
 		free(input);
 		free(text_minishell);
 	}
 }
 
-void	leaks(void)
+/* void	leaks(void)
 {
 	system("leaks -q minishell");
-}
+} */
 
 int	main(int argc, char **argv, char **envp)
 {
-	atexit(leaks);
+	//atexit(leaks);
 	t_pipe	pipex;
 	t_cmd	*cmd;
 
@@ -82,15 +64,20 @@ int	main(int argc, char **argv, char **envp)
 	pipex.fd_in = dup(0);
 	pipex.tmp_in = dup(0);
 	pipex.tmp_out = dup(1);
+	pipex.n_cmd = 3;
 	cmd[0].args = ft_split("ls -l -a", ' ');
 	cmd[0].cmd = "/bin/ls";
+	cmd[0].envp = envp;
 	cmd[1].args = ft_split("wc -l", ' ');
 	cmd[1].cmd = "/usr/bin/wc";
+	cmd[1].envp = envp;
 	cmd[2].args = ft_split("cat -e", ' ');
 	cmd[2].cmd = "/bin/cat";
+	cmd[2].envp = envp;
+
 	if (argc != 1)
 		argc_error();
 	printf("%s", (char *)&(HEADER));
-	ft_getline(&pipex, cmd, envp);
+	ft_getline(&pipex, cmd);
 	exit(0);
 }

@@ -54,7 +54,7 @@ typedef struct s_pipe
 	int		tmp_out;
 }	t_pipe;
 
-
+/*Functions for minishell.c*/
 char	*ft_get_text_minishell(void);
 void	ft_getline(t_pipe *pipex, t_cmd *cmd, char **envp);
 
@@ -70,4 +70,6 @@ void	err_msg_exit(char *str);
 
 /*Functions for frre.c*/
 void	free_matrix(char **str);
+void	close_pipes(int *tube);
+
 #endif

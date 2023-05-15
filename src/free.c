@@ -12,3 +12,10 @@ void	free_matrix(char **str)
 	}
 	free(str);
 }
+
+void	close_pipes(int *tube)
+{
+	printf("ENTRO!\n");
+	close(tube[0]);
+	close(tube[1]);
+}

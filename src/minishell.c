@@ -7,7 +7,7 @@
 	return (*envp + 5);
 } */
 
-/* char	*ft_get_text_minishell(void)
+char	*ft_get_text_minishell(void)
 {
 	char	*text_minishell;
 	char	path[1024];
@@ -20,45 +20,59 @@
 	text_minishell = ft_strjoin(aux, " -> \033[0m"); //Proteger
 	free(aux);
 	return (text_minishell);
-} */
+}
+
+static int	ft_strncmp1(char *s1, char *s2, size_t n)
+{
+	size_t	i;
+	int		end;
+
+	i = 0;
+	end = 0;
+	if (!s1)
+		return (1);
+	while (end == 0 && (s2[i] || s1[i]) && i < n)
+	{
+		end = (unsigned char)s1[i] - (unsigned char)s2[i];
+		i++;
+	}	
+	return (end);
+}
 
 
 void	ft_getline(t_pipe *pipex, t_cmd *cmd, char **envp)
 {
 	char	*input;
-	//char	*text_minishell;
-	int		to_wait;
+	char	*text_minishell;
 
-	//text_minishell = ft_get_text_minishell();
 	while (1)
 	{
-		input = readline("\033[36;1mMinishell -> \033[0m");
-		printf("ME MUERO!!\n");
+		text_minishell = ft_get_text_minishell();
+		input = readline(text_minishell);
+		//printf("%s\n", input);
 		add_history(input);
-		if (ft_strncmp(input, "pitos", 5) == 0)
+		if (ft_strncmp1(input, "pitos", 5) == 0)
+			{child_generator(pipex, cmd, 3, envp);		text_minishell = ft_get_text_minishell();
+		input = readline(text_minishell);}
+		else if (!ft_strncmp1(input, "exit", 5) || !ft_strncmp1(input, "EXIT", 5))
 		{
-			child_generator(pipex, cmd, 3, envp);
-			wait(&to_wait);
-		}
-		else if (!ft_strncmp(input, "exit", 5) || !ft_strncmp(input, "EXIT", 5))
-		{
-			//exit(0);
 			free(input);
 			break ;
 		}
+		//printf("SOY CONCHA, ENTRO\n");
 		free(input);
+		free(text_minishell);
 	}
-	//free(text_minishell);
 }
 
-/* void	leaks(void)
+void	leaks(void)
 {
 	system("leaks -q minishell");
-} */
+}
 
 int	main(int argc, char **argv, char **envp)
 {
-	//atexit(leaks);
+	atexit(leaks);
 	t_pipe	pipex;
 	t_cmd	*cmd;
 

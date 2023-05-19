@@ -27,12 +27,12 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 	char	*input;
 	char	*text_minishell;
 
-
 	while (1)
 	{
 		text_minishell = ft_get_text_minishell();
 		input = readline(text_minishell);
 		add_history(input);
+		ft_checkinput(input, pipex);
 		if (ft_strncmp(input, "pitos", 5) == 0)
 		{
 			child_generator(pipex, cmd);
@@ -67,13 +67,11 @@ int	main(int argc, char **argv, char **envp)
 	pipex.n_cmd = 3;
 	cmd[0].args = ft_split("ls -l -a", ' ');
 	cmd[0].cmd = "/bin/ls";
-	cmd[0].envp = envp;
+	pipex.envp = envp;
 	cmd[1].args = ft_split("wc -l", ' ');
 	cmd[1].cmd = "/usr/bin/wc";
-	cmd[1].envp = envp;
 	cmd[2].args = ft_split("cat -e", ' ');
 	cmd[2].cmd = "/bin/cat";
-	cmd[2].envp = envp;
 
 	if (argc != 1)
 		argc_error();

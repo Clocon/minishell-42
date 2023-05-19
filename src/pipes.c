@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-static void	child(t_cmd *cmd)
+static void	child(t_cmd *cmd, t_pipe *pipex)
 {
 	if (!cmd->cmd)
 	{
@@ -9,7 +9,7 @@ static void	child(t_cmd *cmd)
 		err_msg_exit(CMD_ERROR);
 	}
 	check_awk(cmd);
-	execve(cmd->cmd, cmd->args, cmd->envp);
+	execve(cmd->cmd, cmd->args, pipex->envp);
 }
 
 static void	dup_assignation(t_pipe *pipex, int i)
@@ -45,7 +45,7 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 		dup_assignation(pipex, i);
 		pid[i] = fork();
 		if (!pid[i])
-			child(&cmd[i]);
+			child(&cmd[i], pipex);
 		waitpid(pid[i], &to_wait, 0);
 		free_matrix(cmd[i].args);
 	}

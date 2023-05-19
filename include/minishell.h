@@ -28,7 +28,6 @@
 
 typedef struct s_cmd
 {
-	char	**envp;
 	char	**args;
 	char	*cmd;
 
@@ -36,6 +35,8 @@ typedef struct s_cmd
 
 typedef struct s_pipe
 {
+	char	**envp;
+	char	**path;
 	int		tube[2];
 	int		fd_in;
 	int		tmp_in;
@@ -61,5 +62,8 @@ void	err_msg_exit(char *str);
 /*Functions for frre.c*/
 void	free_matrix(char **str);
 void	close_pipes(int *tube);
+
+/*Functions for checker.c*/
+void	ft_checkinput(char *input, t_pipe *pipex);
 
 #endif

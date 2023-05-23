@@ -15,7 +15,7 @@ static void	ft_getpath(t_pipe *pipex)
 	pipex->path = path;
 }
 
-static char	*ft_getcmd(t_pipex pipex, char *cmd)
+/* static char	*ft_getcmd(t_pipe pipex, char *cmd)
 {
 	int		i;
 	char	*aux;
@@ -40,7 +40,7 @@ static char	*ft_getcmd(t_pipex pipex, char *cmd)
 		i++;
 	}
 	return (NULL);
-}
+} */
 
 void	ft_checkinput(char *input, t_pipe *pipex)
 {
@@ -49,7 +49,7 @@ void	ft_checkinput(char *input, t_pipe *pipex)
 
 	i = 0;
 	ft_getpath(pipex);
-	split_in = ft_split(input, ' ');
+	split_in = ft_splitpipex(input, ' ');
 	while (split_in[i])
 	{
 		printf("INPUT %d = %s\n", i, split_in[i]);

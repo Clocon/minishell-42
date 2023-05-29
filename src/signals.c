@@ -12,10 +12,10 @@ void	sigint_handler(int sig)
 	rl_redisplay();
 }
 
-void	ctrl_d(char *input, t_cmd *cmd)
+void	ctrl_d(char *input, t_pipe *pipe)
 {
 	if (!input)
 	{
-		clean_and_exit_success(cmd);
+		clean_success(pipe);
 	}
 }

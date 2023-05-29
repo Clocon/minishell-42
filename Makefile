@@ -1,7 +1,7 @@
 NAME			=	minishell
 
 CC				=	gcc
-CFLAGS			=	-Wall -Werror -Wextra
+CFLAGS			=	-Wall -Werror -Wextra -I "/Users/$(USER)/.brew/opt/readline/include/"
 RM				=	rm -f
 AR				=	ar -rcs
 
@@ -36,7 +36,7 @@ $(LIBFT):
 				@make -C ./libft
 
 $(NAME):		$(OBJS)
-				@$(CC) $(FLAGS) $(LIBFT) $(OBJS)   -o $(NAME) -lreadline
+				@$(CC) $(FLAGS) $(LIBFT) $(OBJS) -L"/Users/$(USER)/.brew/opt/readline/lib/" -o $(NAME) -lreadline
 				@echo "\n$(CYELLOW)$(NAME) $(PURPLE)-> $(CGREEN) compiled$(CRESET)"
 
 clean:

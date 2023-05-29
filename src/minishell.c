@@ -29,8 +29,10 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 
 	while (1)
 	{
+		signal(SIGINT, sigint_handler);
 		text_minishell = ft_get_text_minishell();
 		input = readline(text_minishell);
+		ctrl_d(input, pipex);
 		add_history(input);
 		ft_checkinput(input, pipex);
 		if (ft_strncmp(input, "pitos", 5) == 0)

@@ -62,6 +62,7 @@ void	err_msg_exit(char *str);
 /*Functions for free.c*/
 void	free_matrix(char **str);
 void	close_pipes(int *tube);
+void	clean_success(t_pipe *pipe);
 
 /*Functions for checker.c*/
 void	ft_checkinput(char *input, t_pipe *pipex);
@@ -71,6 +72,6 @@ char	**ft_splitpipex(char const *str, char c);
 
 /*Functions for signals.c*/
 void	sigint_handler(int sig);
-void	ctrl_d(char *input, t_cmd *cmd);
+void	ctrl_d(char *input, t_pipe *pipe);
 
 #endif

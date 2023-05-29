@@ -1,6 +1,8 @@
-.DS_STORE
+.*
 .vscode/
 a.out
 *.o
 *.a
 minishell
+Makefile
+*.h

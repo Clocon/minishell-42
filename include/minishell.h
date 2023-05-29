@@ -69,4 +69,8 @@ void	ft_checkinput(char *input, t_pipe *pipex);
 /*Functions for split_pipex.c*/
 char	**ft_splitpipex(char const *str, char c);
 
+/*Functions for signals.c*/
+void	sigint_handler(int sig);
+void	ctrl_d(char *input, t_cmd *cmd);
+
 #endif

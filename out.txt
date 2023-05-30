@@ -1,2 +1,0 @@
-termino
-CMD == /bin/cat!

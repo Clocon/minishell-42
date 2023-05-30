@@ -28,9 +28,13 @@
 
 typedef struct s_cmd
 {
-	char	**args;
-	char	*cmd;
-
+	char	**args; //l
+					//-a
+	char	*cmd; //bin/ls
+	char	*infile;
+	int		infile_redirect; // 0 = defecto; 1 = <; 2 = <<
+	char	*outfile;
+	int		outfile_redirect; // 0 = defecto; 1 = > 2 >>
 }	t_cmd;
 
 typedef struct s_pipe
@@ -39,7 +43,7 @@ typedef struct s_pipe
 	char	**path;
 	int		tube[2];
 	int		fd_in;
-	int		tmp_in;
+	//int		tmp_in;
 	int		fd_out;
 	int		tmp_out;
 	int		n_cmd;
@@ -67,6 +71,9 @@ void	close_pipes(int *tube);
 void	ft_checkinput(char *input, t_pipe *pipex);
 
 /*Functions for split_pipex.c*/
-char	**ft_splitpipex(char const *str, char c);
+char	**ft_splitpipex(char *s, char c);
+
+/*Functions for utils_checker.c*/
+int		ft_sizearray(char **array);
 
 #endif

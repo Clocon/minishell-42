@@ -62,11 +62,11 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	cmd = malloc(sizeof(t_cmd) * 3);
 	pipex.fd_in = dup(0);
-	pipex.tmp_in = dup(0);
+	//pipex.tmp_in = dup(0);
 	pipex.tmp_out = dup(1);
 	pipex.n_cmd = 3;
-	cmd[0].args = ft_split("ls -l -a", ' ');
-	cmd[0].cmd = "/bin/ls";
+	cmd[0].args = ft_split("fdgchjil -l -a", ' ');
+	cmd[0].cmd = "fdgchjil";
 	pipex.envp = envp;
 	cmd[1].args = ft_split("wc -l", ' ');
 	cmd[1].cmd = "/usr/bin/wc";

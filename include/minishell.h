@@ -30,6 +30,10 @@ typedef struct s_cmd
 {
 	char	**args;
 	char	*cmd;
+	char	*infile;
+	int		in_redir;// 0 = defecto; 1 = <; 2 = <<
+	char	*outfile;
+	int		out_redir;// 0 = defecto; 1 = > 2 >>
 
 }	t_cmd;
 
@@ -49,10 +53,13 @@ typedef struct s_pipe
 char	*ft_get_text_minishell(void);
 void	ft_getline(t_pipe *pipex, t_cmd *cmd);
 
+/*Functions for pipe.c*/
+void	child_generator(t_pipe *pipex, t_cmd *cmd);
+
 /*Functions for pipe_utils.c*/
 void	sub_dup2(int zero, int one);
 void	check_awk(t_cmd *cmd);
-void	child_generator(t_pipe *pipex, t_cmd *cmd);
+void	redir_check(t_pipe *pipex, t_cmd *cmd, int i);
 
 /*Functions for error.c*/
 void	argc_error(void);
@@ -73,5 +80,8 @@ char	**ft_splitpipex(char const *str, char c);
 /*Functions for signals.c*/
 void	sigint_handler(int sig);
 void	ctrl_d(char *input, t_pipe *pipe);
+
+
+char	**split_args(char *s, char c);
 
 #endif

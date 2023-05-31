@@ -38,6 +38,7 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 		if (ft_strncmp(input, "pitos", 5) == 0)
 		{
 			child_generator(pipex, cmd);
+			dup2(1, 1);
 		}
 		else if (!ft_strncmp(input, "exit", 5) || !ft_strncmp(input, "EXIT", 5))
 		{
@@ -59,21 +60,35 @@ int	main(int argc, char **argv, char **envp)
 	//atexit(leaks);
 	t_pipe	pipex;
 	t_cmd	*cmd;
-
+/* 	char **str;
+	int i = -1;
+	str = split_args("ls | coca | cola | locooo \" | si o q \"", '|');
+	while (str[++i])
+	{
+		printf("%s\n", str[i]);
+	} */
 	(void)argc;
 	(void)argv;
 	cmd = malloc(sizeof(t_cmd) * 3);
 	pipex.fd_in = dup(0);
-	pipex.tmp_in = dup(0);
+	//pipex.tmp_in = dup(0);
 	pipex.tmp_out = dup(1);
 	pipex.n_cmd = 3;
 	cmd[0].args = ft_split("ls -l -a", ' ');
 	cmd[0].cmd = "/bin/ls";
+	cmd[0].in_redir = 0;
+	//cmd[0].infile = "ina.txt";
+	cmd[0].out_redir = 0;
 	pipex.envp = envp;
 	cmd[1].args = ft_split("wc -l", ' ');
 	cmd[1].cmd = "/usr/bin/wc";
+	cmd[1].in_redir = 0;
+	cmd[1].out_redir = 0;
 	cmd[2].args = ft_split("cat -e", ' ');
 	cmd[2].cmd = "/bin/cat";
+	cmd[2].in_redir = 0;
+	cmd[2].out_redir = 2;
+	cmd[2].outfile = "sexy.txt";
 
 	if (argc != 1)
 		argc_error();

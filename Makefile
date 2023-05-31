@@ -12,6 +12,7 @@ SRCS			=	src/minishell.c \
 					src/free.c \
 					src/checker.c \
 					src/split_pipex.c \
+					src/split_args.c \
 					src/signals.c \
 					
 					

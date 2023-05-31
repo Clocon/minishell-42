@@ -12,23 +12,31 @@ static void	child(t_cmd *cmd, t_pipe *pipex)
 	execve(cmd->cmd, cmd->args, pipex->envp);
 }
 
-static void	dup_assignation(t_pipe *pipex, int i)
+static void	dup_assignation(t_pipe *pipex, t_cmd *cmd, int i)
 {
-	int	tube[2];
+	//int	tube[2];
 
-	dup2(pipex->fd_in, 0);
-	close(pipex->fd_in);
+	if (cmd->in_redir == 0)
+	{
+		dup2(pipex->fd_in, 0);
+		//close(pipex->fd_in);
+	}
 	if (i != pipex->n_cmd - 1)
 	{
-		if (pipe(tube) == -1)
+		if (pipe(pipex->tube) == -1)
 			err_msg(PIPE_ERROR);
-		pipex->fd_in = tube[0];
-		pipex->fd_out = tube[1];
+		if (cmd->in_redir == 0)
+			pipex->fd_in = pipex->tube[0];
+		if (cmd->out_redir == 0)
+			pipex->fd_out = pipex->tube[1];
 	}
-	else
+	else if (cmd->out_redir == 0)
 		pipex->fd_out = dup(pipex->tmp_out);
-	dup2(pipex->fd_out, 1);
-	close(pipex->fd_out);
+	if (cmd->out_redir == 0)
+	{
+		dup2(pipex->fd_out, 1);
+		close(pipex->fd_out);
+	}
 }
 
 void	child_generator(t_pipe *pipex, t_cmd *cmd)
@@ -37,18 +45,29 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 	pid_t	pid[3];
 	int		to_wait;
 	int		keyboard_fd;
+	int		display_fd;
 
 	keyboard_fd = dup(0);
+	display_fd = dup(1);
 	i = -1;
 	while (++i < pipex->n_cmd)
 	{
-		dup_assignation(pipex, i);
+		dup_assignation(pipex, cmd, i);
+		/* if (cmd[i].in_redir != 0 || cmd[i].out_redir != 0)
+			redir_check(pipex, &cmd[i], i); */
 		pid[i] = fork();
 		if (!pid[i])
+		{
+			if (cmd[i].in_redir != 0 || cmd[i].out_redir != 0)
+				redir_check(pipex, &cmd[i], i);
 			child(&cmd[i], pipex);
+		}
 		waitpid(pid[i], &to_wait, 0);
-		free_matrix(cmd[i].args);
+		//free_matrix(cmd[i].args);
 	}
-	free(cmd);
+	//free(cmd);
 	dup2(keyboard_fd, 0);
+	close(keyboard_fd);
+	dup2(display_fd, 1);
+	close(display_fd);
 }

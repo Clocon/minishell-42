@@ -55,7 +55,7 @@ static int	ft_checkquotes(char *input)
 
 	i = 0;
 	s = 0;
-	quotes = ft_splitpipex(input, ' ');
+	quotes = ft_split_shell(input, ' ');
 	while (quotes[i])
 	{
 		if (ft_strchr(quotes[i], '\'') || ft_strchr(quotes[i], '"'))
@@ -67,7 +67,7 @@ static int	ft_checkquotes(char *input)
 			}
 		i++;
 	}
-	free(quotes);
+	free_matrix(quotes);
 	return (0);
 }
 
@@ -75,21 +75,19 @@ void	ft_checkinput(char *input, t_pipe *pipex)
 {
 	int		i;
 	char	**split_pi;
+	t_cmd	*cmd;
 
 	i = 0;
 	if (ft_checkquotes(input) == 0)
 	{
 		ft_getpath(pipex);
-		split_pi = ft_splitpipex(input, '|');
-/* 		cmd = malloc(sizeof(t_cmd));
-		if (!cmd)
-			err_msg_exit("Error de memoria:"); */
+		split_pi = ft_split_shell(input, '|');
+		
 		while (split_pi[i])
-			{
-			//ft_checkredirect(split_pi[i]);
+		{
 			printf("INPUT %d = %s\n", i, split_pi[i]);
 			i++;
 		}
-		//err_msg("saludos");
+		free_matrix(split_pi);
 	}
 }

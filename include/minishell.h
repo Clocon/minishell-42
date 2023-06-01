@@ -71,7 +71,7 @@ void	close_pipes(int *tube);
 void	ft_checkinput(char *input, t_pipe *pipex);
 
 /*Functions for split_pipex.c*/
-char	**ft_splitpipex(char *s, char c);
+char	**ft_split_shell(char *str, char c);
 
 /*Functions for utils_checker.c*/
 int		ft_sizearray(char **array);

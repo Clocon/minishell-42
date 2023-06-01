@@ -1,86 +1,79 @@
 #include "../include/minishell.h"
 
-static int	word_counter(char *str, char c)
+static int	ft_foundquotes(char *str, int *i)
+{
+	char	com;
+
+	com = 0;
+	if ((str[*i] == '\'' || str[*i] == '"') && str[*i] != 0)
+	{
+		com = str[*i];
+		*i = *i + 1;
+		while (str[*i] != 0 && str[*i] != com)
+			*i = *i + 1;
+		return (1);
+	}
+	return (0);
+}
+
+static int	ft_foundword(char *str, char s, int *i)
+{
+	if (str[*i] != s && str[*i] != 0)
+	{
+		while (str[*i] != 0 && str[*i] != s)
+		{
+			ft_foundquotes(str, i);
+			*i = *i + 1;
+		}
+		return (1);
+	}
+	return (0);
+}
+
+static int	ft_cwords(char *str, char s)
 {
 	int	i;
-	int	j;
+	int	nwords;
 
 	i = 0;
-	j = 0;
+	nwords = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' || str[i] == '\"')
-		{
+		while (str[i] == s && str[i] != 0)
 			i++;
-			while ((str[i] != '\'' || str[i] == '\"') && str[i] != 0)
-				i++;
-			j++;
-		}
-		if (str[i] != c)
-		{
-			while (str[i] != c && str[i])
-				i++;
-			j++;
-		}
-		else
-			i++;
+		if (str[i] != 0)
+			nwords += ft_foundword(str, s, &i);
+		if (str[i] != 0)
+			ft_foundquotes(str, &i);
 	}
-	return (j);
+	return (nwords);
 }
 
-static int	special_condition(char *s, char c, char c2)
+char	**ft_split_shell(char *str, char s)
 {
-	int	len;
-
-	len = 0;
-	if (*s == c2)
-	{
-		s++;
-		while ((*s != c2) && *s)
-		{
-			s++;
-			len++;
-		}
-		len++;
-		if (*s == c2)
-			len++;
-	}
-	else if (*s != c)
-	{
-		while (*s && *s != c && *s != 0)
-		{
-		len++;
-		s++;
-		}
-	}
-	return (len);
-}
-
-char	**ft_splitpipex(char *s, char c)
-{
-	char	**str;
-	int		len;
 	int		i;
-	char	c2;
+	int		is;
+	int		len;
+	char	**split;
 
-	str = malloc(sizeof(char *) * (word_counter(s, c) + 1));
-	if (!str)
-		return (0);
 	i = 0;
-	while (*s)
+	is = 0;
+	len = 0;
+	split = ft_calloc(sizeof(char *), ft_cwords(str, s) + 1);
+	if (!split)
+		return (0);
+	while (str[i])
 	{
-		if ((*s == '\'' || *s == '"') || *s != c)
+		while (str[i] == s && str[i] != 0)
 		{
-			if (*s == '\'' || *s == '"')
-				c2 = *s;
-			len = 0;
-			len = special_condition(s, c, c2);
-			s += len;
-			str[i++] = ft_substr(s - len, 0, len);
+			len++;
+			i++;
 		}
-		else
-			s++;
+		if (ft_foundword(str, s, &i))
+		{
+			split[is++] = ft_substr(str, len, i - len);
+			len = i;
+		}
 	}
-	str[i] = 0;
-	return (str);
+	return (split);
 }

@@ -32,7 +32,8 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 		text_minishell = ft_get_text_minishell();
 		input = readline(text_minishell);
 		add_history(input);
-		ft_checkinput(input, pipex);
+		if (*input)
+			ft_checkinput(input, pipex);
 		if (ft_strncmp(input, "pitos", 5) == 0)
 		{
 			child_generator(pipex, cmd);

@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-static void	to_upper(char *str)
+static void	to_lower(char *str)
 {	
 	int	i;
 
@@ -12,19 +12,13 @@ static void	to_upper(char *str)
 	}
 }
 
-char	*builting(char *cmd)
+int	builting(t_cmd *cmd)
 {
-	to_upper(&cmd);
-	if (ft_strncmp(cmd, 'pwd', 4))
-		return (ft_strjoin("/bin/", cmd));
-	if (ft_strncmp(cmd, 'pwd', 3))
-		return (ft_strjoin("/bin/", cmd));
-	if (ft_strncmp(cmd, 'pwd', 3))
-		return (ft_strjoin("/bin/", cmd));
-	if (ft_strncmp(cmd, 'pwd', 3))
-		return (ft_strjoin("/bin/", cmd));
-	if (ft_strncmp(cmd, 'pwd', 3))
-		return (ft_strjoin("/bin/", cmd));
-	if (ft_strncmp(cmd, 'pwd', 3))
-		return (ft_strjoin("/bin/", cmd));
+	to_lower(cmd->args[0]);
+	if (!ft_strncmp(cmd->args[0], "echo", 5)
+		&& !ft_strncmp(cmd->args[1], "-n", 3))
+		ft_echo(cmd);
+	else
+		return (0);
+	return (1);
 }

@@ -14,6 +14,8 @@ SRCS			=	src/minishell.c \
 					src/split_pipex.c \
 					src/split_args.c \
 					src/signals.c \
+					src/builtins/built.c \
+					src/builtins/echo.c \
 					
 					
 

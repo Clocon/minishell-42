@@ -81,7 +81,8 @@ char	**ft_splitpipex(char const *str, char c);
 void	sigint_handler(int sig);
 void	ctrl_d(char *input, t_pipe *pipe);
 
-
-char	**split_args(char *s, char c);
+/*Functions for *.c from builtins*/
+int		builting(t_cmd *cmd);
+void	ft_echo(t_cmd *cmd);
 
 #endif

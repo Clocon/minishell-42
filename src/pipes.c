@@ -10,6 +10,7 @@ static void	child(t_cmd *cmd, t_pipe *pipex)
 	}
 	check_awk(cmd);
 	execve(cmd->cmd, cmd->args, pipex->envp);
+	exit (0);
 }
 
 static void	dup_assignation(t_pipe *pipex, t_cmd *cmd, int i)
@@ -53,16 +54,18 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 	while (++i < pipex->n_cmd)
 	{
 		dup_assignation(pipex, cmd, i);
-		/* if (cmd[i].in_redir != 0 || cmd[i].out_redir != 0)
-			redir_check(pipex, &cmd[i], i); */
-		pid[i] = fork();
-		if (!pid[i])
+		if (cmd[i].in_redir != 0 || cmd[i].out_redir != 0)
+			redir_check(pipex, &cmd[i], i);
+		if (builting(&cmd[i]))
+			continue ;
+		else
 		{
-			if (cmd[i].in_redir != 0 || cmd[i].out_redir != 0)
-				redir_check(pipex, &cmd[i], i);
-			child(&cmd[i], pipex);
+			pid[i] = fork();
+			if (!pid[i])
+				child(&cmd[i], pipex);
+			printf("Peta aqui? con CMD = %s\n", cmd->cmd);
+			waitpid(pid[i], &to_wait, 0);
 		}
-		waitpid(pid[i], &to_wait, 0);
 		//free_matrix(cmd[i].args);
 	}
 	//free(cmd);

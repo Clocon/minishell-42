@@ -71,6 +71,74 @@ static int	ft_checkquotes(char *input)
 	return (0);
 }
 
+/* static void	ft_checkredirect(t_pipe *pipex, char **split_pi, t_cmd *cmd)
+{
+	int		i;
+	int		is;
+	char	**red;
+
+	i = 0;
+	is = 0;
+	while (split_pi[i])
+	{
+		if (ft_strchr(split_pi[i], '<'))
+		{
+
+		}
+		is = 0;
+		i++;
+	}
+} */
+
+int	ft_countpipe(char *input)
+{
+	int	i;
+	int	npipe;
+
+	i = 0;
+	npipe = 0;
+	while (input[i])
+	{
+		ft_foundquotes(input, &i);
+		if (input[i] == '|')
+			npipe++;
+		i++;
+	}
+	return (npipe);
+}
+
+int	ft_checksintaxpipex(char *input)
+{
+	int		i;
+	char	**split;
+
+	i = 0;
+	split = ft_split_shell(input, ' ');
+	if (ft_strlen(input) > 0 && split[i])
+	/* while (input[i])
+	{
+		if (input[i] == '|' && input[i - 1] =='|')
+		{
+			err_msg("Parse error near `||'\n");
+			return (1);
+		}
+		i++;
+	} 
+	split_sp = ft_split_shell(input, ' ');
+	i = 0;
+	while (split_sp[i])
+	{
+		if (split_sp[i + 1] && split_sp[i][0] == '|' && split_sp[i + 1][0] =='|')
+		{
+			err_msg("Parse error near `||'\n");
+			return (1);
+		}
+		i++;
+	}
+	*/
+	return (0);
+}
+
 void	ft_checkinput(char *input, t_pipe *pipex)
 {
 	int		i;
@@ -82,7 +150,9 @@ void	ft_checkinput(char *input, t_pipe *pipex)
 	{
 		ft_getpath(pipex);
 		split_pi = ft_split_shell(input, '|');
-		
+		pipex->n_cmd = ft_sizearray(split_pi);
+		cmd = malloc(sizeof(t_cmd *) * pipex->n_cmd);
+//		ft_checkredirect(pipex, split_pi, &cmd);
 		while (split_pi[i])
 		{
 			printf("INPUT %d = %s\n", i, split_pi[i]);

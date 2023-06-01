@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-static int	ft_foundquotes(char *str, int *i)
+int	ft_foundquotes(char *str, int *i)
 {
 	char	com;
 

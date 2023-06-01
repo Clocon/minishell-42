@@ -69,11 +69,15 @@ void	close_pipes(int *tube);
 
 /*Functions for checker.c*/
 void	ft_checkinput(char *input, t_pipe *pipex);
+int		ft_countpipe(char *input);
+int		ft_checksintaxpipex(char *input);
 
 /*Functions for split_pipex.c*/
 char	**ft_split_shell(char *str, char c);
+int		ft_foundquotes(char *str, int *i);
 
 /*Functions for utils_checker.c*/
 int		ft_sizearray(char **array);
+char	*ft_checkpipe(char *input, t_pipe *pipex);
 
 #endif

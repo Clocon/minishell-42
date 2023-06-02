@@ -111,31 +111,36 @@ int	ft_checksintaxpipex(char *input)
 {
 	int		i;
 	char	**split;
+	char	*aux;
 
 	i = 0;
-	split = ft_split_shell(input, ' ');
-	if (ft_strlen(input) > 0 && split[i])
-	/* while (input[i])
+	split = ft_split_shell(input, '|');
+	input = ft_strtrim(input, " ");
+	if (ft_countpipe(input) == 0)
+		return (0);
+	if (ft_countpipe(input) > ft_sizearray(split) || input[0] == '|')
 	{
-		if (input[i] == '|' && input[i - 1] =='|')
-		{
-			err_msg("Parse error near `||'\n");
-			return (1);
-		}
-		i++;
-	} 
-	split_sp = ft_split_shell(input, ' ');
-	i = 0;
-	while (split_sp[i])
-	{
-		if (split_sp[i + 1] && split_sp[i][0] == '|' && split_sp[i + 1][0] =='|')
-		{
-			err_msg("Parse error near `||'\n");
-			return (1);
-		}
-		i++;
+		err_msg("parse error near `|'\n");
+		return (1);
 	}
-	*/
+	if (ft_countpipe(input) != ft_sizearray(split) - 1)
+	{
+		if (!split[i])
+		{
+			err_msg("parse error near `|'\n");
+			return (1);
+		}
+		while (split[i])
+		{
+			aux = ft_strtrim(split[i], " ");
+			if (ft_strlen(aux) == 0)
+			{
+				err_msg("parse error near `|'\n");
+				return (1);
+			}
+			i++;
+		}
+	}
 	return (0);
 }
 

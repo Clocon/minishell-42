@@ -14,7 +14,7 @@ char	*ft_get_text_minishell(void)
 	char	*aux;
 
 	if (getcwd(path, sizeof(path)) == NULL)
-		exit(EXIT_FAILURE); //Poner ft_error y liberar lo que haga falta
+		exit(1); //Poner ft_error y liberar lo que haga falta
 	aux = ft_strrchr(path, '/') + 1;
 	aux = ft_strjoin("\033[36;1m", aux); //Proteger
 	text_minishell = ft_strjoin(aux, " -> \033[0m"); //Proteger
@@ -29,6 +29,7 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 
 	while (1)
 	{
+
 		signal(SIGINT, sigint_handler);
 		text_minishell = ft_get_text_minishell();
 		input = readline(text_minishell);
@@ -75,10 +76,10 @@ int	main(int argc, char **argv, char **envp)
 	pipex.fd_in = dup(0);
 	//pipex.tmp_in = dup(0);
 	pipex.tmp_out = dup(1);
-	cmd[0].args = ft_split_shell("echo", ' ');
-	cmd[0].cmd = "/bin/echo";
+	cmd[0].args = ft_split_shell("ls -l", ' ');
+	cmd[0].cmd = "/bin/ls";
 	cmd[0].in_redir = 1;
-	cmd[0].infile = "ina.txt";
+	cmd[0].infile = "in.txt";
 	cmd[0].out_redir = 0;
 	cmd[1].args = ft_split_shell("wc -l", ' ');
 	cmd[1].cmd = "/usr/bin/wc";
@@ -87,7 +88,7 @@ int	main(int argc, char **argv, char **envp)
 	cmd[2].args = ft_split_shell("cat -e", ' ');
 	cmd[2].cmd = "/bin/cat";
 	cmd[2].in_redir = 0;
-	cmd[2].out_redir = 1;
+	cmd[2].out_redir = 0;
 	cmd[2].outfile = "sexy.txt";
 
 	if (argc != 1)

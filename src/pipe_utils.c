@@ -1,17 +1,5 @@
 #include "../include/minishell.h"
 
-void	fd_comeback(void)
-{
-	int		keyboard_fd;
-	int		display_fd;
-
-	keyboard_fd = dup(0);
-	display_fd = dup(1);
-	dup2(keyboard_fd, 0);
-	close(keyboard_fd);
-	dup2(display_fd, 1);
-	close(display_fd);
-}
 
 char	*check_trim(char *str)
 {
@@ -22,7 +10,7 @@ char	*check_trim(char *str)
 	return (str);
 }
 
-void	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
+int	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
 {
 	if (cmd->in_redir == 1)
 	{
@@ -30,21 +18,23 @@ void	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
 		if (pipex->fd_in == -1)
 		{
 			err_msg("Error al leer archivo\n");
-			fd_comeback();
+			return (0);
 		}
-		else
-			dup2(pipex->fd_in, 0);
+		dup2(pipex->fd_in, 0);
 		if (i != pipex->n_cmd - 1)
 			pipex->fd_in = pipex->tube[0];
 	}
 	if (cmd->out_redir == 0)
-		return ;
+		return (1);
 	if (cmd->out_redir == 1)
 		pipex->fd_out = open(cmd->outfile, O_TRUNC | O_CREAT | O_RDWR, 0644);
-	if (cmd->out_redir == 2)
+	else if (cmd->out_redir == 2)
 		pipex->fd_out = open(cmd->outfile, O_CREAT | O_RDWR | O_APPEND, 0644);
+	if (pipex->fd_out == -1)
+		return (0);
 	if (i != pipex->n_cmd - 1)
 		pipex->fd_out = pipex->tube[1];
 	dup2(pipex->fd_out, 1);
 	close(pipex->fd_out);
+	return (1);
 }

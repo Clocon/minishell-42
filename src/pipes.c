@@ -42,13 +42,18 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 	int		i;
 	pid_t	pid[3];
 	int		to_wait;
+	int		keyboard_fd;
+	int		display_fd;
 
+	keyboard_fd = dup(0);
+	display_fd = dup(1);
 	i = -1;
 	while (++i < pipex->n_cmd)
 	{
 		dup_assignation(pipex, cmd, i);
 		if (cmd[i].in_redir != 0 || cmd[i].out_redir != 0)
-			redir_check(pipex, &cmd[i], i);
+			if (!redir_check(pipex, &cmd[i], i))
+				break ;
 	dprintf(2,"Peta aqui? Valor de I = %d --- con CMD = %s\n", i, cmd[i].cmd);
 		if (builting(&cmd[i]))
 			continue ;
@@ -62,5 +67,8 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 		//free_matrix(cmd[i].args);
 	}
 	//free(cmd);
-	fd_comeback();
+	dup2(keyboard_fd, 0);
+	close(keyboard_fd);
+	dup2(display_fd, 1);
+	close(display_fd);
 }

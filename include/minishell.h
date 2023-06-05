@@ -57,10 +57,9 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd);
 void	child_generator(t_pipe *pipex, t_cmd *cmd);
 
 /*Functions for pipe_utils.c*/
-void	fd_comeback(void);
 //void	sub_dup2(int zero, int one);
 char	*check_trim(char *str);
-void	redir_check(t_pipe *pipex, t_cmd *cmd, int i);
+int		redir_check(t_pipe *pipex, t_cmd *cmd, int i);
 
 /*Functions for error.c*/
 void	argc_error(void);

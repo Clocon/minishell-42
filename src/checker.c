@@ -49,7 +49,7 @@ void	ft_checkinput(char *input, t_pipe *pipex)
 
 	i = 0;
 	ft_getpath(pipex);
-	split_in = ft_splitpipex(input, ' ');
+	split_in = ft_split_shell(input, ' ');
 	while (split_in[i])
 	{
 		printf("INPUT %d = %s\n", i, split_in[i]);

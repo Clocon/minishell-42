@@ -75,20 +75,20 @@ int	main(int argc, char **argv, char **envp)
 	pipex.fd_in = dup(0);
 	//pipex.tmp_in = dup(0);
 	pipex.tmp_out = dup(1);
-	cmd[0].args = ft_split("ECHO -n 'SALUDOosS' ", ' ');
-	cmd[0].cmd = "echo";
-	cmd[0].in_redir = 0;
-	//cmd[0].infile = "ina.txt";
+	cmd[0].args = ft_split_shell("echo", ' ');
+	cmd[0].cmd = "/bin/echo";
+	cmd[0].in_redir = 1;
+	cmd[0].infile = "ina.txt";
 	cmd[0].out_redir = 0;
-/* 	cmd[1].args = ft_split("wc -l", ' ');
+	cmd[1].args = ft_split_shell("wc -l", ' ');
 	cmd[1].cmd = "/usr/bin/wc";
 	cmd[1].in_redir = 0;
-	cmd[1].out_redir = 0; */
-	cmd[1].args = ft_split("cat -e", ' ');
-	cmd[1].cmd = "/bin/cat";
-	cmd[1].in_redir = 0;
-	cmd[1].out_redir = 1;
-	cmd[1].outfile = "sexy.txt";
+	cmd[1].out_redir = 0;
+	cmd[2].args = ft_split_shell("cat -e", ' ');
+	cmd[2].cmd = "/bin/cat";
+	cmd[2].in_redir = 0;
+	cmd[2].out_redir = 1;
+	cmd[2].outfile = "sexy.txt";
 
 	if (argc != 1)
 		argc_error();

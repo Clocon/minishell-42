@@ -1,14 +1,25 @@
 #include "../include/minishell.h"
 
-void	check_awk(t_cmd *cmd)
+void	fd_comeback(void)
 {
-	if (ft_strncmp(cmd->args[0], "awk", 3) == 0)
-	{	
-		if (cmd->args[1][0] == '\'')
-			cmd->args[1] = ft_strtrim(cmd->args[1], "'");
-		else if (cmd->args[1][0] == '"')
-			cmd->args[1] = ft_strtrim(cmd->args[1], "\"");
-	}
+	int		keyboard_fd;
+	int		display_fd;
+
+	keyboard_fd = dup(0);
+	display_fd = dup(1);
+	dup2(keyboard_fd, 0);
+	close(keyboard_fd);
+	dup2(display_fd, 1);
+	close(display_fd);
+}
+
+char	*check_trim(char *str)
+{
+	if (str[0] == '\'')
+		str = ft_strtrim(str, "'");
+	else if (str[0] == '"')
+		str = ft_strtrim(str, "\"");
+	return (str);
 }
 
 void	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
@@ -17,9 +28,12 @@ void	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
 	{
 		pipex->fd_in = open(cmd->infile, O_RDONLY);
 		if (pipex->fd_in == -1)
-			err_msg_exit("Error al leer archivo\n");
-		dup2(pipex->fd_in, 0);
-		//close(pipex->fd_in);
+		{
+			err_msg("Error al leer archivo\n");
+			fd_comeback();
+		}
+		else
+			dup2(pipex->fd_in, 0);
 		if (i != pipex->n_cmd - 1)
 			pipex->fd_in = pipex->tube[0];
 	}

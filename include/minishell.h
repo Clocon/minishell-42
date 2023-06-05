@@ -57,8 +57,9 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd);
 void	child_generator(t_pipe *pipex, t_cmd *cmd);
 
 /*Functions for pipe_utils.c*/
-void	sub_dup2(int zero, int one);
-void	check_awk(t_cmd *cmd);
+void	fd_comeback(void);
+//void	sub_dup2(int zero, int one);
+char	*check_trim(char *str);
 void	redir_check(t_pipe *pipex, t_cmd *cmd, int i);
 
 /*Functions for error.c*/
@@ -75,7 +76,7 @@ void	clean_success(t_pipe *pipe);
 void	ft_checkinput(char *input, t_pipe *pipex);
 
 /*Functions for split_pipex.c*/
-char	**ft_splitpipex(char const *str, char c);
+char	**ft_split_shell(char *str, char s);
 
 /*Functions for signals.c*/
 void	sigint_handler(int sig);

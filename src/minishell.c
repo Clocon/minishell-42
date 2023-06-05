@@ -34,10 +34,13 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 		add_history(input);
 		if (ft_checksintaxpipex(input) == 0)
 		{
-			ft_checkpipe(input, pipex);
-			if (*input)
-				ft_checkinput(input, pipex);
+			input = ft_checkpipe(input, pipex);
+			printf("input = %s \n", input);
+			/* if (*input)
+				ft_checkinput(input, pipex); */
 		}
+		if (*input)
+			ft_checkinput(input, pipex);
 		if (ft_strncmp(input, "pitos", 5) == 0)
 		{
 			child_generator(pipex, cmd);

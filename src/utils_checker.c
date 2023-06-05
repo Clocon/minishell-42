@@ -26,6 +26,11 @@ char	*ft_checkpipe(char *input, t_pipe *pipex)
 		input_aux = readline("pipe>");
 		input = ft_strjoin_free(input, input_aux);
 		free (input_aux);
+		free_matrix(split_pi);
+		split_pi = ft_split_shell(input, '|');
+		pipex->n_cmd = ft_sizearray(split_pi);
+		n_pipe = ft_countpipe(input);
 	}
+	free_matrix(split_pi);
 	return (input);
 }

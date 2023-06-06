@@ -54,7 +54,6 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 		if (cmd[i].in_redir != 0 || cmd[i].out_redir != 0)
 			if (!redir_check(pipex, &cmd[i], i))
 				break ;
-	dprintf(2,"Peta aqui? Valor de I = %d --- con CMD = %s\n", i, cmd[i].cmd);
 		if (builting(&cmd[i]))
 			continue ;
 /* 		else

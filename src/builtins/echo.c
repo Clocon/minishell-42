@@ -14,7 +14,6 @@ void	ft_echo(t_cmd *cmd)
 		i = -1;
 		while (++i < len)
 		{
-			dprintf(2,"%c\n", cmd->args[j][i]);
 			if (!cmd->args[j][i + 1])
 				if (cmd->args[j][len - 1] == '\n' && i == len -1)
 					break ;

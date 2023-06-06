@@ -61,13 +61,7 @@ int	main(int argc, char **argv, char **envp)
 	//atexit(leaks);
 	t_pipe	pipex;
 	t_cmd	*cmd;
-/* 	char **str;
-	int i = -1;
-	str = split_args("ls | coca | cola | locooo \" | si o q \"", '|');
-	while (str[++i])
-	{
-		printf("%s\n", str[i]);
-	} */
+
 	(void)argc;
 	(void)argv;
 	pipex.n_cmd = 3;
@@ -90,7 +84,6 @@ int	main(int argc, char **argv, char **envp)
 	cmd[2].in_redir = 0;
 	cmd[2].out_redir = 0;
 	cmd[2].outfile = "sexy.txt";
-
 	if (argc != 1)
 		argc_error();
 	printf("%s", (char *)&(HEADER));

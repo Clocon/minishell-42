@@ -47,30 +47,6 @@ static void	ft_getpath(t_pipe *pipex)
 	return (cmd);
 } */
 
-static int	ft_checkquotes(char *input)
-{
-	char	**quotes;
-	int		i;
-	int		s;
-
-	i = 0;
-	s = 0;
-	quotes = ft_split_shell(input, ' ');
-	while (quotes[i])
-	{
-		if (ft_strchr(quotes[i], '\'') || ft_strchr(quotes[i], '"'))
-			if (quotes[i][s] != quotes[i][ft_strlen(quotes[i]) - 1]
-				|| ft_strlen(quotes[i]) == 1)
-			{
-				err_msg("Sintax error: ' or \" must be closed\n");
-				return (1);
-			}
-		i++;
-	}
-	free_matrix(quotes);
-	return (0);
-}
-
 /* static void	ft_checkredirect(t_pipe *pipex, char **split_pi, t_cmd *cmd)
 {
 	int		i;
@@ -114,10 +90,10 @@ int	ft_checksintaxpipex(char *input)
 	char	*aux;
 
 	i = 0;
-	split = ft_split_shell(input, '|');
 	input = ft_strtrim(input, " ");
 	if (ft_countpipe(input) == 0)
 		return (0);
+	split = ft_split_shell(input, '|');
 	if (ft_countpipe(input) > ft_sizearray(split) || input[0] == '|')
 	{
 		err_msg("parse error near `|'\n");
@@ -143,15 +119,27 @@ int	ft_checksintaxpipex(char *input)
 	}
 	return (0);
 }
+/* int	ft_checksintaxpipex(char *input)
+{
+	int		i;
+	char	**split;
+	//char	*aux;
 
-void	ft_checkinput(char *input, t_pipe *pipex)
+	i = 0;
+	input = ft_strtrim(input, " ");
+	if (ft_countpipe(input) == 0)
+		return (0);
+	split = ft_split_shell(input, '|');
+} */
+
+int	ft_checkinput(char *input, t_pipe *pipex)
 {
 	int		i;
 	char	**split_pi;
 	t_cmd	*cmd;
 
 	i = 0;
-	if (ft_checkquotes(input) == 0)
+	if (ft_checkquotes(input) == 0 && ft_checksintaxpipex(input) == 0)
 	{
 		ft_getpath(pipex);
 		split_pi = ft_split_shell(input, '|');
@@ -160,9 +148,12 @@ void	ft_checkinput(char *input, t_pipe *pipex)
 //		ft_checkredirect(pipex, split_pi, &cmd);
 		while (split_pi[i])
 		{
-			printf("INPUT %d = %s\n", i, split_pi[i]);
+			//printf("INPUT %d = %s\n", i, split_pi[i]);
 			i++;
 		}
 		free_matrix(split_pi);
+		return (0);
 	}
+	else
+		return (1);
 }

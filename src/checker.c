@@ -89,10 +89,8 @@ int	ft_checksintaxpipex(char *input)
 	char	**split;
 	char	*aux;
 
-	i = 0;
+	i = -1;
 	input = ft_strtrim(input, " ");
-	if (ft_countpipe(input) == 0)
-		return (0);
 	split = ft_split_shell(input, '|');
 	if (ft_countpipe(input) > ft_sizearray(split) || input[0] == '|')
 	{
@@ -101,12 +99,7 @@ int	ft_checksintaxpipex(char *input)
 	}
 	if (ft_countpipe(input) != ft_sizearray(split) - 1)
 	{
-		if (!split[i])
-		{
-			err_msg("parse error near `|'\n");
-			return (1);
-		}
-		while (split[i])
+		while (split[++i])
 		{
 			aux = ft_strtrim(split[i], " ");
 			if (ft_strlen(aux) == 0)
@@ -114,23 +107,10 @@ int	ft_checksintaxpipex(char *input)
 				err_msg("parse error near `|'\n");
 				return (1);
 			}
-			i++;
 		}
 	}
 	return (0);
 }
-/* int	ft_checksintaxpipex(char *input)
-{
-	int		i;
-	char	**split;
-	//char	*aux;
-
-	i = 0;
-	input = ft_strtrim(input, " ");
-	if (ft_countpipe(input) == 0)
-		return (0);
-	split = ft_split_shell(input, '|');
-} */
 
 int	ft_checkinput(char *input, t_pipe *pipex)
 {

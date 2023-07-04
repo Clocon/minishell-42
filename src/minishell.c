@@ -32,7 +32,13 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 		text_minishell = ft_get_text_minishell();
 		input = readline(text_minishell);
 		add_history(input);
-		if (ft_strlen(input) > 0)
+		if (!ft_strncmp(input, "exit", 5) || !ft_strncmp(input, "EXIT", 5))
+		{
+			free(input);
+			free(text_minishell);
+			break ;
+		}
+		if (ft_strlen(input) > 0 && ft_strlen(ft_strtrim(input, " ")) > 0)
 		{
 			input = ft_checkpipe(input, pipex);
 			printf("input = %s \n", input);
@@ -40,11 +46,6 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 		if (ft_strncmp(input, "pitos", 5) == 0)
 		{
 			child_generator(pipex, cmd);
-		}
-		else if (!ft_strncmp(input, "exit", 5) || !ft_strncmp(input, "EXIT", 5))
-		{
-			free(input);
-			break ;
 		}
 		free(input);
 		free(text_minishell);
@@ -58,7 +59,7 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 
 int	main(int argc, char **argv, char **envp)
 {
-	//atexit(leaks);
+//	atexit(leaks);
 	t_pipe	pipex;
 	t_cmd	*cmd;
 

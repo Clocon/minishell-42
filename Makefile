@@ -12,7 +12,8 @@ SRCS			=	src/minishell.c \
 					src/free.c \
 					src/checker.c \
 					src/split_pipex.c \
-					src/utils_checker.c
+					src/utils_checker.c \
+					src/utils_redirect.c 
 					
 					
 

@@ -2,7 +2,6 @@
 
 static void	ft_getpath(t_pipe *pipex)
 {
-	char	**path;
 	int		i;
 
 	i = 0;
@@ -12,11 +11,10 @@ static void	ft_getpath(t_pipe *pipex)
 		pipex->path = 0;
 	else
 	{
-		path = ft_calloc(ft_strlen(pipex->envp[i] + 5), sizeof(char));
-		if (!path)
-			err_msg("PATH_ERROR");
-		path = ft_split(pipex->envp[i] + 5, ':');
-		pipex->path = path;
+		pipex->path = ft_calloc(ft_strlen(pipex->envp[i] + 5), sizeof(char));
+		if (!pipex->path)
+			err_msg_sintax("PATH_ERROR");
+		pipex->path = ft_split(pipex->envp[i] + 5, ':');
 	}
 }
 
@@ -47,93 +45,108 @@ static void	ft_getpath(t_pipe *pipex)
 	return (cmd);
 } */
 
-/* static void	ft_checkredirect(t_pipe *pipex, char **split_pi, t_cmd *cmd)
-{
-	int		i;
-	int		is;
-	char	**red;
-
-	i = 0;
-	is = 0;
-	while (split_pi[i])
-	{
-		if (ft_strchr(split_pi[i], '<'))
-		{
-
-		}
-		is = 0;
-		i++;
-	}
-} */
-
-int	ft_countpipe(char *input)
+int	ft_consecutivepipes(char *input)
 {
 	int	i;
-	int	npipe;
 
 	i = 0;
-	npipe = 0;
 	while (input[i])
 	{
 		ft_foundquotes(input, &i);
-		if (input[i] == '|')
-			npipe++;
+		if (input [i] == '|' && input[i + 1] != 0 && input[i + 1] == '|')
+			return (1);
 		i++;
 	}
-	return (npipe);
+	return (0);
 }
 
 int	ft_checksintaxpipex(char *input)
 {
 	int		i;
 	char	**split;
-	char	*aux;
 
 	i = -1;
-	input = ft_strtrim(input, " ");
 	split = ft_split_shell(input, '|');
-	if (ft_countpipe(input) > ft_sizearray(split) || input[0] == '|')
+	split = ft_cleanspaces(split);
+	if (ft_countpipe(input) > ft_sizearray(split) || input[0] == '|'
+		|| ft_consecutivepipes(input) == 1)
 	{
-		err_msg("parse error near `|'\n");
+		err_msg_sintax("parse error near `|'\n");
+		free_matrix(split);
 		return (1);
 	}
 	if (ft_countpipe(input) != ft_sizearray(split) - 1)
 	{
 		while (split[++i])
 		{
-			aux = ft_strtrim(split[i], " ");
-			if (ft_strlen(aux) == 0)
+			if (ft_strlen(split[i]) == 0)
 			{
-				err_msg("parse error near `|'\n");
+				err_msg_sintax("parse error near `|'\n");
+				free_matrix(split);
 				return (1);
 			}
 		}
 	}
+	free_matrix(split);
 	return (0);
+}
+
+char	*ft_checkpipe(char *input, t_pipe *pipex)
+{
+	char	**split_pi;
+	char	*input_aux;
+
+	input = ft_strtrim(input, " ");
+	if (ft_checkinput(input, pipex) == 0)
+	{
+		split_pi = ft_split_shell(input, '|');
+		split_pi = ft_cleanspaces(split_pi);
+		pipex->n_cmd = ft_sizearray(split_pi);
+		while (ft_countpipe(input) + 1 != pipex->n_cmd)
+		{
+			input_aux = readline("pipe>");
+			input = ft_strjoin_free(input, input_aux);
+			free (input_aux);
+			free_matrix(split_pi);
+			if (ft_checkinput(input, pipex) == 1)
+				return (input);
+			split_pi = ft_split_shell(input, '|');
+			split_pi = ft_cleanspaces(split_pi);
+			pipex->n_cmd = ft_sizearray(split_pi);
+		}
+		free_matrix(split_pi);
+	}
+	return (input);
 }
 
 int	ft_checkinput(char *input, t_pipe *pipex)
 {
 	int		i;
 	char	**split_pi;
-	t_cmd	*cmd;
+//	t_cmd	*cmd;
 
 	i = 0;
-	if (ft_checkquotes(input) == 0 && ft_checksintaxpipex(input) == 0)
+	split_pi = ft_split_shell(input, '|');
+	if (ft_checkquotes(input) == 0 && ft_checksintaxpipex(input) == 0 
+		&& ft_checkredirect(input) == 0)
 	{
 		ft_getpath(pipex);
-		split_pi = ft_split_shell(input, '|');
 		pipex->n_cmd = ft_sizearray(split_pi);
-		cmd = malloc(sizeof(t_cmd *) * pipex->n_cmd);
-//		ft_checkredirect(pipex, split_pi, &cmd);
+		//cmd = malloc(sizeof(t_cmd *) * pipex->n_cmd);
 		while (split_pi[i])
 		{
 			//printf("INPUT %d = %s\n", i, split_pi[i]);
 			i++;
 		}
 		free_matrix(split_pi);
+		free_matrix(pipex->path);
+//		free(cmd);
 		return (0);
 	}
 	else
+	{
+		free_matrix(split_pi);
+		//free_matrix(pipex->path);
 		return (1);
+	}
 }

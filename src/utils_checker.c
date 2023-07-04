@@ -12,47 +12,37 @@ int	ft_sizearray(char **array)
 	return (i);
 }
 
-char	**ft_cleanspaces(char **split)
+int	ft_countpipe(char *input)
 {
 	int	i;
+	int	npipe;
+
+	i = 0;
+	npipe = 0;
+	while (input[i])
+	{
+		ft_foundquotes(input, &i);
+		if (input[i] == '|')
+			npipe++;
+		i++;
+	}
+	return (npipe);
+}
+
+char	**ft_cleanspaces(char **split)
+{
+	int		i;
+	char	*trim;
 
 	i = 0;
 	while (split[i])
 	{
-		split[i] = ft_strtrim(split[i], " ");
+		trim = ft_strtrim(split[i], " ");
+		free(split[i]);
+		split[i] = trim;
 		i++;
 	}
 	return (split);
-}
-
-char	*ft_checkpipe(char *input, t_pipe *pipex)
-{
-	int		n_pipe;
-	char	**split_pi;
-	char	*input_aux;
-
-	if (ft_checkinput(input, pipex) == 0)
-	{
-		split_pi = ft_split_shell(input, '|');
-		split_pi = ft_cleanspaces(split_pi);
-		pipex->n_cmd = ft_sizearray(split_pi);
-		n_pipe = ft_countpipe(input);
-		while (n_pipe + 1 != pipex->n_cmd)
-		{
-			input_aux = readline("pipe>");
-			input = ft_strjoin_free(input, input_aux);
-			free (input_aux);
-			free_matrix(split_pi);
-			if (ft_checkinput(input, pipex) == 1)
-				return (input);
-			split_pi = ft_split_shell(input, '|');
-			split_pi = ft_cleanspaces(split_pi);
-			pipex->n_cmd = ft_sizearray(split_pi);
-			n_pipe = ft_countpipe(input);
-		}
-		free_matrix(split_pi);
-	}
-	return (input);
 }
 
 static int	ft_checkclose(char *quotes)
@@ -92,7 +82,8 @@ int	ft_checkquotes(char *input)
 		{
 			if (ft_checkclose(quotes[i]) == 0)
 			{
-				err_msg("Sintax error: ' or \" must be closed\n");
+				err_msg_sintax("Sintax error: ' or \" must be closed\n");
+				free_matrix(quotes);
 				return (1);
 			}
 		}

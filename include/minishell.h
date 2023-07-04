@@ -62,13 +62,14 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd);
 void	argc_error(void);
 void	err_msg(char *str);
 void	err_msg_exit(char *str);
+void	err_msg_sintax(char *str);
 
 /*Functions for free.c*/
 void	free_matrix(char **str);
 void	close_pipes(int *tube);
 
 /*Functions for checker.c*/
-int	ft_checkinput(char *input, t_pipe *pipex);
+int		ft_checkinput(char *input, t_pipe *pipex);
 int		ft_countpipe(char *input);
 int		ft_checksintaxpipex(char *input);
 
@@ -80,5 +81,10 @@ int		ft_foundquotes(char *str, int *i);
 int		ft_sizearray(char **array);
 char	*ft_checkpipe(char *input, t_pipe *pipex);
 int		ft_checkquotes(char *input);
+char	**ft_cleanspaces(char **split);
+
+/*Functions for utils_redirect.c*/
+int		ft_checkoutf(char **input);
+int		ft_checkredirect(char *input);
 
 #endif

@@ -22,10 +22,13 @@ char	*ft_get_text_minishell(void)
 	return (text_minishell);
 }
 
-void	ft_getline(t_pipe *pipex, t_cmd *cmd)
+void	ft_getline(t_pipe *pipex/*,  t_cmd *cmd */)
 {
 	char	*input;
 	char	*text_minishell;
+	t_cmd	*cmd;
+/* 	int		i = 0;
+	int		i2 = 0; */
 
 	while (1)
 	{
@@ -34,6 +37,8 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 		add_history(input);
 		if (!ft_strncmp(input, "exit", 5) || !ft_strncmp(input, "EXIT", 5))
 		{
+			free_matrix(pipex->path);
+			free_matrix(pipex->envp);
 			free(input);
 			free(text_minishell);
 			break ;
@@ -41,7 +46,24 @@ void	ft_getline(t_pipe *pipex, t_cmd *cmd)
 		if (ft_strlen(input) > 0 && ft_strlen(ft_strtrim(input, " ")) > 0)
 		{
 			input = ft_checkpipe(input, pipex);
-			printf("input = %s \n", input);
+			cmd = malloc(sizeof(t_cmd *) * pipex->n_cmd);
+//			ft_getinput(cmd, input, pipex);
+			printf("n_cmd = %i\n", pipex->n_cmd);
+			/* while (i < pipex->n_cmd)
+			{
+				cmd[i].n_args = 2;
+				printf("cmd_%i = %s \n", i, cmd[i].cmd);
+				while (i2 < cmd[i].n_args)
+				{
+					cmd[i].args[i2] = 0;
+					printf("arg_%i = %s \n", i, cmd[i].args[i2]);
+					i2++;
+				} 
+				printf("infile = %d // outfile = %d \n", cmd[i].infile_redirect, cmd[i].outfile_redirect);
+				i2 = 0;
+				i++;
+			} 
+			i = 0;*/
 		}
 		if (ft_strncmp(input, "pitos", 5) == 0)
 		{
@@ -61,26 +83,27 @@ int	main(int argc, char **argv, char **envp)
 {
 //	atexit(leaks);
 	t_pipe	pipex;
-	t_cmd	*cmd;
+//	t_cmd	*cmd;
 
-	(void)argc;
+//	(void)argc;
 	(void)argv;
-	cmd = malloc(sizeof(t_cmd) * 3);
+
+//	cmd = malloc(sizeof(t_cmd) * 3);
 	pipex.fd_in = dup(0);
 	//pipex.tmp_in = dup(0);
 	pipex.tmp_out = dup(1);
-	pipex.n_cmd = 3;
-	cmd[0].args = ft_split("fdgchjil -l -a", ' ');
+	pipex.envp = envp;
+/* 	cmd[0].args = ft_split("fdgchjil -l -a", ' ');
 	cmd[0].cmd = "fdgchjil";
 	pipex.envp = envp;
 	cmd[1].args = ft_split("wc -l", ' ');
 	cmd[1].cmd = "/usr/bin/wc";
 	cmd[2].args = ft_split("cat -e", ' ');
-	cmd[2].cmd = "/bin/cat";
+	cmd[2].cmd = "/bin/cat"; */
 
 	if (argc != 1)
 		argc_error();
 	printf("%s", (char *)&(HEADER));
-	ft_getline(&pipex, cmd);
+	ft_getline(&pipex);
 	exit(0);
 }

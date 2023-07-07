@@ -54,15 +54,11 @@ int	ft_checkredirect(char *input)
 	i = 0;
 	split = ft_split_shell(input, '|');
 	split = ft_cleanspaces(split);
-	if (ft_existred(input) != 0)
+	while (split[i] != 0)
 	{
-		while (split[i] && ft_existred(split[i]))
-		{
-			if (ft_sintaxred(split[i]) == 1)
-				return (1);
-			i++;
-		}
-		ft_putstr_fd("encontrado red\n", 1);
+		if (ft_existred(split[i]) && ft_sintaxred(split[i]) == 1)
+			return (1);
+		i++;
 	}
 	free_matrix(split);
 	return (0);

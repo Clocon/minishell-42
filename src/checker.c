@@ -18,33 +18,6 @@ static void	ft_getpath(t_pipe *pipex)
 	}
 }
 
-/* static char	*ft_getcmd(t_pipe pipex, char *cmd)
-{
-	int		i;
-	char	*aux;
-	char	*c;
-	char	*ex;
-
-	i = 0;
-	while (cmd[i] != 0 && cmd[i] != ' ')
-		i++;
-	ex = ft_substr(cmd, 0, i);
-	i = 0;
-	if (access(ex, X_OK) == 0)
-		return (ex);
-	while (pipex.path[i])
-	{
-		aux = ft_strjoin(pipex.path[i], "/");
-		c = ft_strjoin(aux, ex);
-		free (aux);
-		if (access(c, X_OK) == 0)
-			return (c);
-		free (c);
-		i++;
-	}
-	return (cmd);
-} */
-
 int	ft_consecutivepipes(char *input)
 {
 	int	i;
@@ -121,32 +94,28 @@ char	*ft_checkpipe(char *input, t_pipe *pipex)
 
 int	ft_checkinput(char *input, t_pipe *pipex)
 {
-	int		i;
+//	int		i;
 	char	**split_pi;
 //	t_cmd	*cmd;
 
-	i = 0;
+//	i = 0;
 	split_pi = ft_split_shell(input, '|');
 	if (ft_checkquotes(input) == 0 && ft_checksintaxpipex(input) == 0 
 		&& ft_checkredirect(input) == 0)
 	{
 		ft_getpath(pipex);
-		pipex->n_cmd = ft_sizearray(split_pi);
-		//cmd = malloc(sizeof(t_cmd *) * pipex->n_cmd);
-		while (split_pi[i])
+/* 		while (split_pi[i])
 		{
-			//printf("INPUT %d = %s\n", i, split_pi[i]);
+			printf("INPUT %d = %s\n", i, split_pi[i]);
 			i++;
-		}
+		} */
 		free_matrix(split_pi);
-		free_matrix(pipex->path);
-//		free(cmd);
+	//	free_matrix(pipex->path);
 		return (0);
 	}
 	else
 	{
 		free_matrix(split_pi);
-		//free_matrix(pipex->path);
 		return (1);
 	}
 }

@@ -13,7 +13,8 @@ SRCS			=	src/minishell.c \
 					src/checker.c \
 					src/split_pipex.c \
 					src/utils_checker.c \
-					src/utils_redirect.c 
+					src/sintax_redirect.c \
+					src/get_input.c
 					
 					
 

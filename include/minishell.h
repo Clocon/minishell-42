@@ -31,6 +31,7 @@ typedef struct s_cmd
 	char	**args; //l
 					//-a
 	char	*cmd; //bin/ls
+	int		n_args;
 	char	*infile;
 	int		infile_redirect; // 0 = defecto; 1 = <; 2 = <<
 	char	*outfile;
@@ -51,7 +52,7 @@ typedef struct s_pipe
 
 /*Functions for minishell.c*/
 char	*ft_get_text_minishell(void);
-void	ft_getline(t_pipe *pipex, t_cmd *cmd);
+void	ft_getline(t_pipe *pipex/* , t_cmd *cmd */);
 
 /*Functions for pipe_utils.c*/
 void	sub_dup2(int zero, int one);
@@ -83,8 +84,12 @@ char	*ft_checkpipe(char *input, t_pipe *pipex);
 int		ft_checkquotes(char *input);
 char	**ft_cleanspaces(char **split);
 
-/*Functions for utils_redirect.c*/
+/*Functions for sintax_redirect.c*/
 int		ft_checkoutf(char **input);
 int		ft_checkredirect(char *input);
+int		ft_existred(char *input);
+
+/*Functions for get_input.c*/
+void	ft_getinput(t_cmd *cmd, char *input, t_pipe *pipex);
 
 #endif

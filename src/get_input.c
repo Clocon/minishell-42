@@ -27,30 +27,61 @@
 	return (cmd);
 } */
 
-void	ft_getdatas(t_cmd *cmd, char *one_cmd)
+void	ft_getdatas_red(t_cmd *cmd, char *one_cmd)
+{
+	int	i;
+	int	ic;
+
+	i = 0;
+	ic = 0;
+	while (one_cmd[i])
+	{
+		if (one_cmd[i] == '>')
+		{
+			i++;
+			if (one_cmd[i] == '>')
+			{
+				i++;
+				while (one_cmd[i] && one_cmd[i] != ' ' && one_cmd[i] != '>'
+					&& one_cmd[i] != '<')
+				{
+					cmd->outfile[ic] = one_cmd[i];
+					printf("Copiando: %c\n", cmd->outfile);
+					ic++;
+					i++;
+				}
+				printf("OUTFILE = %s\n", cmd->outfile);
+			}
+			/* else
+			{
+
+			} */
+		}
+		i++;
+	}
+}
+
+void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd)
 {
 	int		i;
-	int		is;
 	char	**split_sp;
 
 	i = 0;
-	is = 0;
 	split_sp = ft_split_shell(one_cmd, ' ');
-	if (ft_existred(one_cmd) == 0)
+	cmd->cmd = split_sp[0];
+	cmd->infile_redirect = 0;
+	cmd->outfile_redirect = 1;
+	cmd->infile = 0;
+	cmd->outfile = 0;
+	cmd->args = malloc((sizeof(char *)) * (ft_sizearray(split_sp) + 1));
+	while (split_sp[i] != 0)
 	{
-		cmd->cmd = split_sp[is];
-		cmd->args = malloc((sizeof(char *)) * (ft_sizearray(split_sp) + 1));
-		while (split_sp[is] != 0)
-		{
-			cmd->args[is] = split_sp[is];
-			printf("ARGS = %s\n", cmd->args[is]);
-			is++;
-		}
-		is = 0;
+		cmd->args[i] = split_sp[i];
+		i++;
 	}
-	free_matrix(split_sp);
+	cmd->args[i] = 0;
+	free(split_sp);
 }
-
 
 void	ft_getinput(char *input, t_pipe *pipex)
 {
@@ -61,17 +92,19 @@ void	ft_getinput(char *input, t_pipe *pipex)
 
 	i = 0;
 	i_s = 0;
+	printf("input = %s\n", input);
 	split_pi = ft_split_shell(input, '|');
 	split_pi = ft_cleanspaces(split_pi);
 	cmd = malloc(sizeof(t_cmd) * pipex->n_cmd);
 	while (i < pipex->n_cmd)
 	{
-		cmd[i].infile_redirect = 0;
-		cmd[i].outfile_redirect = 1;
-		cmd[i].infile = 0;
-		cmd[i].outfile = 0;
+		if (ft_existred(split_pi[i]) == 0)
+			ft_getdatas_nored(&cmd[i], split_pi[i]);
+		else
+			ft_getdatas_red(&cmd[i], split_pi[i]);
 		printf("infile = %d // outfile = %d \n", cmd[i].infile_redirect, cmd[i].outfile_redirect);
-		ft_getdatas(&cmd[i], split_pi[i]);
+		printf("OUTFILE name = %s\n", cmd[i].outfile);
+		printf("CMD despues = %s\n", cmd[i].cmd);
 		i++;
 	}
 	free_matrix(split_pi);

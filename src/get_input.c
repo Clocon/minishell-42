@@ -27,7 +27,7 @@
 	return (cmd);
 } */
 
-void	ft_getdatas(t_cmd *cmd, char *one_cmd, int n_cmd)
+void	ft_getdatas(t_cmd *cmd, char *one_cmd)
 {
 	int		i;
 	int		is;
@@ -36,44 +36,43 @@ void	ft_getdatas(t_cmd *cmd, char *one_cmd, int n_cmd)
 	i = 0;
 	is = 0;
 	split_sp = ft_split_shell(one_cmd, ' ');
-/* 	while (one_cmd[i])
-	{ */
-		if (ft_existred(one_cmd) == 0)
+	if (ft_existred(one_cmd) == 0)
+	{
+		cmd->cmd = split_sp[is];
+		cmd->args = malloc((sizeof(char *)) * (ft_sizearray(split_sp) + 1));
+		while (split_sp[is] != 0)
 		{
-			cmd[n_cmd].cmd = split_sp[is];
-			while (split_sp[is])
-			{
-				cmd[n_cmd].args[is] = split_sp[is];
-				is++;
-			}
+			cmd->args[is] = split_sp[is];
+			printf("ARGS = %s\n", cmd->args[is]);
+			is++;
 		}
-/* 		else
-		{
-
-		} */
-/* 		i++;
-	} */
+		is = 0;
+	}
 	free_matrix(split_sp);
 }
 
 
-void	ft_getinput(t_cmd *cmd, char *input, t_pipe *pipex)
+void	ft_getinput(char *input, t_pipe *pipex)
 {
 	int		i;
 	int		i_s;
 	char	**split_pi;
+	t_cmd	*cmd;
 
 	i = 0;
 	i_s = 0;
 	split_pi = ft_split_shell(input, '|');
+	split_pi = ft_cleanspaces(split_pi);
+	cmd = malloc(sizeof(t_cmd) * pipex->n_cmd);
 	while (i < pipex->n_cmd)
 	{
 		cmd[i].infile_redirect = 0;
 		cmd[i].outfile_redirect = 1;
 		cmd[i].infile = 0;
 		cmd[i].outfile = 0;
-		//ft_getdatas(cmd, split_pi[i], i);
+		printf("infile = %d // outfile = %d \n", cmd[i].infile_redirect, cmd[i].outfile_redirect);
+		ft_getdatas(&cmd[i], split_pi[i]);
 		i++;
 	}
-//	free_matrix(split_pi);
+	free_matrix(split_pi);
 }

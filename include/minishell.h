@@ -90,6 +90,6 @@ int		ft_checkredirect(char *input);
 int		ft_existred(char *input);
 
 /*Functions for get_input.c*/
-void	ft_getinput(t_cmd *cmd, char *input, t_pipe *pipex);
+void	ft_getinput(char *input, t_pipe *pipex);
 
 #endif

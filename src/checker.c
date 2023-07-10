@@ -88,34 +88,19 @@ char	*ft_checkpipe(char *input, t_pipe *pipex)
 			pipex->n_cmd = ft_sizearray(split_pi);
 		}
 		free_matrix(split_pi);
+		ft_getinput(input, pipex);
 	}
 	return (input);
 }
 
 int	ft_checkinput(char *input, t_pipe *pipex)
 {
-//	int		i;
-	char	**split_pi;
-//	t_cmd	*cmd;
-
-//	i = 0;
-	split_pi = ft_split_shell(input, '|');
-	if (ft_checkquotes(input) == 0 && ft_checksintaxpipex(input) == 0 
+	if (ft_checkquotes(input) == 0 && ft_checksintaxpipex(input) == 0
 		&& ft_checkredirect(input) == 0)
 	{
 		ft_getpath(pipex);
-/* 		while (split_pi[i])
-		{
-			printf("INPUT %d = %s\n", i, split_pi[i]);
-			i++;
-		} */
-		free_matrix(split_pi);
-	//	free_matrix(pipex->path);
 		return (0);
 	}
 	else
-	{
-		free_matrix(split_pi);
 		return (1);
-	}
 }

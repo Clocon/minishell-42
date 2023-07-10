@@ -26,7 +26,6 @@ void	ft_getline(t_pipe *pipex/*,  t_cmd *cmd */)
 {
 	char	*input;
 	char	*text_minishell;
-	t_cmd	*cmd;
 /* 	int		i = 0;
 	int		i2 = 0; */
 
@@ -34,21 +33,15 @@ void	ft_getline(t_pipe *pipex/*,  t_cmd *cmd */)
 	{
 		text_minishell = ft_get_text_minishell();
 		input = readline(text_minishell);
-		add_history(input);
 		if (!ft_strncmp(input, "exit", 5) || !ft_strncmp(input, "EXIT", 5))
 		{
-			free_matrix(pipex->path);
-			free_matrix(pipex->envp);
 			free(input);
 			free(text_minishell);
 			break ;
 		}
+		add_history(input);
 		if (ft_strlen(input) > 0 && ft_strlen(ft_strtrim(input, " ")) > 0)
-		{
 			input = ft_checkpipe(input, pipex);
-			cmd = malloc(sizeof(t_cmd *) * pipex->n_cmd);
-//			ft_getinput(cmd, input, pipex);
-			printf("n_cmd = %i\n", pipex->n_cmd);
 			/* while (i < pipex->n_cmd)
 			{
 				cmd[i].n_args = 2;
@@ -64,11 +57,10 @@ void	ft_getline(t_pipe *pipex/*,  t_cmd *cmd */)
 				i++;
 			} 
 			i = 0;*/
-		}
-		if (ft_strncmp(input, "pitos", 5) == 0)
+/* 		if (ft_strncmp(input, "pitos", 5) == 0)
 		{
 			child_generator(pipex, cmd);
-		}
+		} */
 		free(input);
 		free(text_minishell);
 	}

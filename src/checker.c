@@ -44,7 +44,7 @@ int	ft_checksintaxpipex(char *input)
 	if (ft_countpipe(input) > ft_sizearray(split) || input[0] == '|'
 		|| ft_consecutivepipes(input) == 1)
 	{
-		err_msg_sintax("parse error near `|'\n");
+		err_msg_sintax("Syntax error near unexpected token `|'\n");
 		free_matrix(split);
 		return (1);
 	}
@@ -54,7 +54,7 @@ int	ft_checksintaxpipex(char *input)
 		{
 			if (ft_strlen(split[i]) == 0)
 			{
-				err_msg_sintax("parse error near `|'\n");
+				err_msg_sintax("Syntax error near unexpected token `|'\n");
 				free_matrix(split);
 				return (1);
 			}

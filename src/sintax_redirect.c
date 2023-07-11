@@ -28,17 +28,17 @@ int	ft_sintaxred(char *cmd)
 		if (cmd[i] == '>')
 		{
 			if (ft_strncmp(&cmd[i], "><", 2) == 0
-				|| ft_strncmp(&cmd[i], ">>>", 3) == 0)
+				|| ft_strncmp(&cmd[i], ">>>", 3) == 0 || cmd[i + 1] == 0)
 			{
-				err_msg_sintax("parse error near `>'\n");
+				err_msg_sintax("Syntax error near unexpected token `>'\n");
 				return (1);
 			}
 		}
 		else if (cmd[i] == '<')
 		{
-			if (ft_strncmp(&cmd[i], "<<<", 3) == 0)
+			if (ft_strncmp(&cmd[i], "<<<", 3) == 0 || cmd[i + 1] == 0)
 			{
-				err_msg_sintax("parse error near `<'\n");
+				err_msg_sintax("Syntax error near unexpected token `<'\n");
 				return (1);
 			}
 		}

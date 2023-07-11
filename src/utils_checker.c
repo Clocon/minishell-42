@@ -82,7 +82,7 @@ int	ft_checkquotes(char *input)
 		{
 			if (ft_checkclose(quotes[i]) == 0)
 			{
-				err_msg_sintax("Sintax error: ' or \" must be closed\n");
+				err_msg_sintax("Syntax error: ' or \" must be closed\n");
 				free_matrix(quotes);
 				return (1);
 			}

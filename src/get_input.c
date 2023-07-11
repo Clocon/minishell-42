@@ -27,6 +27,48 @@
 	return (cmd);
 } */
 
+char	*ft_getname(char *cmd, int *j)
+{
+	int		i;
+	char	*file;
+
+	i = 0;
+	while (cmd[i] && cmd[i] != ' ' && cmd[i] != '<' && cmd[i] != '>')
+	{
+		ft_foundquotes(&cmd[i], &i);
+		i++;
+	}
+	i--;
+	file = ft_substr(cmd, 0, i + 1);
+	file[i + 1] = 0;
+	*j += i;
+	return (file);
+}
+
+void	ft_getfiles(t_cmd *cmd, char *str, int *i, int red)
+{
+	if (str[*i] == red)
+	{
+		*i += 1;
+		if (red == '>')
+			cmd->outfile_redirect = 1;
+		else if (red == '<')
+			cmd->infile_redirect = 1;
+		while (str[*i] == '>' || str[*i] == ' ')
+		{
+			if (str[*i] == '>')
+				cmd->outfile_redirect = 2;
+			else if (str[*i] == '<')
+				cmd->infile_redirect = 2;
+			*i += 1;
+		}
+		if (red == '>')
+			cmd->outfile = ft_getname(&str[*i], i);
+		else if (red == '<')
+			cmd->infile = ft_getname(&str[*i], i);
+	}
+}
+
 void	ft_getdatas_red(t_cmd *cmd, char *one_cmd)
 {
 	int	i;
@@ -34,31 +76,43 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd)
 
 	i = 0;
 	ic = 0;
-	while (one_cmd[i])
+	while (one_cmd[i] && i < ft_strlen(one_cmd))
 	{
-		if (one_cmd[i] == '>')
+		ft_foundquotes(one_cmd, &i);
+		/* if (one_cmd[i] == '>')
 		{
 			i++;
-			if (one_cmd[i] == '>')
+			cmd->outfile_redirect = 1;
+			while (one_cmd[i] == '>' || one_cmd[i] == ' ')
 			{
+				if (one_cmd[i] == '>')
+					cmd->outfile_redirect = 2;
 				i++;
-				while (one_cmd[i] && one_cmd[i] != ' ' && one_cmd[i] != '>'
-					&& one_cmd[i] != '<')
-				{
-					cmd->outfile[ic] = one_cmd[i];
-					printf("Copiando: %c\n", cmd->outfile);
-					ic++;
-					i++;
-				}
-				printf("OUTFILE = %s\n", cmd->outfile);
 			}
-			/* else
-			{
-
-			} */
+			cmd->outfile = ft_getname(&one_cmd[i], &i);
 		}
+		else if (one_cmd[i] == '<')
+		{
+			i++;
+			cmd->infile_redirect = 1;
+			while (one_cmd[i] == '<' || one_cmd[i] == ' ')
+			{
+				if (one_cmd[i] == '<')
+					cmd->infile_redirect = 2;
+				i++;
+			}
+			cmd->infile = ft_getname(&one_cmd[i], &i);
+		} */
+		if (one_cmd[i] != '<' && one_cmd[i] != '>' && i == 0 && one_cmd[i])
+		{
+			cmd->cmd = ft_getname(&one_cmd[i], &i);
+		}
+		else if ((one_cmd[i] == '<' || one_cmd[i] == '>') && one_cmd[i])
+			ft_getfiles(cmd, one_cmd, &i, one_cmd[i]);
 		i++;
 	}
+	cmd->args = malloc(sizeof(char *) * 1);
+	cmd->args[0] = 0;
 }
 
 void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd)
@@ -70,7 +124,7 @@ void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd)
 	split_sp = ft_split_shell(one_cmd, ' ');
 	cmd->cmd = split_sp[0];
 	cmd->infile_redirect = 0;
-	cmd->outfile_redirect = 1;
+	cmd->outfile_redirect = 0;
 	cmd->infile = 0;
 	cmd->outfile = 0;
 	cmd->args = malloc((sizeof(char *)) * (ft_sizearray(split_sp) + 1));
@@ -104,7 +158,14 @@ void	ft_getinput(char *input, t_pipe *pipex)
 			ft_getdatas_red(&cmd[i], split_pi[i]);
 		printf("infile = %d // outfile = %d \n", cmd[i].infile_redirect, cmd[i].outfile_redirect);
 		printf("OUTFILE name = %s\n", cmd[i].outfile);
-		printf("CMD despues = %s\n", cmd[i].cmd);
+		printf("INFILE name = %s\n", cmd[i].infile);
+		printf("CMD = %s\n", cmd[i].cmd);
+		int a = 0;
+		while (cmd[i].args[a])
+		{
+			printf("ARGS_%d: %s\n",i, cmd[i].args[a]);
+			a++;
+		}
 		i++;
 	}
 	free_matrix(split_pi);

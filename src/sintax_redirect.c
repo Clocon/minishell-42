@@ -32,11 +32,13 @@ int	ft_checksymbols(char *cmd, int symbol)
 	{
 		if (cmd[i] == symbol)
 		{
-			while (cmd[i] == symbol)
+			while (cmd[i] == '<' || cmd[i] == '>')
 				i++;
 			ft_scapespaces(cmd, &i);
 			if (cmd[i] && (cmd[i] == '<' || cmd[i] == '>'))
 				return (1);
+			else
+				return (0);
 		}
 		i++;
 	}

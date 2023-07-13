@@ -27,10 +27,30 @@
 	return (cmd);
 } */
 
+void	ft_getargs(char *one_cmd, t_cmd *cmd)
+{
+	int		i;
+	char	**split_arg;
+
+	i = 0;
+	while (one_cmd[i] && one_cmd[i] != '>' && one_cmd[i] != '<')
+		i++;
+	split_arg = ft_split_shell(ft_substr(one_cmd, 0, i), ' ');
+	i = 0;
+	cmd->args = malloc((sizeof(char *)) * (ft_sizearray(split_arg) + 1));
+	while (split_arg[i] != 0)
+	{
+		cmd->args[i] = split_arg[i];
+		i++;
+	}
+	cmd->args[i] = 0;
+	free(split_arg);
+}
+
 char	*ft_getname(char *cmd, int *j)
 {
 	int		i;
-	char	*file;
+	char	*name;
 
 	i = 0;
 	while (cmd[i] && cmd[i] != ' ' && cmd[i] != '<' && cmd[i] != '>')
@@ -39,70 +59,41 @@ char	*ft_getname(char *cmd, int *j)
 		i++;
 	}
 	i--;
-	file = ft_substr(cmd, 0, i + 1);
-	file[i + 1] = 0;
+	name = ft_substr(cmd, 0, i + 1);
+	name[i + 1] = 0;
 	*j += i;
-	return (file);
+	return (name);
 }
 
 void	ft_getfiles(t_cmd *cmd, char *str, int *i, int red)
 {
-	if (str[*i] == red)
+	if (red == '>')
+		cmd->outfile_redirect = 1;
+	else if (red == '<')
+		cmd->infile_redirect = 1;
+	*i += 1;
+	while (str[*i] == '>' || str[*i] == '<' || str[*i] == ' ')
 	{
+		if (str[*i] == '>')
+			cmd->outfile_redirect = 2;
+		else if (str[*i] == '<')
+			cmd->infile_redirect = 2;
 		*i += 1;
-		if (red == '>')
-			cmd->outfile_redirect = 1;
-		else if (red == '<')
-			cmd->infile_redirect = 1;
-		while (str[*i] == '>' || str[*i] == ' ')
-		{
-			if (str[*i] == '>')
-				cmd->outfile_redirect = 2;
-			else if (str[*i] == '<')
-				cmd->infile_redirect = 2;
-			*i += 1;
-		}
-		if (red == '>')
-			cmd->outfile = ft_getname(&str[*i], i);
-		else if (red == '<')
-			cmd->infile = ft_getname(&str[*i], i);
 	}
+	if (red == '>')
+		cmd->outfile = ft_getname(&str[*i], i);
+	else if (red == '<')
+		cmd->infile = ft_getname(&str[*i], i);
 }
 
 void	ft_getdatas_red(t_cmd *cmd, char *one_cmd)
 {
-	int	i;
-	int	ic;
+	int		i;
 
 	i = 0;
-	ic = 0;
 	while (one_cmd[i] && i < ft_strlen(one_cmd))
 	{
 		ft_foundquotes(one_cmd, &i);
-		/* if (one_cmd[i] == '>')
-		{
-			i++;
-			cmd->outfile_redirect = 1;
-			while (one_cmd[i] == '>' || one_cmd[i] == ' ')
-			{
-				if (one_cmd[i] == '>')
-					cmd->outfile_redirect = 2;
-				i++;
-			}
-			cmd->outfile = ft_getname(&one_cmd[i], &i);
-		}
-		else if (one_cmd[i] == '<')
-		{
-			i++;
-			cmd->infile_redirect = 1;
-			while (one_cmd[i] == '<' || one_cmd[i] == ' ')
-			{
-				if (one_cmd[i] == '<')
-					cmd->infile_redirect = 2;
-				i++;
-			}
-			cmd->infile = ft_getname(&one_cmd[i], &i);
-		} */
 		if (one_cmd[i] != '<' && one_cmd[i] != '>' && i == 0 && one_cmd[i])
 		{
 			cmd->cmd = ft_getname(&one_cmd[i], &i);
@@ -111,8 +102,7 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd)
 			ft_getfiles(cmd, one_cmd, &i, one_cmd[i]);
 		i++;
 	}
-	cmd->args = malloc(sizeof(char *) * 1);
-	cmd->args[0] = 0;
+	ft_getargs(one_cmd, cmd);
 }
 
 void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd)

@@ -79,6 +79,7 @@ int	main(int argc, char **argv, char **envp)
 
 //	(void)argc;
 	(void)argv;
+	printf("%d\n",getpid());
 
 //	cmd = malloc(sizeof(t_cmd) * 3);
 	pipex.fd_in = dup(0);

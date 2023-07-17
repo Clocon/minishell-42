@@ -15,7 +15,7 @@ static void	child(t_cmd *cmd, t_pipe *pipex)
 
 static void	dup_assignation(t_pipe *pipex, t_cmd *cmd, int i)
 {
-	if (cmd->in_redir == 0)
+	if (cmd->infile_redirect == 0)
 	{
 		dup2(pipex->fd_in, 0);
 	}
@@ -23,14 +23,14 @@ static void	dup_assignation(t_pipe *pipex, t_cmd *cmd, int i)
 	{
 		if (pipe(pipex->tube) == -1)
 			err_msg(PIPE_ERROR);
-		if (cmd->in_redir == 0)
+		if (cmd->infile_redirect == 0)
 			pipex->fd_in = pipex->tube[0];
-		if (cmd->out_redir == 0)
+		if (cmd->outfile_redirect == 0)
 			pipex->fd_out = pipex->tube[1];
 	}
-	else if (cmd->out_redir == 0)
+	else if (cmd->outfile_redirect == 0)
 		pipex->fd_out = dup(pipex->tmp_out);
-	if (cmd->out_redir == 0)
+	if (cmd->outfile_redirect == 0)
 	{
 		dup2(pipex->fd_out, 1);
 		close(pipex->fd_out);
@@ -51,7 +51,7 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 	while (++i < pipex->n_cmd)
 	{
 		dup_assignation(pipex, cmd, i);
-		if (cmd[i].in_redir != 0 || cmd[i].out_redir != 0)
+		if (cmd[i].infile_redirect != 0 || cmd[i].outfile_redirect != 0)
 			if (!redir_check(pipex, &cmd[i], i))
 				break ;
 		if (builting(&cmd[i]))

@@ -28,13 +28,14 @@
 
 typedef struct s_cmd
 {
-	char	**args;
-	char	*cmd;
+	char	**args; //l
+					//-a
+	char	*cmd; //bin/ls
+	int		n_args;
 	char	*infile;
-	int		in_redir;// 0 = defecto; 1 = <; 2 = <<
+	int		infile_redirect; // 0 = defecto; 1 = <; 2 = <<
 	char	*outfile;
-	int		out_redir;// 0 = defecto; 1 = > 2 >>
-
+	int		outfile_redirect; // 0 = defecto; 1 = > 2 >>
 }	t_cmd;
 
 typedef struct s_pipe
@@ -47,11 +48,12 @@ typedef struct s_pipe
 	int		fd_out;
 	int		tmp_out;
 	int		n_cmd;
+	int		shell_exit;
 }	t_pipe;
 
 /*Functions for minishell.c*/
 char	*ft_get_text_minishell(void);
-void	ft_getline(t_pipe *pipex, t_cmd *cmd);
+void	ft_getline(t_pipe *pipex);
 
 /*Functions for pipe.c*/
 void	child_generator(t_pipe *pipex, t_cmd *cmd);
@@ -65,6 +67,7 @@ int		redir_check(t_pipe *pipex, t_cmd *cmd, int i);
 void	argc_error(void);
 void	err_msg(char *str);
 void	err_msg_exit(char *str);
+void	err_msg_sintax(char *str);
 
 /*Functions for free.c*/
 void	free_matrix(char **str);
@@ -72,10 +75,14 @@ void	close_pipes(int *tube);
 void	clean_success(t_pipe *pipe);
 
 /*Functions for checker.c*/
-void	ft_checkinput(char *input, t_pipe *pipex);
+char	*ft_checkpipe(char *input, t_pipe *pipex);
+int		ft_checkinput(char *input, t_pipe *pipex);
+int		ft_countpipe(char *input);
+int		ft_checksintaxpipex(char *input);
 
 /*Functions for split_pipex.c*/
-char	**ft_split_shell(char *str, char s);
+char	**ft_split_shell(char *str, char c);
+int		ft_foundquotes(char *str, int *i);
 
 /*Functions for signals.c*/
 void	sigint_handler(int sig);
@@ -84,5 +91,17 @@ void	ctrl_d(char *input, t_pipe *pipe);
 /*Functions for *.c from builtins*/
 int		builting(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
+
+/*Functions for utils_checker.c*/
+int		ft_sizearray(char **array);
+int		ft_checkquotes(char *input);
+char	**ft_cleanspaces(char **split);
+
+/*Functions for sintax_redirect.c*/
+int		ft_checkredirect(char *input);
+int		ft_existred(char *input);
+
+/*Functions for get_input.c*/
+t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd);
 
 #endif

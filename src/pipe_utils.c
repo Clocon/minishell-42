@@ -12,7 +12,7 @@ char	*check_trim(char *str)
 
 int	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
 {
-	if (cmd->in_redir == 1)
+	if (cmd->infile_redirect == 1)
 	{
 		pipex->fd_in = open(cmd->infile, O_RDONLY);
 		if (pipex->fd_in == -1)
@@ -24,11 +24,11 @@ int	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
 		if (i != pipex->n_cmd - 1)
 			pipex->fd_in = pipex->tube[0];
 	}
-	if (cmd->out_redir == 0)
+	if (cmd->outfile_redirect == 0)
 		return (1);
-	if (cmd->out_redir == 1)
+	if (cmd->outfile_redirect == 1)
 		pipex->fd_out = open(cmd->outfile, O_TRUNC | O_CREAT | O_RDWR, 0644);
-	else if (cmd->out_redir == 2)
+	else if (cmd->outfile_redirect == 2)
 		pipex->fd_out = open(cmd->outfile, O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (pipex->fd_out == -1)
 		return (0);

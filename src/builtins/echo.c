@@ -7,6 +7,10 @@ void	ft_echo(t_cmd *cmd)
 	int	j;
 
 	j = 1;
+	if (cmd->args[j][0] && cmd->args[j][0] == '"')
+		cmd->args[j] = ft_strtrim(cmd->args[1], "\"");
+	else if (cmd->args[j][0] && cmd->args[j][0] == '\'')
+		cmd->args[j] = ft_strtrim(cmd->args[1], "'");
 	while (cmd->args[++j])
 	{
 		cmd->args[j] = check_trim(cmd->args[j]);

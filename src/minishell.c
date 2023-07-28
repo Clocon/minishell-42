@@ -1,12 +1,5 @@
 #include "../include/minishell.h"
 
-/* static char	*find_path(char **envp)
-{
-	while (ft_strncmp("PATH", *envp, 4))
-		envp++;
-	return (*envp + 5);
-} */
-
 char	*ft_get_text_minishell(void)
 {
 	char	*text_minishell;
@@ -58,7 +51,6 @@ int	main(int argc, char **argv, char **envp)
 
 //	(void)argc;
 	(void)argv;
-	printf("%d\n",getpid());
 
 //	cmd = malloc(sizeof(t_cmd) * 3);
 	pipex.fd_in = dup(0);

@@ -94,7 +94,7 @@ char	*ft_checkpipe(char *input, t_pipe *pipex)
 			pipex->n_cmd = ft_sizearray(split_pi);
 		}
 		free_matrix(split_pi);
-		cmd = ft_getinput(input, pipex, cmd);
+		cmd = ft_getinput((ft_expandit(input, pipex)), pipex, cmd);
 		child_generator(pipex, cmd);
 	}
 	else

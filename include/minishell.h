@@ -104,4 +104,7 @@ int		ft_existred(char *input);
 /*Functions for get_input.c*/
 t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd);
 
+/*Functions for expand.c*/
+char	*ft_expandit(char *cmd, t_pipe *pipex);
+
 #endif

@@ -104,6 +104,8 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 		i++;
 	}
 	ft_getargs(one_cmd, cmd);
+	/* if (cmd->infile == 2)
+		ft_heredoc(); */
 }
 
 void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
@@ -146,18 +148,18 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 			ft_getdatas_nored(&cmd[i], split_pi[i], pipex);
 		else
 			ft_getdatas_red(&cmd[i], split_pi[i], pipex);
- 		/* printf("infile = %d // outfile = %d \n", cmd[i].infile_redirect, cmd[i].outfile_redirect);
-		printf("OUTFILE name = %s\n", cmd[i].outfile);
-		printf("INFILE name = %s\n", cmd[i].infile);
-		printf("CMD = %s\n", cmd[i].cmd);
-		int a = 0;
-		while (cmd[i].args[a])
-		{
-			printf("ARGS_%d: %s\n",i, cmd[i].args[a]);
-			a++;
-		} */
 		i++;
 	}
 	free_matrix(split_pi);
+//	ft_expandvalues(cmd, pipex);
+	i = 0;
+	printf("---* CMD = %s *---\n", cmd->cmd);
+	while (cmd->args[i])
+	{
+		printf("---* Args_%s = %s *---\n", cmd->cmd, cmd->args[i]);
+		i++;
+	}
+	printf(">Infile_name = %s\n", cmd->infile);
+	printf("<Outfile_name = %s\n", cmd->outfile);
 	return (cmd);
 }

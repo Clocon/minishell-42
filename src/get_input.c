@@ -153,7 +153,7 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 	free_matrix(split_pi);
 //	ft_expandvalues(cmd, pipex);
 	i = 0;
-	printf("---* CMD = %s *---\n", cmd->cmd);
+	printf("\n\n---* CMD = %s *---\n", cmd->cmd);
 	while (cmd->args[i])
 	{
 		printf("---* Args_%s = %s *---\n", cmd->cmd, cmd->args[i]);

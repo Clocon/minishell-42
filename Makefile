@@ -1,7 +1,7 @@
 NAME			=	minishell
 
 CC				=	gcc -g
-CFLAGS			=	-Wall -Werror -Wextra -I "/Users/$(USER)/.brew/opt/readline/include/"
+CFLAGS			=	-Wall -Werror -Wextra -I "/Users/$(USER)/.brew/opt/readline/include/" -g
 RM				=	rm -f
 AR				=	ar -rcs
 

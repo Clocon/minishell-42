@@ -28,7 +28,7 @@
 
 typedef struct s_cmd
 {
-	char	**args; //l
+	char	**args; //ls
 					//-a
 	char	*cmd; //bin/ls
 	int		n_args;

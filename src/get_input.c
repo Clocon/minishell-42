@@ -153,13 +153,13 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 	free_matrix(split_pi);
 //	ft_expandvalues(cmd, pipex);
 	i = 0;
-	printf("\n\n---* CMD = %s *---\n", cmd->cmd);
+/* 	printf("\n\n---* CMD = %s *---\n", cmd->cmd);
 	while (cmd->args[i])
 	{
 		printf("---* Args_%s = %s *---\n", cmd->cmd, cmd->args[i]);
 		i++;
 	}
 	printf(">Infile_name = %s\n", cmd->infile);
-	printf("<Outfile_name = %s\n", cmd->outfile);
+	printf("<Outfile_name = %s\n", cmd->outfile); */
 	return (cmd);
 }

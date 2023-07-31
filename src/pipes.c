@@ -70,4 +70,5 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 	close(keyboard_fd);
 	dup2(display_fd, 1);
 	close(display_fd);
+	pipex->shell_exit = 0;
 }

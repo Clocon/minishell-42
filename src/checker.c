@@ -71,7 +71,6 @@ char	*ft_checkpipe(char *input, t_pipe *pipex)
 	t_cmd	*cmd;
 
 	input = ft_strtrim(input, " ");
-	pipex->shell_exit = 0;
 	cmd = 0;
 	if (ft_checkinput(input, pipex) == 0)
 	{
@@ -111,5 +110,8 @@ int	ft_checkinput(char *input, t_pipe *pipex)
 		return (0);
 	}
 	else
+	{
+		pipex->shell_exit = 258;
 		return (1);
+	}
 }

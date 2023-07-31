@@ -35,6 +35,7 @@ void	ft_getline(t_pipe *pipex/*,  t_cmd *cmd */)
 			ft_checkpipe(input, pipex);
 		free(input);
 		free(text_minishell);
+		//pipex->shell_exit = 0;
 	}
 }
 

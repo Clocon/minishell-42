@@ -31,7 +31,6 @@ typedef struct s_cmd
 	char	**args; //ls
 					//-a
 	char	*cmd; //bin/ls
-	int		n_args;
 	char	*infile;
 	int		infile_redirect; // 0 = defecto; 1 = <; 2 = <<
 	char	*outfile;
@@ -105,6 +104,6 @@ int		ft_existred(char *input);
 t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd);
 
 /*Functions for expand.c*/
-char	*ft_expandit(char *cmd, t_pipe *pipex);
+char	*ft_expandit(char *cmd, t_pipe *pipex, int expand);
 
 #endif

@@ -124,7 +124,7 @@ void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 		i++;
 	}
 	cmd->args[i] = 0;
-	free(split_sp);
+	//free(split_sp);
 }
 
 t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
@@ -153,13 +153,23 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 	free_matrix(split_pi);
 //	ft_expandvalues(cmd, pipex);
 	i = 0;
-/* 	printf("\n\n---* CMD = %s *---\n", cmd->cmd);
-	while (cmd->args[i])
+ 	printf("ncmd = %D\n", pipex->n_cmd);
+	while (i < pipex->n_cmd)
 	{
-		printf("---* Args_%s = %s *---\n", cmd->cmd, cmd->args[i]);
+		//(cmd[i]).cmd = ft_expandit((cmd[i]).cmd, pipex, 0);
+		printf("\n\n---* CMD = %s *---\n", (cmd[i]).cmd);
+		i_s = 0;
+		while ((cmd[i]).args[i_s])
+		{
+			//(cmd[i]).args[i_s] = ft_expandit((cmd[i]).args[i_s], pipex, 0);
+			printf("---* Args_%s = %s *---\n", (cmd[i]).cmd, (cmd[i]).args[i_s]);
+			i_s++;
+		}
+		//(cmd[i]).infile = ft_expandit((cmd[i]).infile, pipex, 0);
+		printf(">Infile_name = %s\n", (cmd[i]).infile);
+		//(cmd[i]).outfile = ft_expandit((cmd[i]).outfile, pipex, 0);
+		printf("<Outfile_name = %s\n", (cmd[i]).outfile);
 		i++;
 	}
-	printf(">Infile_name = %s\n", cmd->infile);
-	printf("<Outfile_name = %s\n", cmd->outfile); */
 	return (cmd);
 }

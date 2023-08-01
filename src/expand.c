@@ -2,14 +2,22 @@
 
 static int	ft_ignorequotes(char *str, int *i)
 {
-	char	com;
-
-	com = 0;
 	if (str[*i] == '\'' && str[*i] != 0)
 	{
-		com = str[*i];
 		*i = *i + 1;
-		while (str[*i] != 0 && str[*i] != com)
+		while (str[*i] != 0 && str[*i] != '\'')
+			*i = *i + 1;
+		return (1);
+	}
+	return (0);
+}
+
+static int	ft_cutquotes(char *str, int *i)
+{
+	if (str[*i] == '"' && str[*i] != 0)
+	{
+		*i = *i + 1;
+		while (str[*i] != 0 && str[*i] != '"')
 			*i = *i + 1;
 		return (1);
 	}
@@ -35,12 +43,14 @@ char	*ft_getenv(char *var, t_pipe *pipex)
 		return (ft_strjoin_free(aux, ft_substr(var, 1, i - 1)));
 	}
 	while (var[size] != ' ' && var[size] != '\t' && var[size] != '\''
-		&& var[size] != '"' && var[size] != '$' && var[size])
-		size++;	
-	if (var[size - 1] == '"')
+		&& var[size] != '"' && var[size] != '$' && var[size]
+		&& var[size] != '|' && var[size] != '\'')
+			size++;
+	/* if (var[size - 1] == '"')
 	{
-		var[size - 1] = '\0'; size--;
-	}
+		var[size - 1] = '\0';
+		size--;
+	} */
 	while (pipex->envp[i])
 	{
 		aux = ft_strchr(pipex->envp[i], '=') + 1;
@@ -123,7 +133,7 @@ char	*ft_getenv(char *var, t_pipe *pipex)
 
 //hol'a '$USER mundo
 
-char	*ft_expandit(char *input, t_pipe *pipex)
+char	*ft_expandit(char *input, t_pipe *pipex, int expand)
 {
 	int		i;
 	int		start;
@@ -134,10 +144,17 @@ char	*ft_expandit(char *input, t_pipe *pipex)
 	start = 0;
 	result = 0;
 	(void)pipex;
+	if (!input)
+		return (0);
 	while (input[i])
 	{
-		if (ft_ignorequotes(input, &i) == 1)
+		if (ft_ignorequotes(input, &i) == 1 && expand == 0)
 			aux = ft_substr(input, start + 1, (i - start) - 1);
+		else if (ft_cutquotes(input, &i) == 1 && expand == 0)
+		{
+			aux = ft_substr(input, start + 1, (i - start) - 1);
+			aux = ft_expandit(aux, pipex, 1);
+		}
 		else if (input[i] == '$')
 		{
 			i++;
@@ -154,8 +171,8 @@ char	*ft_expandit(char *input, t_pipe *pipex)
 				}
 			}
 		}
-		else if (input[i] == '"')
-			aux = 0;
+/* 		else if (input[i] == '"')
+			aux = 0; */
 		else
 			aux = ft_substr(input, start, 1);
 		result = ft_strjoin_free(result, aux);
@@ -163,7 +180,8 @@ char	*ft_expandit(char *input, t_pipe *pipex)
 		start = i;
 		free(aux);
 	}
+	free(input);
 	return (result);
 }
 
-prueba pendiente: no funtsiona echo "'Hola" "esto" "eso"
+//prueba pendiente: no funtsiona echo "'Hola" "esto" "eso"

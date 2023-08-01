@@ -14,9 +14,9 @@ int	ft_existred(char *input)
 	while (input[i])
 	{
 		ft_foundquotes(input, &i);
-		if (input[i] == '>')
+		if (input[i] && input[i] == '>')
 			return (1);
-		else if (input[i] == '<')
+		else if (input[i] && input[i] == '<')
 			return (2);
 		i++;
 	}

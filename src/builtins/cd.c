@@ -1,21 +1,21 @@
 #include "../../include/minishell.h"
 
-static char	*ft_getenv(char *env, t_pipe *pipex, int start, int size)
-{
-	int		i;
-	char	*aux;
+// static char	*ft_getenv(char *env, t_pipe *pipex, int start, int size)
+// {
+// 	int		i;
+// 	char	*aux;
 
-	i = 0;
-	while (pipex->envp[i])
-	{
-		aux = ft_strchr(pipex->envp[i], '=') + 1;
-		if (size == aux - pipex->envp[i] - 1)
-			if (ft_strncmp(&env[start], pipex->envp[i], size - 2) == 0)
-				return (ft_strdup(aux));
-		i++;
-	}
-	return (ft_strdup(""));
-}
+// 	i = 0;
+// 	while (pipex->envp[i])
+// 	{
+// 		aux = ft_strchr(pipex->envp[i], '=') + 1;
+// 		if (size == aux - pipex->envp[i] - 1)
+// 			if (ft_strncmp(&env[start], pipex->envp[i], size - 2) == 0)
+// 				return (ft_strdup(aux));
+// 		i++;
+// 	}
+// 	return (ft_strdup(""));
+// }
 //// VER ESTA FUNCION DE ARRIBA CON JESSICA ////
 
 static void	ft_cd_newpwd(t_pipe *pipex)

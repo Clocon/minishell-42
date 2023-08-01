@@ -62,6 +62,10 @@ char	*ft_getname(char *cmd, int *j)
 	name = ft_substr(cmd, 0, i + 1);
 	name[i + 1] = 0;
 	*j += i;
+	if (name[0] == '\'')
+		name = ft_strtrim(name, "'");
+	else if (name[0] == '"')
+		name = ft_strtrim(name, "\"");
 	return (name);
 }
 
@@ -112,6 +116,7 @@ void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 {
 	int		i;
 	char	**split_sp;
+	char	*clean_quotes;
 
 	i = 0;
 	split_sp = ft_split_shell(one_cmd, ' ');
@@ -120,11 +125,18 @@ void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 	cmd->args = malloc((sizeof(char *)) * (ft_sizearray(split_sp) + 1));
 	while (split_sp[i] != 0)
 	{
-		cmd->args[i] = split_sp[i];
+		if (split_sp[i][0] == '\'')
+			clean_quotes = ft_strtrim(split_sp[i], "'");
+		else if (split_sp[i][0] == '"')
+			clean_quotes = ft_strtrim(split_sp[i], "\"");
+		else
+			clean_quotes = ft_strdup(split_sp[i]);
+		free(split_sp[i]);
+		cmd->args[i] = clean_quotes;
 		i++;
 	}
 	cmd->args[i] = 0;
-	//free(split_sp);
+	free(split_sp);
 }
 
 t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)

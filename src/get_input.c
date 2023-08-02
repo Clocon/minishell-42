@@ -11,6 +11,7 @@ static char	*ft_getcmd(t_pipe pipex, char *cmd)
 	while (cmd[i] != 0 && cmd[i] != ' ')
 		i++;
 	ex = ft_substr(cmd, 0, i);
+	//free(cmd);
 	i = 0;
 	if (access(ex, X_OK) == 0)
 		return (ex);
@@ -27,25 +28,28 @@ static char	*ft_getcmd(t_pipe pipex, char *cmd)
 	return (cmd);
 }
 
-void	ft_getargs(char *one_cmd, t_cmd *cmd)
+void	ft_addarg(char *arg, t_cmd *cmd)
 {
+	char	**new_arg;
 	int		i;
-	char	**split_arg;
 
-	i = 0;
-	while (one_cmd[i] && one_cmd[i] != '>' && one_cmd[i] != '<')
-		i++;
-	split_arg = ft_split_shell(ft_substr(one_cmd, 0, i), ' ');
-	i = 0;
-	cmd->args = malloc((sizeof(char *)) * (ft_sizearray(split_arg) + 1));
-	while (split_arg[i] != 0)
+	if (!cmd->args)
 	{
-		cmd->args[i] = split_arg[i];
-		i++;
+		cmd->args = ft_calloc(sizeof(char *), 2);
+		cmd->args[0] = arg;
 	}
-	cmd->args[i] = 0;
-	free(split_arg);
+	else
+	{
+		new_arg = ft_calloc(sizeof(char *), ft_sizearray(cmd->args) + 2);
+		i = -1;
+		while (cmd->args[++i])
+			new_arg[i] = ft_strdup(cmd->args[i]);
+		new_arg[i] = arg;
+		free_matrix(cmd->args);
+		cmd->args = new_arg;
+	}
 }
+
 
 char	*ft_getname(char *cmd, int *j)
 {
@@ -92,23 +96,54 @@ void	ft_getfiles(t_cmd *cmd, char *str, int *i, int red)
 
 void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 {
-	int		i;
+	int			i;
+	t_typetoken	type;
 
 	i = 0;
-	while (one_cmd[i] && i < ft_strlen(one_cmd))
+	type = WORD;
+	while (one_cmd[i])
 	{
-		ft_foundquotes(one_cmd, &i);
-		if (one_cmd[i] != '<' && one_cmd[i] != '>' && i == 0 && one_cmd[i])
+		if (one_cmd[i] == '>')
 		{
-			cmd->cmd = ft_getname(&one_cmd[i], &i);
-			cmd->cmd = ft_getcmd(*pipex, cmd->cmd);
+			cmd->outfile_redirect = 1;
+			if (type == RED_OUT)
+			{
+				cmd->outfile_redirect = 2;
+				type = RED_APPEND;
+			}
+			else
+				type = RED_OUT;
 		}
-		else if ((one_cmd[i] == '<' || one_cmd[i] == '>') && one_cmd[i])
-			ft_getfiles(cmd, one_cmd, &i, one_cmd[i]);
+		else if (one_cmd[i] == '<')
+		{
+			cmd->infile_redirect = 1;
+			if (type == RED_IN)
+			{
+				cmd->infile_redirect = 2;
+				type = RED_HERE;
+			}
+			else
+				type = RED_IN;
+		}
+		else if (one_cmd[i] != ' ' && one_cmd[i] != '\t')
+		{
+			if (type == RED_IN || type == RED_HERE)
+				cmd->infile = ft_getname(&one_cmd[i], &i);
+			else if (type == RED_OUT || type == RED_APPEND)
+				cmd->outfile = ft_getname(&one_cmd[i], &i);
+			else if (!cmd->cmd)
+			{
+				cmd->cmd = ft_getname(&one_cmd[i], &i);
+				ft_addarg(cmd->cmd, cmd);
+				cmd->cmd = ft_getcmd(*pipex, cmd->cmd);
+			}
+			else
+				ft_addarg(ft_getname(&one_cmd[i], &i), cmd);
+			type = WORD;
+		}
 		i++;
 	}
-	ft_getargs(one_cmd, cmd);
-	/* if (cmd->infile == 2)
+/*	if (cmd->infile == 2)
 		ft_heredoc(); */
 }
 
@@ -150,12 +185,13 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 	split_pi = ft_split_shell(input, '|');
 	split_pi = ft_cleanspaces(split_pi);
 	cmd = malloc(sizeof(t_cmd) * pipex->n_cmd);
-	cmd->infile_redirect = 0;
-	cmd->outfile_redirect = 0;
-	cmd->infile = 0;
-	cmd->outfile = 0;
 	while (i < pipex->n_cmd)
 	{
+		cmd[i].infile_redirect = 0;
+		cmd[i].outfile_redirect = 0;
+		cmd[i].infile = 0;
+		cmd[i].outfile = 0;
+		cmd[i].args = NULL;
 		if (ft_existred(split_pi[i]) == 0)
 			ft_getdatas_nored(&cmd[i], split_pi[i], pipex);
 		else
@@ -163,23 +199,18 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 		i++;
 	}
 	free_matrix(split_pi);
-//	ft_expandvalues(cmd, pipex);
 	i = 0;
  	printf("ncmd = %D\n", pipex->n_cmd);
-	while (i < pipex->n_cmd)
+	 while (i < pipex->n_cmd)
 	{
-		//(cmd[i]).cmd = ft_expandit((cmd[i]).cmd, pipex, 0);
 		printf("\n\n---* CMD = %s *---\n", (cmd[i]).cmd);
 		i_s = 0;
 		while ((cmd[i]).args[i_s])
 		{
-			//(cmd[i]).args[i_s] = ft_expandit((cmd[i]).args[i_s], pipex, 0);
 			printf("---* Args_%s = %s *---\n", (cmd[i]).cmd, (cmd[i]).args[i_s]);
 			i_s++;
 		}
-		//(cmd[i]).infile = ft_expandit((cmd[i]).infile, pipex, 0);
 		printf(">Infile_name = %s\n", (cmd[i]).infile);
-		//(cmd[i]).outfile = ft_expandit((cmd[i]).outfile, pipex, 0);
 		printf("<Outfile_name = %s\n", (cmd[i]).outfile);
 		i++;
 	}

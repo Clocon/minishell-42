@@ -1,5 +1,22 @@
 #include "../include/minishell.h"
 
+int	ft_existcmd(t_cmd *cmd, t_pipe *pipex)
+{
+	int	i;
+
+	i = 0;
+	while (i < pipex->n_cmd)
+	{
+		if (!cmd[i].cmd)
+		{
+			err_msg_sintax("Command not found\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 static void	ft_getpath(t_pipe *pipex)
 {
 	int		i;
@@ -94,8 +111,8 @@ char	*ft_checkpipe(char *input, t_pipe *pipex)
 		}
 		free_matrix(split_pi);
 		cmd = ft_getinput((ft_expandit(input, pipex, 0)), pipex, cmd);
-		//cmd = ft_getinput(input, pipex, cmd);
-		child_generator(pipex, cmd);
+		if (ft_existcmd(cmd, pipex) == 1)
+			child_generator(pipex, cmd);
 	}
 	else
 		pipex->shell_exit = 258;

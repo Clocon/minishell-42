@@ -49,7 +49,7 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 	display_fd = dup(1);
 	i = -1;
 	while (++i < pipex->n_cmd)
-	{
+	{		
 		dup_assignation(pipex, cmd, i);
 		if (cmd[i].infile_redirect != 0 || cmd[i].outfile_redirect != 0)
 			if (!redir_check(pipex, &cmd[i], i))

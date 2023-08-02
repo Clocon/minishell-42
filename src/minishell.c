@@ -15,7 +15,7 @@ char	*ft_get_text_minishell(void)
 	return (text_minishell);
 }
 
-void	ft_getline(t_pipe *pipex/*,  t_cmd *cmd */)
+void	ft_getline(t_pipe *pipex)
 {
 	char	*input;
 	char	*text_minishell;
@@ -28,6 +28,7 @@ void	ft_getline(t_pipe *pipex/*,  t_cmd *cmd */)
 		{
 			free(input);
 			free(text_minishell);
+			free_matrix(pipex->path);
 			break ;
 		}
 		add_history(input);
@@ -35,36 +36,18 @@ void	ft_getline(t_pipe *pipex/*,  t_cmd *cmd */)
 			ft_checkpipe(input, pipex);
 		free(input);
 		free(text_minishell);
-		//pipex->shell_exit = 0;
 	}
 }
 
-/* void	leaks(void)
-{
-	system("leaks -q minishell");
-} */
-
 int	main(int argc, char **argv, char **envp)
 {
-//	atexit(leaks);
 	t_pipe	pipex;
-//	t_cmd	*cmd;
 
-//	(void)argc;
 	(void)argv;
 
-//	cmd = malloc(sizeof(t_cmd) * 3);
 	pipex.fd_in = dup(0);
-	//pipex.tmp_in = dup(0);
 	pipex.tmp_out = dup(1);
 	pipex.envp = envp;
-/* 	cmd[0].args = ft_split("fdgchjil -l -a", ' ');
-	cmd[0].cmd = "fdgchjil";
-	pipex.envp = envp;
-	cmd[1].args = ft_split("wc -l", ' ');
-	cmd[1].cmd = "/usr/bin/wc";
-	cmd[2].args = ft_split("cat -e", ' ');
-	cmd[2].cmd = "/bin/cat"; */
 
 	if (argc != 1)
 		argc_error();
@@ -72,3 +55,10 @@ int	main(int argc, char **argv, char **envp)
 	ft_getline(&pipex);
 	exit(0);
 }
+
+
+/* void	leaks(void)
+{
+	system("leaks -q minishell");
+} */
+//	atexit(leaks);

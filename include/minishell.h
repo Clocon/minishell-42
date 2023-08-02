@@ -50,6 +50,15 @@ typedef struct s_pipe
 	int		shell_exit;
 }	t_pipe;
 
+typedef enum s_typetoken
+{
+	WORD,
+	RED_OUT,
+	RED_IN,
+	RED_APPEND,
+	RED_HERE,
+}	t_typetoken;
+
 /*Functions for minishell.c*/
 char	*ft_get_text_minishell(void);
 void	ft_getline(t_pipe *pipex);

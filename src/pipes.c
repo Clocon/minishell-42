@@ -1,7 +1,12 @@
 #include "../include/minishell.h"
 
+extern int errno;
+
 static void	child(t_cmd *cmd, t_pipe *pipex)
 {
+	char	*error;
+
+	error = NULL;
 	if (!cmd->cmd)
 	{
 		free_matrix(cmd->args);
@@ -9,8 +14,14 @@ static void	child(t_cmd *cmd, t_pipe *pipex)
 		err_msg_exit(CMD_ERROR);
 	}
 	//check_awk(cmd);
-	execve(cmd->cmd, cmd->args, pipex->envp);
-	exit (0);
+	if (execve(cmd->cmd, cmd->args, pipex->envp) == -1)
+	{
+		error = ft_strjoin_free(cmd->cmd, ": ");
+		error = ft_strjoin_free(error, CMD_ERROR);
+		pipex->shell_exit = 127;
+		err_msg(error);
+	}
+	exit (pipex->shell_exit);
 }
 
 static void	dup_assignation(t_pipe *pipex, t_cmd *cmd, int i)
@@ -62,6 +73,7 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 			if (!pid[i])
 				child(&cmd[i], pipex);
 			waitpid(pid[i], &to_wait, 0);
+			pipex->shell_exit = WEXITSTATUS(to_wait);
 /* 		} */
 		//free_matrix(cmd[i].args);
 	}
@@ -70,5 +82,5 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 	close(keyboard_fd);
 	dup2(display_fd, 1);
 	close(display_fd);
-	pipex->shell_exit = 0;
+	//pipex->shell_exit = 0;
 }

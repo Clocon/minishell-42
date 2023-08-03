@@ -24,4 +24,5 @@ void	ft_echo(t_cmd *cmd)
 			ft_putchar_fd(cmd->args[j][i], 1);
 		}
 	}
+	ft_putstr_fd("%\n", 1);
 }

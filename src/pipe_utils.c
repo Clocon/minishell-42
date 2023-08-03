@@ -12,12 +12,16 @@ char	*check_trim(char *str)
 
 int	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
 {
+	char	*error;
+
+	error = NULL;
 	if (cmd->infile_redirect == 1)
 	{
 		pipex->fd_in = open(cmd->infile, O_RDONLY);
 		if (pipex->fd_in == -1)
 		{
-			err_msg("Error al leer archivo\n");
+			error = ft_strjoin_free(cmd->infile, ": No such file or directory\n");
+			err_msg(error);
 			return (0);
 		}
 		dup2(pipex->fd_in, 0);

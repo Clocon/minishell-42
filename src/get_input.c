@@ -11,7 +11,6 @@ static char	*ft_getcmd(t_pipe pipex, char *cmd)
 	while (cmd[i] != 0 && cmd[i] != ' ')
 		i++;
 	ex = ft_substr(cmd, 0, i);
-	//free(cmd);
 	i = 0;
 	if (access(ex, X_OK) == 0)
 		return (ex);
@@ -119,7 +118,8 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 			cmd->infile_redirect = 1;
 			if (type == RED_IN)
 			{
-				cmd->infile_redirect = 2;
+				//cmd->infile_redirect = 2; 
+				cmd->infile_redirect = 1;
 				type = RED_HERE;
 			}
 			else
@@ -128,9 +128,25 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 		else if (one_cmd[i] != ' ' && one_cmd[i] != '\t')
 		{
 			if (type == RED_IN || type == RED_HERE)
+			{
+				if (cmd->infile)
+					free(cmd->infile);
 				cmd->infile = ft_getname(&one_cmd[i], &i);
+			}
 			else if (type == RED_OUT || type == RED_APPEND)
-				cmd->outfile = ft_getname(&one_cmd[i], &i);
+			{
+				if (!cmd->outfile)
+				{
+					cmd->outfile = ft_getname(&one_cmd[i], &i);
+					close(open(cmd->outfile, O_CREAT | O_RDWR, 0644));
+				}
+				else
+				{
+					close(open(cmd->outfile, O_CREAT | O_RDWR | O_TRUNC, 0644));
+					free(cmd->outfile);
+					cmd->outfile = ft_getname(&one_cmd[i], &i);
+				}
+			}
 			else if (!cmd->cmd)
 			{
 				cmd->cmd = ft_getname(&one_cmd[i], &i);
@@ -155,8 +171,14 @@ void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 
 	i = 0;
 	split_sp = ft_split_shell(one_cmd, ' ');
-	cmd->cmd = split_sp[0];
-	cmd->cmd = ft_getcmd(*pipex, cmd->cmd);
+	if (split_sp[0][0] == '\'')
+		clean_quotes = ft_strtrim(split_sp[0], "'");
+	else if (split_sp[0][0] == '"')
+		clean_quotes = ft_strtrim(split_sp[0], "\"");
+	else
+		clean_quotes = ft_strdup(split_sp[0]);
+	cmd->cmd = clean_quotes;
+	cmd->cmd = ft_strdup(ft_getcmd(*pipex, cmd->cmd));
 	cmd->args = malloc((sizeof(char *)) * (ft_sizearray(split_sp) + 1));
 	while (split_sp[i] != 0)
 	{
@@ -189,9 +211,10 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 	{
 		cmd[i].infile_redirect = 0;
 		cmd[i].outfile_redirect = 0;
-		cmd[i].infile = 0;
-		cmd[i].outfile = 0;
+		cmd[i].infile = NULL;
+		cmd[i].outfile = NULL;
 		cmd[i].args = NULL;
+		cmd[i].cmd = NULL;
 		if (ft_existred(split_pi[i]) == 0)
 			ft_getdatas_nored(&cmd[i], split_pi[i], pipex);
 		else
@@ -199,13 +222,13 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 		i++;
 	}
 	free_matrix(split_pi);
-	i = 0;
+ /* 	i = 0;
  	printf("ncmd = %D\n", pipex->n_cmd);
 	 while (i < pipex->n_cmd)
 	{
 		printf("\n\n---* CMD = %s *---\n", (cmd[i]).cmd);
 		i_s = 0;
-		while ((cmd[i]).args[i_s])
+		while ((cmd[i]).args && (cmd[i]).args[i_s])
 		{
 			printf("---* Args_%s = %s *---\n", (cmd[i]).cmd, (cmd[i]).args[i_s]);
 			i_s++;
@@ -213,6 +236,6 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 		printf(">Infile_name = %s\n", (cmd[i]).infile);
 		printf("<Outfile_name = %s\n", (cmd[i]).outfile);
 		i++;
-	}
+	} */
 	return (cmd);
 }

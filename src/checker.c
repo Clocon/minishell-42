@@ -43,8 +43,19 @@ int	ft_consecutivepipes(char *input)
 	while (input[i])
 	{
 		ft_foundquotes(input, &i);
-		if (input [i] == '|' && input[i + 1] != 0 && input[i + 1] == '|')
-			return (1);
+		//if (input [i] == '|' && input[i + 1] != 0 && input[i + 1] == '|')
+		if (input[i] == '|')
+		{
+			i++;
+			ft_foundquotes(input, &i);
+			while (input[i] && (input[i] == ' ' || input[i] == '\t'))
+			{
+				ft_foundquotes(input, &i);
+				i++;
+			}
+			if (input[i] && input[i] == '|')
+				return (1);
+		}
 		i++;
 	}
 	return (0);

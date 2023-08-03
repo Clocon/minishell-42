@@ -14,7 +14,7 @@ static void	to_lower(char *str)
 int	builting(t_cmd *cmd)
 {
 	to_lower(cmd->args[0]);
-	if (!ft_strncmp(cmd->cmd, "echo", 4)
+	if (!ft_strncmp(cmd->args[0], "echo", 4)
 		&& !ft_strncmp(cmd->args[1], "-n", 2))
 		ft_echo(cmd);
 	else

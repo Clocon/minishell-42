@@ -1,5 +1,11 @@
 #include "../include/minishell.h"
 
+/**
+ * @brief Función para medir un char **
+ * 
+ * @param array char **
+ * @return int con el tamaño
+ */
 int	ft_sizearray(char **array)
 {
 	int	i;
@@ -12,6 +18,14 @@ int	ft_sizearray(char **array)
 	return (i);
 }
 
+
+/**
+ * @brief función para contar el número de '|' (pipes) en un string, 
+ * sin tener en cuenta los que están entre comillas (dobles o simples)
+ * 
+ * @param input char *
+ * @return int con el número de | localizados
+ */
 int	ft_countpipe(char *input)
 {
 	int	i;
@@ -29,6 +43,14 @@ int	ft_countpipe(char *input)
 	return (npipe);
 }
 
+/**
+ * @brief Función que elimina ' ' (espacios) (si los hubiera), 
+ * al comienzo y al final del string, recibe un char ** ,va liberando
+ * cada item y lo sustituye por el nuevo string sin espacios.
+ * 
+ * @param split char **
+ * @return char** 
+ */
 char	**ft_cleanspaces(char **split)
 {
 	int		i;
@@ -45,6 +67,14 @@ char	**ft_cleanspaces(char **split)
 	return (split);
 }
 
+/**
+ * @brief Verifica si tanto comillas simples como comillas
+dobles están cerradas en un string, sin tener en cuenta las comillas que puedan 
+estar entre comilladas ya que estas sí pueden estar abiertas.
+ * 
+ * @param quotes string
+ * @return Devuelve 0 si no están cerradas y 1 si lo están.
+ */
 static int	ft_checkclose(char *quotes)
 {
 	int	i;
@@ -65,6 +95,14 @@ static int	ft_checkclose(char *quotes)
 	return (1);
 }
 
+/**
+ * @brief Verifica si tanto comillas simples como comillas dobles están cerradas 
+ * en un string, sin tener en cuenta las comillas que puedan estar entre comilladas
+ * ya que estas sí pueden estar abiertas.
+ * 
+ * @param input char *
+ * @return int 
+ */
 int	ft_checkquotes(char *input)
 {
 	char	**quotes;

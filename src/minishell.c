@@ -18,24 +18,24 @@ char	*ft_get_text_minishell(void)
 void	ft_getline(t_pipe *pipex)
 {
 	char	*input;
-	char	*text_minishell;
+//	char	*text_minishell;
 
 	while (1)
 	{
-		text_minishell = ft_get_text_minishell();
-		input = readline(text_minishell);
-		if (!ft_strncmp(input, "exit", 5) || !ft_strncmp(input, "EXIT", 5))
+		//text_minishell = ft_get_text_minishell();
+		input = readline("\033[32;1m* \033[0mMiniShell $> ");
+		if (!ft_strncmp(input, "exit", 5))
 		{
 			free(input);
-			free(text_minishell);
-			free_matrix(pipex->path);
+			//free(text_minishell);
+			//free_matrix(pipex->path);
 			break ;
 		}
 		add_history(input);
 		if (ft_strlen(input) > 0 && ft_strlen(ft_strtrim(input, " ")) > 0)
 			ft_checkpipe(input, pipex);
 		free(input);
-		free(text_minishell);
+		//free(text_minishell);
 	}
 }
 
@@ -44,11 +44,9 @@ int	main(int argc, char **argv, char **envp)
 	t_pipe	pipex;
 
 	(void)argv;
-
 	pipex.fd_in = dup(0);
 	pipex.tmp_out = dup(1);
 	pipex.envp = envp;
-
 	if (argc != 1)
 		argc_error();
 	printf("%s", (char *)&(HEADER));

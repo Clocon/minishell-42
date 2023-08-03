@@ -18,7 +18,7 @@
 // }
 //// VER ESTA FUNCION DE ARRIBA CON JESSICA ////
 
-static void	ft_cd_newpwd(t_pipe *pipex)
+/* static void	ft_cd_newpwd(t_pipe *pipex)
 {
 	int		i;
 	char	*aux;
@@ -44,4 +44,31 @@ void	ft_cd(t_pipe *pipex, t_cmd *cmd)
 	{
 		aux = ft_getenv()
 	}
+} */
+
+void	ft_cd(t_cmd *cmd, t_pipe *pipex)
+{
+	char	*error;
+	char	*path;
+	char	*old_path;
+
+	error = NULL;
+	path = cmd->args[1];
+	old_path = getcwd(NULL, 0);
+	if (!path)
+		path = ft_getenv("HOME", pipex);
+	else if (ft_strncmp(path, "-", 2) == 0)
+		path = ft_getenv("OLDPWD", pipex);
+	if (chdir(path))
+	{
+		error = ft_strjoin("cd: ", cmd->args[1]);
+		error = ft_strjoin_free(error, ": No such file or directory\n");
+		err_msg(error);
+		free(error);
+	}
+	// else
+	// 	ft_setenv("OLDPWD", old_path, pipex);
+
+	//addarray("OLDPWD=old_path", pipex->envp);
+	//deletearray!!!
 }

@@ -26,27 +26,31 @@ static char	*ft_getcmd(t_pipe pipex, char *cmd)
 	}
 	return (cmd);
 }
-
-void	ft_addarg(char *arg, t_cmd *cmd)
+void	ft_addarray(char *str, char **array)
 {
-	char	**new_arg;
+	char	**new_array;
 	int		i;
 
-	if (!cmd->args)
+	if (!array)
 	{
-		cmd->args = ft_calloc(sizeof(char *), 2);
-		cmd->args[0] = arg;
+		array = ft_calloc(sizeof(char *), 2);
+		array[0] = str;
 	}
 	else
 	{
-		new_arg = ft_calloc(sizeof(char *), ft_sizearray(cmd->args) + 2);
+		new_array = ft_calloc(sizeof(char *), ft_sizearray(array) + 2);
 		i = -1;
-		while (cmd->args[++i])
-			new_arg[i] = ft_strdup(cmd->args[i]);
-		new_arg[i] = arg;
-		free_matrix(cmd->args);
-		cmd->args = new_arg;
+		while (array[++i])
+			new_array[i] = ft_strdup(array[i]);
+		new_array[i] = str;
+		free_matrix(array);
+		array = new_array;
 	}
+}
+
+void	ft_addarg(char *arg, t_cmd *cmd)
+{
+	ft_addarray(arg, cmd->args);
 }
 
 

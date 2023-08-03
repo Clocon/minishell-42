@@ -97,8 +97,10 @@ void	sigint_handler(int sig);
 void	ctrl_d(char *input, t_pipe *pipe);
 
 /*Functions for *.c from builtins*/
-int		builting(t_cmd *cmd);
+int		builting(t_cmd *cmd, t_pipe *pipex);
 void	ft_echo(t_cmd *cmd);
+void	ft_pwd(void);
+void	ft_cd(t_cmd *cmd, t_pipe *pipex);
 
 /*Functions for utils_checker.c*/
 int		ft_sizearray(char **array);
@@ -114,5 +116,6 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd);
 
 /*Functions for expand.c*/
 char	*ft_expandit(char *cmd, t_pipe *pipex, int expand);
+char	*ft_getenv(char *var, t_pipe *pipex);
 
 #endif

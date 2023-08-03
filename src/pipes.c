@@ -65,7 +65,7 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 		if (cmd[i].infile_redirect != 0 || cmd[i].outfile_redirect != 0)
 			if (!redir_check(pipex, &cmd[i], i))
 				break ;
-		if (builting(&cmd[i]))
+		if (builting(&cmd[i], pipex))
 			continue ;
 /* 		else
 		{ */

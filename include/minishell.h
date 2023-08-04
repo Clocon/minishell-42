@@ -101,6 +101,8 @@ int		builting(t_cmd *cmd, t_pipe *pipex);
 void	ft_echo(t_cmd *cmd);
 void	ft_pwd(void);
 void	ft_cd(t_cmd *cmd, t_pipe *pipex);
+void	ft_export(t_cmd *cmd, t_pipe *pipex);
+void	ft_unset(t_cmd *cmd, t_pipe *pipex);
 
 /*Functions for utils_checker.c*/
 int		ft_sizearray(char **array);
@@ -111,6 +113,7 @@ char	**ft_cleanspaces(char **split);
 char	**ft_addarray(char *str, char **array);
 int		ft_foundenv(char *var, char **envp);
 char	**ft_deleteitem(int pos, char **array);
+char	**ft_arraydup(char **array);
 
 /*Functions for sintax_redirect.c*/
 int		ft_checkredirect(char *input);

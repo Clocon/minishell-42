@@ -14,7 +14,7 @@ static char	*ft_getcmd(t_pipe pipex, char *cmd)
 	i = 0;
 	if (access(ex, X_OK) == 0)
 		return (ex);
-	while (pipex.path[i])
+	while (pipex.path && pipex.path[i])
 	{
 		aux = ft_strjoin(pipex.path[i], "/");
 		c = ft_strjoin(aux, ex);
@@ -115,7 +115,6 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 				if (!cmd->outfile)
 				{
 					cmd->outfile = ft_getname(&one_cmd[i], &i);
-					close(open(cmd->outfile, O_CREAT | O_RDWR, 0644));
 				}
 				else
 				{
@@ -199,7 +198,7 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 		i++;
 	}
 	free_matrix(split_pi);
-/*    	i = 0;
+/*     	i = 0;
  	printf("ncmd = %D\n", pipex->n_cmd);
 	 while (i < pipex->n_cmd)
 	{
@@ -213,6 +212,6 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 		printf(">Infile_name = %s\n", (cmd[i]).infile);
 		printf("<Outfile_name = %s\n", (cmd[i]).outfile);
 		i++;
-	} */
+	}*/
 	return (cmd);
 }

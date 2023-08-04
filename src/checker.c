@@ -22,7 +22,7 @@ static void	ft_getpath(t_pipe *pipex)
 	int		i;
 
 	i = 0;
-	while (ft_strnstr(pipex->envp[i], "PATH=", 5) == 0)
+	while (pipex->envp[i] && ft_strnstr(pipex->envp[i], "PATH=", 5) == 0)
 		i++;
 	if (i == ft_sizearray(pipex->envp))
 		pipex->path = 0;

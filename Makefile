@@ -17,11 +17,13 @@ SRCS			=	src/minishell.c \
 					src/builtins/echo.c \
 					src/builtins/pwd.c \
 					src/builtins/cd.c \
+					src/builtins/export.c \
+					src/builtins/unset.c \
 					src/utils_checker.c \
 					src/sintax_redirect.c \
 					src/get_input.c \
 					src/expand.c \
-					src/utils.c
+					src/utils.c 
 					
 					
 

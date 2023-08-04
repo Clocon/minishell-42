@@ -46,7 +46,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	pipex.fd_in = dup(0);
 	pipex.tmp_out = dup(1);
-	pipex.envp = envp;
+	pipex.envp = ft_arraydup(envp);
 	if (argc != 1)
 		argc_error();
 	printf("%s", (char *)&(HEADER));

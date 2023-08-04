@@ -107,6 +107,11 @@ int		ft_sizearray(char **array);
 int		ft_checkquotes(char *input);
 char	**ft_cleanspaces(char **split);
 
+/* Functions for utils.c*/
+char	**ft_addarray(char *str, char **array);
+int		ft_foundenv(char *var, char **envp);
+char	**ft_deleteitem(int pos, char **array);
+
 /*Functions for sintax_redirect.c*/
 int		ft_checkredirect(char *input);
 int		ft_existred(char *input);

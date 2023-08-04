@@ -20,7 +20,8 @@ SRCS			=	src/minishell.c \
 					src/utils_checker.c \
 					src/sintax_redirect.c \
 					src/get_input.c \
-					src/expand.c
+					src/expand.c \
+					src/utils.c
 					
 					
 

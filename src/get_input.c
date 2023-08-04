@@ -26,33 +26,6 @@ static char	*ft_getcmd(t_pipe pipex, char *cmd)
 	}
 	return (cmd);
 }
-void	ft_addarray(char *str, char **array)
-{
-	char	**new_array;
-	int		i;
-
-	if (!array)
-	{
-		array = ft_calloc(sizeof(char *), 2);
-		array[0] = str;
-	}
-	else
-	{
-		new_array = ft_calloc(sizeof(char *), ft_sizearray(array) + 2);
-		i = -1;
-		while (array[++i])
-			new_array[i] = ft_strdup(array[i]);
-		new_array[i] = str;
-		free_matrix(array);
-		array = new_array;
-	}
-}
-
-void	ft_addarg(char *arg, t_cmd *cmd)
-{
-	ft_addarray(arg, cmd->args);
-}
-
 
 char	*ft_getname(char *cmd, int *j)
 {
@@ -154,11 +127,11 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 			else if (!cmd->cmd)
 			{
 				cmd->cmd = ft_getname(&one_cmd[i], &i);
-				ft_addarg(cmd->cmd, cmd);
+				cmd->args = ft_addarray(cmd->cmd, cmd->args);
 				cmd->cmd = ft_getcmd(*pipex, cmd->cmd);
 			}
 			else
-				ft_addarg(ft_getname(&one_cmd[i], &i), cmd);
+				cmd->args = ft_addarray(ft_getname(&one_cmd[i], &i), cmd->args);
 			type = WORD;
 		}
 		i++;
@@ -226,7 +199,7 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 		i++;
 	}
 	free_matrix(split_pi);
- /* 	i = 0;
+/*    	i = 0;
  	printf("ncmd = %D\n", pipex->n_cmd);
 	 while (i < pipex->n_cmd)
 	{

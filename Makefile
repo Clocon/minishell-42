@@ -19,6 +19,7 @@ SRCS			=	src/minishell.c \
 					src/builtins/cd.c \
 					src/builtins/export.c \
 					src/builtins/unset.c \
+					src/builtins/env.c \
 					src/utils_checker.c \
 					src/sintax_redirect.c \
 					src/get_input.c \

@@ -59,6 +59,12 @@ char	**ft_deleteitem(int pos, char **array)
 	return (new_array);
 }
 
+/**
+ * @brief Crea una copia de un char ** y devuelve la copia
+ * 
+ * @param array char ** a copiar
+ * @return char** copiado en nueva dirección de memoria
+ */
 char	**ft_arraydup(char **array)
 {
 	char	**new_array;

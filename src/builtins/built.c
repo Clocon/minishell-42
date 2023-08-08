@@ -24,6 +24,8 @@ int	builting(t_cmd *cmd, t_pipe *pipex)
 		ft_export(cmd, pipex);
 	else if (!ft_strncmp(cmd->args[0], "unset", 6))
 		ft_unset(cmd, pipex);
+	else if (!ft_strncmp(cmd->args[0], "env", 4))
+		ft_env(pipex);
 	else
 		return (0);
 	return (1);

@@ -103,6 +103,7 @@ void	ft_pwd(void);
 void	ft_cd(t_cmd *cmd, t_pipe *pipex);
 void	ft_export(t_cmd *cmd, t_pipe *pipex);
 void	ft_unset(t_cmd *cmd, t_pipe *pipex);
+void	ft_env(t_pipe *pipex);
 
 /*Functions for utils_checker.c*/
 int		ft_sizearray(char **array);

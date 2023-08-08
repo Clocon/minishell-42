@@ -1,31 +1,5 @@
 #include "../../include/minishell.h"
 
-static char	*ft_getcmd(t_pipe pipex, char *cmd)
-{
-	int		i;
-	char	*aux;
-	char	*c;
-	char	*ex;
-
-	i = 0;
-	while (cmd[i] != 0 && cmd[i] != ' ')
-		i++;
-	ex = ft_substr(cmd, 0, i);
-	i = 0;
-	if (access(ex, X_OK) == 0)
-		return (ex);
-	while (pipex.path && pipex.path[i])
-	{
-		aux = ft_strjoin(pipex.path[i], "/");
-		c = ft_strjoin(aux, ex);
-		free (aux);
-		if (access(c, X_OK) == 0)
-			return (c);
-		free (c);
-		i++;
-	}
-	return (cmd);
-}
 
 char	*ft_getname(char *cmd, int *j)
 {
@@ -139,6 +113,20 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 		ft_heredoc(); */
 }
 
+static	char	*ft_cleanquotes(char *input)
+{
+	char	*str;
+
+	str = NULL;
+	if (input[0] == '\'')
+		str = ft_strtrim(input, "'");
+	else if (input[0] == '"')
+		str = ft_strtrim(input, "\"");
+	else
+		str = ft_strdup(input);
+	return (str);
+}
+
 void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 {
 	int		i;
@@ -147,29 +135,21 @@ void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 
 	i = 0;
 	split_sp = ft_split_shell(one_cmd, ' ');
-	if (split_sp[0][0] == '\'')
-		clean_quotes = ft_strtrim(split_sp[0], "'");
-	else if (split_sp[0][0] == '"')
-		clean_quotes = ft_strtrim(split_sp[0], "\"");
-	else
-		clean_quotes = ft_strdup(split_sp[0]);
-	cmd->cmd = clean_quotes;
-	cmd->cmd = ft_strdup(ft_getcmd(*pipex, cmd->cmd));
-	cmd->args = malloc((sizeof(char *)) * (ft_sizearray(split_sp) + 1));
-	while (split_sp[i] != 0)
+	clean_quotes = ft_cleanquotes(split_sp[0]);
+	if (clean_quotes)
 	{
-		if (split_sp[i][0] == '\'')
-			clean_quotes = ft_strtrim(split_sp[i], "'");
-		else if (split_sp[i][0] == '"')
-			clean_quotes = ft_strtrim(split_sp[i], "\"");
-		else
-			clean_quotes = ft_strdup(split_sp[i]);
-		free(split_sp[i]);
-		cmd->args[i] = clean_quotes;
-		i++;
+		cmd->cmd = ft_strdup(ft_getcmd(*pipex, clean_quotes));
+		cmd->args = malloc((sizeof(char *)) * (ft_sizearray(split_sp) + 1));
+		while (split_sp[i] != 0)
+		{
+			cmd->args[i] = ft_cleanquotes(split_sp[i]);
+			free(split_sp[i]);
+			i++;
+		}
+		cmd->args[i] = 0;
 	}
-	cmd->args[i] = 0;
 	free(split_sp);
+	free(clean_quotes);
 }
 
 t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
@@ -198,6 +178,11 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 		i++;
 	}
 	free_matrix(split_pi);
+	return (cmd);
+}
+
+
+
 /*     	i = 0;
  	printf("ncmd = %D\n", pipex->n_cmd);
 	 while (i < pipex->n_cmd)
@@ -213,5 +198,3 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 		printf("<Outfile_name = %s\n", (cmd[i]).outfile);
 		i++;
 	}*/
-	return (cmd);
-}

@@ -54,9 +54,8 @@ int	main(int argc, char **argv, char **envp)
 	exit(0);
 }
 
-
 /* void	leaks(void)
 {
 	system("leaks -q minishell");
-} */
+} 
 //	atexit(leaks);

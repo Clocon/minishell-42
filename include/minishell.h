@@ -107,6 +107,7 @@ void	ft_env(t_pipe *pipex);
 int		ft_checkquotes(char *input);
 char	**ft_cleanspaces(char **split);
 void	ft_getpath(t_pipe *pipex);
+char	*ft_getcmd(t_pipe pipex, char *cmd);
 
 /* Functions for general_utils.c*/
 char	**ft_addarray(char *str, char **array);

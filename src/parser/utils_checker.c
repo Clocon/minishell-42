@@ -51,6 +51,41 @@ void	ft_getpath(t_pipe *pipex)
 }
 
 /**
+ * @brief Recoge el comando con la ruta completa buscando en pipex->path
+ * si se puede ejecutar el comando recogido (cmd)
+ * 
+ * @param pipex struct que contiene el path con las rutas de los ejecutables
+ * @param cmd string comando
+ * @return char* comando con la ruta absoluta 
+ */
+char	*ft_getcmd(t_pipe pipex, char *cmd)
+{
+	int		i;
+	char	*aux;
+	char	*c;
+	char	*ex;
+
+	i = 0;
+	while (cmd[i] != 0 && cmd[i] != ' ')
+		i++;
+	ex = ft_substr(cmd, 0, i);
+	i = 0;
+	if (access(ex, X_OK) == 0)
+		return (ex);
+	while (pipex.path && pipex.path[i])
+	{
+		aux = ft_strjoin(pipex.path[i], "/");
+		c = ft_strjoin(aux, ex);
+		free (aux);
+		if (access(c, X_OK) == 0)
+			return (c);
+		free (c);
+		i++;
+	}
+	return (cmd);
+}
+
+/**
  * @brief Verifica si tanto comillas simples como comillas
 dobles están cerradas en un string, sin tener en cuenta las comillas que puedan 
 estar entre comilladas ya que estas sí pueden estar abiertas.

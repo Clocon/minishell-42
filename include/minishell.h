@@ -84,8 +84,6 @@ void	clean_success(t_pipe *pipe);
 
 /*Functions for checker.c*/
 char	*ft_checkpipe(char *input, t_pipe *pipex);
-int		ft_checkinput(char *input, t_pipe *pipex);
-int		ft_countpipe(char *input);
 int		ft_checksintaxpipex(char *input);
 
 /*Functions for split_pipex.c*/
@@ -106,15 +104,20 @@ void	ft_unset(t_cmd *cmd, t_pipe *pipex);
 void	ft_env(t_pipe *pipex);
 
 /*Functions for utils_checker.c*/
-int		ft_sizearray(char **array);
 int		ft_checkquotes(char *input);
 char	**ft_cleanspaces(char **split);
+void	ft_getpath(t_pipe *pipex);
 
-/* Functions for utils.c*/
+/* Functions for general_utils.c*/
 char	**ft_addarray(char *str, char **array);
-int		ft_foundenv(char *var, char **envp);
 char	**ft_deleteitem(int pos, char **array);
 char	**ft_arraydup(char **array);
+int		ft_sizearray(char **array);
+int		ft_foundenv(char *var, char **envp);
+
+/* Functions for sintax_pipe.c*/
+int		ft_checksintaxpipex(char *input);
+int		ft_countpipe(char *input);
 
 /*Functions for sintax_redirect.c*/
 int		ft_checkredirect(char *input);

@@ -14,6 +14,7 @@ SRCS			=	src/minishell.c \
 					src/general_utils/split_minishell.c \
 					src/general_utils/utils.c \
 					src/parser/checker.c \
+					src/parser/sintax_pipe.c \
 					src/parser/utils_checker.c \
 					src/parser/sintax_redirect.c \
 					src/parser/get_input.c \

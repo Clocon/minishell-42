@@ -1,48 +1,6 @@
 #include "../../include/minishell.h"
 
 /**
- * @brief Función para medir un char **
- * 
- * @param array char **
- * @return int con el tamaño
- */
-int	ft_sizearray(char **array)
-{
-	int	i;
-
-	i = 0;
-	if (!array)
-		return (0);
-	while (array[i])
-		i++;
-	return (i);
-}
-
-/**
- * @brief función para contar el número de '|' (pipes) en un string, 
- * sin tener en cuenta los que están entre comillas (dobles o simples)
- * 
- * @param input char *
- * @return int con el número de | localizados
- */
-int	ft_countpipe(char *input)
-{
-	int	i;
-	int	npipe;
-
-	i = 0;
-	npipe = 0;
-	while (input[i])
-	{
-		ft_foundquotes(input, &i);
-		if (input[i] == '|')
-			npipe++;
-		i++;
-	}
-	return (npipe);
-}
-
-/**
  * @brief Función que elimina ' ' (espacios) (si los hubiera), 
  * al comienzo y al final del string, recibe un char ** ,va liberando
  * cada item y lo sustituye por el nuevo string sin espacios.
@@ -64,6 +22,32 @@ char	**ft_cleanspaces(char **split)
 		i++;
 	}
 	return (split);
+}
+
+/**
+ * @brief Función que recoge la variable de entorno PATH del programa
+ * y la guarda en la estructura pipex (pipex->path como char **) Se recoge
+ * cada vez que se ejecuta una nueva entrada ya que ha podido ser eliminada
+ * de las variables de entorno y en ese caso pipex->path = NULL.
+ * 
+ * @param pipex struct que almacena las variablse de entorno y recoge el PATH
+ */
+void	ft_getpath(t_pipe *pipex)
+{
+	int		i;
+
+	i = 0;
+	while (pipex->envp[i] && ft_strnstr(pipex->envp[i], "PATH=", 5) == 0)
+		i++;
+	if (i == ft_sizearray(pipex->envp))
+		pipex->path = 0;
+	else
+	{
+		pipex->path = ft_calloc(ft_strlen(pipex->envp[i] + 5), sizeof(char));
+		if (!pipex->path)
+			err_msg_sintax("PATH_ERROR");
+		pipex->path = ft_split(pipex->envp[i] + 5, ':');
+	}
 }
 
 /**

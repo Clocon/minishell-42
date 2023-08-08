@@ -83,6 +83,24 @@ char	**ft_arraydup(char **array)
 }
 
 /**
+ * @brief Función para medir un char **
+ * 
+ * @param array char **
+ * @return int con el tamaño
+ */
+int	ft_sizearray(char **array)
+{
+	int	i;
+
+	i = 0;
+	if (!array)
+		return (0);
+	while (array[i])
+		i++;
+	return (i);
+}
+
+/**
  * @brief Localiza la posición de una variable de entorno 
  * 
  * @param var string con el nombre de la variable

@@ -1,11 +1,25 @@
 #include "../../include/minishell.h"
 
-void	ft_scapespaces(char *str, int *i)
+/**
+ * @brief Avanza el indice i de un string hasta el final o hasta que 
+ * no existan más espacios ' '
+ * 
+ * @param str string
+ * @param i indice
+ */
+static void	ft_scapespaces(char *str, int *i)
 {
 	while (str[*i] && str[*i] == ' ')
 		*i += 1;
 }
 
+/**
+ * @brief Localiza en un string el simbolo '<' o '>' que no esté entre
+ * comillas. 
+ * 
+ * @param input string en el que buscar 
+ * @return int 0 si no existe ninguno, 1 si existe > y 2 si existe <
+ */
 int	ft_existred(char *input)
 {
 	int	i;
@@ -23,7 +37,14 @@ int	ft_existred(char *input)
 	return (0);
 }
 
-int	ft_checksymbols(char *cmd, int symbol)
+/**
+ * @brief Localiza simbolos de redirección consecutivos separados por espacios
+ * 
+ * @param cmd string en el que buscar
+ * @param symbol tipo de simbolo que localizar '<' o '>'
+ * @return int 0 si no están consecutivos 1 si lo están
+ */
+static int	ft_checksymbols(char *cmd, int symbol)
 {
 	int	i;
 
@@ -45,7 +66,14 @@ int	ft_checksymbols(char *cmd, int symbol)
 	return (0);
 }
 
-int	ft_sintaxred(char *cmd)
+/**
+ * @brief Verifica si la sintaxis de redirecciones en un comando es correcta, 
+ * devuelve error en el caso de '<<<' o '>>>' o '><'
+ * 
+ * @param cmd string a verificar
+ * @return int 0 si todo está correcto, 1 si hay error de sintaxis
+ */
+static int	ft_sintaxred(char *cmd)
 {
 	int	i;
 
@@ -68,6 +96,14 @@ int	ft_sintaxred(char *cmd)
 	return (0);
 }
 
+/**
+ * @brief En un string verifica si la sintaxis de redirección es correcta, 
+ * comprueba que exista redirección (sin estar entre comillada) y en tal caso
+ * verifica si la sintaxis es correcta.
+ * 
+ * @param input string que verificar
+ * @return int 1 si hay error, 0 si todo es correcto
+ */
 int	ft_checkredirect(char *input)
 {
 	char	**split;

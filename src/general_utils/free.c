@@ -17,6 +17,7 @@ void	free_matrix(char **str)
 	}
 	free(str);
 }
+
 /**
  * @brief Cierra las tuberias de un pipe abierto
  * 
@@ -27,6 +28,7 @@ void	close_pipes(int *tube)
 	close(tube[0]);
 	close(tube[1]);
 }
+
 /**
  * @brief No hace nada :( solo exit
  * 

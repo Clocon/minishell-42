@@ -1,5 +1,10 @@
 #include "../../include/minishell.h"
 
+/**
+ * @brief Pasa a minúscula todos los caracteres de un string
+ * 
+ * @param str char *
+ */
 static void	to_lower(char *str)
 {	
 	int	i;
@@ -11,6 +16,14 @@ static void	to_lower(char *str)
 	}
 }
 
+/**
+ * @brief Función que comprueba si el comando es un builting para derivarlo
+ * a la correspondiente función si así lo es
+ * 
+ * @param cmd estructura de comando
+ * @param pipex estructura con las variables de entorno, tuberias...
+ * @return int 1 si es un builting y 0 si no lo es
+ */
 int	builting(t_cmd *cmd, t_pipe *pipex)
 {
 	to_lower(cmd->args[0]);

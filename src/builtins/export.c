@@ -1,5 +1,12 @@
 #include "../../include/minishell.h"
 
+/**
+ * @brief Built-in export: exporta a las variables de entorno (pipex)
+ * la variable que se indique como parámetro.
+ * 
+ * @param cmd struct con el comando y sus argumentos
+ * @param pipex structu con las variables de entorno
+ */
 void	ft_export(t_cmd *cmd, t_pipe *pipex)
 {
 	int		pos;

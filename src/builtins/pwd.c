@@ -1,5 +1,10 @@
 #include "../../include/minishell.h"
 
+/**
+ * @brief Built-in pwd: muestra por pantalla la ruta actual
+ * del usuario
+ * 
+ */
 void	ft_pwd(void)
 {
 	char	*pwd;

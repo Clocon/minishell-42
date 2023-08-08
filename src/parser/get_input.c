@@ -1,4 +1,4 @@
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 static char	*ft_getcmd(t_pipe pipex, char *cmd)
 {

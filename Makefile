@@ -6,13 +6,18 @@ RM				=	rm -f
 AR				=	ar -rcs
 
 SRCS			=	src/minishell.c \
-					src/pipes.c \
-					src/pipe_utils.c \
-					src/error.c \
-					src/free.c \
-					src/checker.c \
-					src/split_pipex.c \
-					src/signals.c \
+					src/executor/pipes.c \
+					src/executor/pipe_utils.c \
+					src/executor/signals.c \
+					src/general_utils/error.c \
+					src/general_utils/free.c \
+					src/general_utils/split_minishell.c \
+					src/general_utils/utils.c \
+					src/parser/checker.c \
+					src/parser/utils_checker.c \
+					src/parser/sintax_redirect.c \
+					src/parser/get_input.c \
+					src/parser/expand.c \
 					src/builtins/built.c \
 					src/builtins/echo.c \
 					src/builtins/pwd.c \
@@ -20,12 +25,6 @@ SRCS			=	src/minishell.c \
 					src/builtins/export.c \
 					src/builtins/unset.c \
 					src/builtins/env.c \
-					src/utils_checker.c \
-					src/sintax_redirect.c \
-					src/get_input.c \
-					src/expand.c \
-					src/utils.c 
-					
 					
 
 #		COLORS		#

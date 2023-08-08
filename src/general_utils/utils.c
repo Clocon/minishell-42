@@ -1,4 +1,4 @@
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 /**
  * @brief Añade un string a un char ** al final del mismo. Si no existe, 

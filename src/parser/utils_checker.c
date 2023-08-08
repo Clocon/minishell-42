@@ -1,4 +1,4 @@
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 /**
  * @brief Función para medir un char **
@@ -17,7 +17,6 @@ int	ft_sizearray(char **array)
 		i++;
 	return (i);
 }
-
 
 /**
  * @brief función para contar el número de '|' (pipes) en un string, 
@@ -96,9 +95,9 @@ static int	ft_checkclose(char *quotes)
 }
 
 /**
- * @brief Verifica si tanto comillas simples como comillas dobles están cerradas 
- * en un string, sin tener en cuenta las comillas que puedan estar entre comilladas
- * ya que estas sí pueden estar abiertas.
+ * @brief Verifica si tanto comillas simples como comillas dobles
+ * están cerradas en un string, sin tener en cuenta las comillas
+ * que puedan estar entre comilladas ya que estas sí pueden estar abiertas.
  * 
  * @param input char *
  * @return int 

@@ -1,5 +1,10 @@
 #include "../../include/minishell.h"
 
+/**
+ * @brief Built-in echo: imprime por pantalla lo que reciba por argumentos
+ * 
+ * @param cmd struct con el comando a ejecutar y sus argumentos
+ */
 void	ft_echo(t_cmd *cmd)
 {
 	int	j;
@@ -13,7 +18,6 @@ void	ft_echo(t_cmd *cmd)
 		if (cmd->args[j])
 			ft_putstr_fd(" ", 1);
 	}
-
 	if (!(cmd->args[1] && ft_strncmp(cmd->args[1], "-n", 3) == 0))
 		ft_putstr_fd("\n", 1);
 }

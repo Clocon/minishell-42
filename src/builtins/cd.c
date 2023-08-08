@@ -1,5 +1,13 @@
 #include "../../include/minishell.h"
 
+/**
+ * @brief Built-in cd: que cambia de directorio, admite las opciones
+ * cd (NULL) para volver a la raíz, cd .. para subir de carpeta
+ * cd - para ir al directorio anterior y cd con la ruta 
+ * 
+ * @param cmd struct con el comando y los argumentos
+ * @param pipex struct con las variables de entorno
+ */
 void	ft_cd(t_cmd *cmd, t_pipe *pipex)
 {
 	char	*error;

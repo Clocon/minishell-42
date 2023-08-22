@@ -39,6 +39,8 @@ int	builting(t_cmd *cmd, t_pipe *pipex)
 		ft_unset(cmd, pipex);
 	else if (!ft_strncmp(cmd->args[0], "env", 4))
 		ft_env(pipex);
+	else if (!ft_strncmp(cmd->args[0], "exit", 5))
+		ft_exit(cmd);
 	else
 		return (0);
 	return (1);

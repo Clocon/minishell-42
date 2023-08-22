@@ -26,6 +26,7 @@ SRCS			=	src/minishell.c \
 					src/builtins/export.c \
 					src/builtins/unset.c \
 					src/builtins/env.c \
+					src/builtins/exit.c \
 					
 
 #		COLORS		#

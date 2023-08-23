@@ -1,6 +1,5 @@
 #include "../../include/minishell.h"
 
-
 char	*check_trim(char *str)
 {
 	if (str[0] == '\'')

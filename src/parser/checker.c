@@ -118,6 +118,7 @@ char	*ft_checkpipe(char *input, t_pipe *pipex)
 		cmd = ft_getinput((ft_expandit(input, pipex, 0)), pipex, cmd);
 		if (ft_existcmd(cmd, pipex) == 1)
 			child_generator(pipex, cmd);
+		//ft_cleanall(); (borrar fichero tmp heredoc)
 	}
 	else
 		pipex->shell_exit = 258;

@@ -1,5 +1,22 @@
 #include "../../include/minishell.h"
 
+void	ft_heredoc(t_cmd *cmd)
+{
+	int		tmp_fd;
+	char	*input;
+
+	tmp_fd = open(HEREDOC_FILE, O_TRUNC | O_CREAT | O_RDWR, 0644);
+	input = readline("> ");
+	while (ft_strncmp(input, cmd->infile, ft_strlen(cmd->infile) + 1))
+	{
+		write(tmp_fd, input, ft_strlen(input));
+		write(tmp_fd, "\n", 1);
+		input = readline("> ");
+	}
+	close(tmp_fd);
+	free(cmd->infile);
+	cmd->infile = HEREDOC_FILE;
+}
 
 char	*ft_getname(char *cmd, int *j)
 {
@@ -69,8 +86,7 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 			cmd->infile_redirect = 1;
 			if (type == RED_IN)
 			{
-				//cmd->infile_redirect = 2; 
-				cmd->infile_redirect = 1;
+				//cmd->infile_redirect = 2;
 				type = RED_HERE;
 			}
 			else
@@ -80,9 +96,11 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 		{
 			if (type == RED_IN || type == RED_HERE)
 			{
-				if (cmd->infile)
+				if (cmd->infile && type == RED_IN)
 					free(cmd->infile);
 				cmd->infile = ft_getname(&one_cmd[i], &i);
+				if (type == RED_HERE)
+					ft_heredoc(cmd);
 			}
 			else if (type == RED_OUT || type == RED_APPEND)
 			{
@@ -109,8 +127,6 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 		}
 		i++;
 	}
-/*	if (cmd->infile == 2)
-		ft_heredoc(); */
 }
 
 static	char	*ft_cleanquotes(char *input)

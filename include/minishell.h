@@ -25,16 +25,16 @@
 
 # define CMD_ERROR "Command not found\n"
 # define PIPE_ERROR "Pipe error\n"
+# define HEREDOC_FILE "/tmp/__spedismaracatermicers__"
 
 typedef struct s_cmd
 {
-	char	**args; //ls
-					//-a
-	char	*cmd; //bin/ls
+	char	**args;
+	char	*cmd;
 	char	*infile;
-	int		infile_redirect; // 0 = defecto; 1 = <; 2 = <<
+	int		infile_redirect;
 	char	*outfile;
-	int		outfile_redirect; // 0 = defecto; 1 = > 2 >>
+	int		outfile_redirect;
 }	t_cmd;
 
 typedef struct s_pipe

@@ -51,7 +51,7 @@ static void	dup_assignation(t_pipe *pipex, t_cmd *cmd, int i)
 void	child_generator(t_pipe *pipex, t_cmd *cmd)
 {
 	int		i;
-	pid_t	pid[3];
+	pid_t	pid;
 	int		to_wait;
 	int		keyboard_fd;
 	int		display_fd;
@@ -61,7 +61,7 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 	i = -1;
 	while (++i < pipex->n_cmd)
 	{		
-		dup_assignation(pipex, cmd, i);
+		dup_assignation(pipex, &cmd[i], i);
 		if (cmd[i].infile_redirect != 0 || cmd[i].outfile_redirect != 0)
 			if (!redir_check(pipex, &cmd[i], i))
 				break ;
@@ -69,10 +69,10 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 			continue ;
 /* 		else
 		{ */
-			pid[i] = fork();
-			if (!pid[i])
+			pid = fork();
+			if (!pid)
 				child(&cmd[i], pipex);
-			waitpid(pid[i], &to_wait, 0);
+			waitpid(pid, &to_wait, 0);
 			pipex->shell_exit = WEXITSTATUS(to_wait);
 /* 		} */
 		//free_matrix(cmd[i].args);

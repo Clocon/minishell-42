@@ -47,11 +47,28 @@ static void	dup_assignation(t_pipe *pipex, t_cmd *cmd, int i)
 	}
 }
 
+static int pipe_control(t_pipe *pipex, t_cmd *cmd, int i)
+{
+	pid_t	pid;
+	int		to_wait;
+
+	dup_assignation(pipex, &cmd[i], i);
+	if (cmd[i].infile_redirect != 0 || cmd[i].outfile_redirect != 0)
+		if (!redir_check(pipex, &cmd[i], i))
+			return (0);
+	if (builting(&cmd[i], pipex))
+		return (1);
+	pid = fork();
+	if (!pid)
+		child(&cmd[i], pipex);
+	waitpid(pid, &to_wait, 0);
+	pipex->shell_exit = WEXITSTATUS(to_wait);
+	return (2);
+}
 void	child_generator(t_pipe *pipex, t_cmd *cmd)
 {
 	int		i;
-	pid_t	pid;
-	int		to_wait;
+	int		nb_controler;
 	int		keyboard_fd;
 	int		display_fd;
 
@@ -59,24 +76,18 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 	display_fd = dup(1);
 	i = -1;
 	while (++i < pipex->n_cmd)
-	{		
-		dup_assignation(pipex, &cmd[i], i);
-		if (cmd[i].infile_redirect != 0 || cmd[i].outfile_redirect != 0)
-			if (!redir_check(pipex, &cmd[i], i))
-				break ;
-		if (builting(&cmd[i], pipex))
+	{
+		nb_controler = pipe_control(pipex, cmd, i);
+		free_cmd_structure(&cmd[i]);
+		if (nb_controler == 0)
+			break ;
+		else if (nb_controler == 1)
 			continue ;
-
-			pid = fork();
-			if (!pid)
-				child(&cmd[i], pipex);
-			waitpid(pid, &to_wait, 0);
-			pipex->shell_exit = WEXITSTATUS(to_wait);
-		//free_cmd(&cmd[i]); HACER ESTO!
 	}
 	dup2(keyboard_fd, 0);
 	close(keyboard_fd);
 	dup2(display_fd, 1);
 	close(display_fd);
-	//free_pipe(pipex) HACER ESTO!
+	free(cmd);
+	//free_pipe(pipex)
 }

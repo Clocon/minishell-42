@@ -78,10 +78,11 @@ char	*ft_getcmd(t_pipe pipex, char *cmd)
 		c = ft_strjoin(aux, ex);
 		free (aux);
 		if (access(c, X_OK) == 0)
-			return (c);
+			return (free (ex), c);
 		free (c);
 		i++;
 	}
+	free (ex);
 	return (cmd);
 }
 

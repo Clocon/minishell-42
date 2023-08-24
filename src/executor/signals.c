@@ -11,11 +11,3 @@ void	sigint_handler(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 }
-
-/* void	ctrl_d(char *input, t_pipe *pipe)
-{
-	if (!input)
-	{
-		clean_success(pipe);
-	}
-} */

@@ -23,20 +23,29 @@ void	free_matrix(char **str)
  * 
  * @param tube 
  */
-void	close_pipes(int *tube)
+/* void	close_pipes(int *tube)
 {
 	close(tube[0]);
 	close(tube[1]);
-}
+} */
 
 /**
- * @brief No hace nada :( solo exit
+ * @brief Libera la memoria asignada a cada elemento de la structura
+ * que tiene una reserva de memoria.
  * 
- * @param pipe 
+ * @param cmd 
  */
-void	clean_success(t_pipe *pipe)
+void	free_cmd_structure(t_cmd *cmd)
 {
-	(void)pipe;
-	//free_matrix(pipe->envp);
-	exit(0);
+	free_matrix(cmd->args);
+	free(cmd->cmd);
+	free(cmd->infile);
+	free(cmd->outfile);
+	printf("SOY CONCHA, LIMPIO!\n");
+}
+
+void free_pipe_structure(t_pipe *pipex)
+{
+	free_matrix(pipex->envp);
+	free_matrix(pipex->path);
 }

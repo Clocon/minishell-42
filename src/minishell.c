@@ -3,6 +3,8 @@
 void	ft_getline(t_pipe *pipex)
 {
 	char	*input;
+	char	*aux;
+
 
 	while (1)
 	{
@@ -10,8 +12,10 @@ void	ft_getline(t_pipe *pipex)
 		if (!input)
 			exit(0);
 		add_history(input);
-		if (ft_strlen(input) > 0 && ft_strlen(ft_strtrim(input, " ")) > 0)
+		aux = ft_strtrim(input, " ");
+		if (ft_strlen(input) > 0 && ft_strlen(aux) > 0)
 			ft_checkpipe(input, pipex);
+		free(aux);
 		free(input);
 	}
 }

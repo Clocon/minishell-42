@@ -60,7 +60,6 @@ typedef enum s_typetoken
 }	t_typetoken;
 
 /*Functions for minishell.c*/
-char	*ft_get_text_minishell(void);
 void	ft_getline(t_pipe *pipex);
 
 /*Functions for pipe.c*/
@@ -68,7 +67,6 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd);
 
 /*Functions for pipe_utils.c*/
 //void	sub_dup2(int zero, int one);
-char	*check_trim(char *str);
 int		redir_check(t_pipe *pipex, t_cmd *cmd, int i);
 
 /*Functions for error.c*/
@@ -79,8 +77,9 @@ void	err_msg_sintax(char *str);
 
 /*Functions for free.c*/
 void	free_matrix(char **str);
-void	close_pipes(int *tube);
-void	clean_success(t_pipe *pipe);
+//void	close_pipes(int *tube);
+void	free_cmd_structure(t_cmd *cmd);
+void	free_pipe_structure(t_pipe *pipex);
 
 /*Functions for checker.c*/
 char	*ft_checkpipe(char *input, t_pipe *pipex);
@@ -92,7 +91,6 @@ int		ft_foundquotes(char *str, int *i);
 
 /*Functions for signals.c*/
 void	sigint_handler(int sig);
-void	ctrl_d(char *input, t_pipe *pipe);
 
 /*Functions for *.c from builtins*/
 int		builting(t_cmd *cmd, t_pipe *pipex);

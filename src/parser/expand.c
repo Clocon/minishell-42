@@ -1,5 +1,14 @@
 #include "../../include/minishell.h"
 
+/**
+ * @brief En un string avanza el indice i si encuentra una comilla del 
+ * tipo 'quote' hasta la siguiente exactamente igual.
+ * 
+ * @param str string sobre el que iterar
+ * @param i puntero al indice del string
+ * @param quote comilla ' o " (int ascii)
+ * @return int 1 si encuentra comillas, 0 si en la posición i no hay comillas
+ */
 static int	ft_ignorequotes(char *str, int *i, int quote)
 {
 	if (str[*i] == quote && str[*i] != 0)
@@ -12,6 +21,14 @@ static int	ft_ignorequotes(char *str, int *i, int quote)
 	return (0);
 }
 
+/**
+ * @brief Recoge el último estado de ejecución del comando anterior 
+ * (shell_exit), lo transforma a string y lo devuelve seguido de lo que 
+ * 
+ * @param var 
+ * @param pipex 
+ * @return char* 
+ */
 char	*ft_get_exit_status(char *var, t_pipe *pipex)
 {
 	char	*status;
@@ -19,7 +36,8 @@ char	*ft_get_exit_status(char *var, t_pipe *pipex)
 
 	status = ft_itoa(pipex->shell_exit);
 	i = 1;
-	while (var[i] && var[i] != '$')
+	while (var[i] && var[i] != ' ' && var[i] != '\''
+		&& var[i] != '"' && var[i] != '$')
 		i++;
 	return (ft_strjoin_free(status, ft_substr(var, 1, i - 1)));
 }

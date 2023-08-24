@@ -24,13 +24,8 @@ void	ft_getline(t_pipe *pipex)
 	{
 		//text_minishell = ft_get_text_minishell();
 		input = readline("\033[32;1m* \033[0mMiniShell $> ");
-		if (!ft_strncmp(input, "exit", 5))
-		{
-			free(input);
-			//free(text_minishell);
-			//free_matrix(pipex->path);
-			break ;
-		}
+		if (!input)
+			exit(0);
 		add_history(input);
 		if (ft_strlen(input) > 0 && ft_strlen(ft_strtrim(input, " ")) > 0)
 			ft_checkpipe(input, pipex);
@@ -43,6 +38,8 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_pipe	pipex;
 
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 	(void)argv;
 	pipex.fd_in = dup(0);
 	pipex.tmp_out = dup(1);

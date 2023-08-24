@@ -7,7 +7,7 @@ void	ft_heredoc(t_cmd *cmd)
 
 	tmp_fd = open(HEREDOC_FILE, O_TRUNC | O_CREAT | O_RDWR, 0644);
 	input = readline("> ");
-	while (ft_strncmp(input, cmd->infile, ft_strlen(cmd->infile) + 1))
+	while (input && ft_strncmp(input, cmd->infile, ft_strlen(cmd->infile) + 1))
 	{
 		write(tmp_fd, input, ft_strlen(input));
 		write(tmp_fd, "\n", 1);
@@ -21,22 +21,24 @@ void	ft_heredoc(t_cmd *cmd)
 char	*ft_getname(char *cmd, int *j)
 {
 	int		i;
+	int		start;
 	char	*name;
+	char	*aux;
 
 	i = 0;
+	name = 0;
 	while (cmd[i] && cmd[i] != ' ' && cmd[i] != '<' && cmd[i] != '>')
 	{
-		ft_foundquotes(&cmd[i], &i);
+		start = i;
+		if (ft_foundquotes(cmd, &i))
+			aux = ft_substr(cmd, start + 1, (i - start) - 1);
+		else
+			aux = ft_substr(cmd, start, 1);
+		name = ft_strjoin_free(name, aux);
+		free(aux);
 		i++;
 	}
-	i--;
-	name = ft_substr(cmd, 0, i + 1);
-	name[i + 1] = 0;
 	*j += i;
-	if (name[0] == '\'')
-		name = ft_strtrim(name, "'");
-	else if (name[0] == '"')
-		name = ft_strtrim(name, "\"");
 	return (name);
 }
 
@@ -125,7 +127,8 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 				cmd->args = ft_addarray(ft_getname(&one_cmd[i], &i), cmd->args);
 			type = WORD;
 		}
-		i++;
+		if (one_cmd[i])
+			i++;
 	}
 }
 
@@ -187,9 +190,9 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 		cmd[i].outfile = NULL;
 		cmd[i].args = NULL;
 		cmd[i].cmd = NULL;
-		if (ft_existred(split_pi[i]) == 0)
+/* 		if (ft_existred(split_pi[i]) == 0)
 			ft_getdatas_nored(&cmd[i], split_pi[i], pipex);
-		else
+		else */
 			ft_getdatas_red(&cmd[i], split_pi[i], pipex);
 		i++;
 	}

@@ -1,32 +1,28 @@
 #include "../../include/minishell.h"
 
-char	*check_trim(char *str)
-{
-	if (str[0] == '\'')
-		str = ft_strtrim(str, "'");
-	else if (str[0] == '"')
-		str = ft_strtrim(str, "\"");
-	return (str);
-}
-
-int	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
+static int open_and_redir(t_pipe *pipex, t_cmd *cmd, int i)
 {
 	char	*error;
 
 	error = NULL;
-	if (cmd->infile_redirect == 1)
+	pipex->fd_in = open(cmd->infile, O_RDONLY);
+	if (pipex->fd_in == -1)
 	{
-		pipex->fd_in = open(cmd->infile, O_RDONLY);
-		if (pipex->fd_in == -1)
-		{
-			error = ft_strjoin_free(cmd->infile, ": No such file or directory\n");
-			err_msg(error);
-			return (0);
-		}
-		dup2(pipex->fd_in, 0);
-		if (i != pipex->n_cmd - 1)
-			pipex->fd_in = pipex->tube[0];
+		error = ft_strjoin_free(cmd->infile, ": No such file or directory\n");
+		err_msg(error);
+		return (0);
 	}
+	dup2(pipex->fd_in, 0);
+	if (i != pipex->n_cmd - 1)
+		pipex->fd_in = pipex->tube[0];
+	return (1);
+}
+
+int	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
+{
+	if (cmd->infile_redirect == 1)
+		if(open_and_redir(pipex, cmd, i) == 0)
+			return (0);
 	if (cmd->outfile_redirect == 0)
 		return (1);
 	if (cmd->outfile_redirect == 1)

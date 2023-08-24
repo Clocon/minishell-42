@@ -125,12 +125,8 @@ int	ft_checkquotes(char *input)
 {
 	char	**quotes;
 	int		i;
-	int		s;
-	char	com;
 
 	i = 0;
-	s = 0;
-	com = 0;
 	quotes = ft_split_shell(input, ' ');
 	while (quotes[i])
 	{

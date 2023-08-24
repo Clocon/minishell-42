@@ -13,7 +13,6 @@ static void	child(t_cmd *cmd, t_pipe *pipex)
 		free(cmd->cmd);
 		err_msg_exit(CMD_ERROR);
 	}
-	//check_awk(cmd);
 	if (execve(cmd->cmd, cmd->args, pipex->envp) == -1)
 	{
 		error = ft_strjoin_free(cmd->cmd, ": ");
@@ -67,20 +66,17 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 				break ;
 		if (builting(&cmd[i], pipex))
 			continue ;
-/* 		else
-		{ */
+
 			pid = fork();
 			if (!pid)
 				child(&cmd[i], pipex);
 			waitpid(pid, &to_wait, 0);
 			pipex->shell_exit = WEXITSTATUS(to_wait);
-/* 		} */
-		//free_matrix(cmd[i].args);
+		//free_cmd(&cmd[i]); HACER ESTO!
 	}
-	//free(cmd);
 	dup2(keyboard_fd, 0);
 	close(keyboard_fd);
 	dup2(display_fd, 1);
 	close(display_fd);
-	//pipex->shell_exit = 0;
+	//free_pipe(pipex) HACER ESTO!
 }

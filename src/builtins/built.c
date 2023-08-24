@@ -27,7 +27,8 @@ static void	to_lower(char *str)
 int	builting(t_cmd *cmd, t_pipe *pipex)
 {
 	to_lower(cmd->args[0]);
-	if (!ft_strncmp(cmd->args[0], "echo", 5))
+	if (!ft_strncmp(cmd->args[0], "echo", 5) 
+		|| !ft_strncmp(cmd->args[0], "/bin/echo", 10))
 		ft_echo(cmd);
 	else if (!ft_strncmp(cmd->args[0], "pwd", 4))
 		ft_pwd();

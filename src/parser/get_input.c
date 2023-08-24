@@ -174,11 +174,9 @@ void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 {
 	int		i;
-	int		i_s;
 	char	**split_pi;
 
 	i = 0;
-	i_s = 0;
 	split_pi = ft_split_shell(input, '|');
 	split_pi = ft_cleanspaces(split_pi);
 	cmd = malloc(sizeof(t_cmd) * pipex->n_cmd);

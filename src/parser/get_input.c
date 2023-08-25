@@ -6,7 +6,7 @@
  * Guarda el input del usuario en un fichero temporal en la carpeta temporal del 
  * sistema para posteriormente utilizarlo como infile en el comando introducido
  * 
- * @param cmd 
+ * @param cmd estructura con el comando introducido
  */
 void	ft_heredoc(t_cmd *cmd)
 {
@@ -26,6 +26,15 @@ void	ft_heredoc(t_cmd *cmd)
 	cmd->infile = HEREDOC_FILE;
 }
 
+/**
+ * @brief Recoge un string que forma parte de una misma "palabra", bien sea
+ * el nombre de un fichero, de un comando o un argumento. Avanza el indice j
+ * hasta el final de la palabra.
+ * 
+ * @param cmd string con el comando introducido
+ * @param j indice por el que se está iterando en el string
+ * @return char* string con la palabra recogida (comando, argumento, fichero)
+ */
 static char	*ft_getname(char *cmd, int *j)
 {
 	int		i;
@@ -114,6 +123,17 @@ void	ft_getdatas(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 	}
 }
 
+/**
+ * @brief Recibe la entrada del usuario a ejecutar en minishell y recoge
+ * en un array de cmd (comandos) los datos introducidos en la variable 
+ * correspondiente.
+ * 
+ * 
+ * @param input string con la entrada del usuario
+ * @param pipex estructura con las variables de entorno 
+ * @param cmd puntero a una estructura de comandos vacia
+ * @return t_cmd* puntero de comandos 
+ */
 t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 {
 	int		i;

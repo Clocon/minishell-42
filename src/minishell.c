@@ -7,6 +7,7 @@ void	ft_getline(t_pipe *pipex)
 
 	while (1)
 	{
+		ft_getpath(pipex);
 		input = readline("\033[32;1m* \033[0mMiniShell $> ");
 		if (!input)
 			exit(0);
@@ -16,11 +17,17 @@ void	ft_getline(t_pipe *pipex)
 			ft_checkpipe(input, pipex);
 		free(aux);
 		free(input);
+		free_matrix(pipex->path);
 	}
 }
 
+void	leaks(void)
+{
+	system("leaks -q minishell");
+}
 int	main(int argc, char **argv, char **envp)
 {
+	atexit(leaks);
 	t_pipe	pipex;
 
 	signal(SIGINT, sigint_handler);
@@ -36,8 +43,4 @@ int	main(int argc, char **argv, char **envp)
 	exit(0);
 }
 
-/* void	leaks(void)
-{
-	system("leaks -q minishell");
-} 
-//	atexit(leaks);*/
+//	atexit(leaks);

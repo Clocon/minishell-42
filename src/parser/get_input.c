@@ -111,7 +111,7 @@ void	ft_getdatas(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 			else if (!cmd->cmd)
 			{
 				cmd->cmd = ft_getname(&one_cmd[i], &i);
-				cmd->args = ft_addarray(cmd->cmd, cmd->args);
+				cmd->args = ft_addarray(ft_strdup(cmd->cmd), cmd->args);
 				cmd->cmd = ft_getcmd(*pipex, cmd->cmd);
 			}
 			else

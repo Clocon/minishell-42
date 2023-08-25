@@ -48,3 +48,18 @@ void	free_pipe_structure(t_pipe *pipex)
 	free_matrix(pipex->envp);
 	free_matrix(pipex->path);
 }
+
+void	ft_free_cmds(t_cmd *cmd, t_pipe *pipex)
+{
+	int	i;
+
+	i = 0;
+	if (cmd)
+	{
+		while (i < pipex->n_cmd)
+		{
+			free_cmd_structure(&cmd[i]);
+			i++;
+		}
+	}
+}

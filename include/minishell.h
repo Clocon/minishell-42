@@ -29,8 +29,8 @@
 
 typedef struct s_cmd
 {
-	char	**args;
 	char	*cmd;
+	char	**args;
 	char	*infile;
 	int		infile_redirect;
 	char	*outfile;
@@ -80,6 +80,7 @@ void	free_matrix(char **str);
 //void	close_pipes(int *tube);
 void	free_cmd_structure(t_cmd *cmd);
 void	free_pipe_structure(t_pipe *pipex);
+void	ft_free_cmds(t_cmd *cmd, t_pipe *pipex);
 
 /*Functions for checker.c*/
 char	*ft_checkpipe(char *input, t_pipe *pipex);

@@ -44,5 +44,6 @@ int	builting(t_cmd *cmd, t_pipe *pipex)
 		ft_exit(cmd);
 	else
 		return (0);
+	pipex->shell_exit = 0;
 	return (1);
 }

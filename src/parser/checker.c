@@ -38,10 +38,7 @@ static int	ft_checkinput(char *input, t_pipe *pipex)
 {
 	if (ft_checkquotes(input) == 0 && ft_checksintaxpipex(input) == 0
 		&& ft_checkredirect(input) == 0)
-	{
-		ft_getpath(pipex);
 		return (0);
-	}
 	else
 	{
 		pipex->shell_exit = 258;
@@ -106,6 +103,7 @@ char	*ft_checkpipe(char *input, t_pipe *pipex)
 {
 	char	**split_pi;
 	t_cmd	*cmd;
+	char	*new_input;
 
 	input = ft_strtrim(input, " ");
 	cmd = 0;
@@ -115,7 +113,9 @@ char	*ft_checkpipe(char *input, t_pipe *pipex)
 		split_pi = ft_cleanspaces(split_pi);
 		pipex->n_cmd = ft_sizearray(split_pi);
 		input = ft_openpipe(input, pipex, split_pi);
-		cmd = ft_getinput((ft_expandit(input, pipex, 0)), pipex, cmd);
+		new_input = ft_expandit(input, pipex, 0);
+		cmd = ft_getinput(new_input, pipex, cmd);
+		free(new_input);
 		if (ft_existcmd(cmd, pipex) == 1)
 			child_generator(pipex, cmd);
 		//ft_cleanall(); (borrar fichero tmp heredoc)

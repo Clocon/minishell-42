@@ -42,6 +42,16 @@ char	*ft_get_exit_status(char *var, t_pipe *pipex)
 	return (ft_strjoin_free(status, ft_substr(var, 1, i - 1)));
 }
 
+/**
+ * @brief Localiza y devuelve como string el valor de una variable de
+ * entorno de la minishell. Si no se envia ninguna variable devuelve
+ * un string vacio. Si se recibe $$ devuelve el pid de la minishell. 
+ * Si recibe $? devuelve el estado de la última ejecución de comando.
+ * 
+ * @param var string con el nombre de la variable
+ * @param pipex estructura con las variables de entorno
+ * @return char* string con el valor de la variable
+ */
 char	*ft_getenv(char *var, t_pipe *pipex)
 {
 	int		i;
@@ -71,6 +81,16 @@ char	*ft_getenv(char *var, t_pipe *pipex)
 	return (ft_strdup(""));
 }
 
+/**
+ * @brief avanza el indice de iteración del input hasta el final del nombre
+ * de la variable. Devuelve string con el valor de la variable de entorno
+ * encontrada en ese indice i.
+ * 
+ * @param i puntero al int indice que está iterando en el input
+ * @param input string con el input recibido por el usuario
+ * @param pipex estructura con las variables de entorno
+ * @return char* valor de la variable encontrada
+ */
 char	*ft_expand_value(int *i, char *input, t_pipe *pipex)
 {
 	char	*aux;
@@ -91,6 +111,23 @@ char	*ft_expand_value(int *i, char *input, t_pipe *pipex)
 	return (aux);
 }
 
+/**
+ * @brief Recibe la entrada de datos escrita por el usuario en minishell
+ * comprueba si hay variables de entorno a expandir por su valor y devuelve
+ * el input con el valor de las variables localizadas.
+ * * Si la variable escrita está entre comillas simples, no se expande su valor.
+ * * Si la variable escrita está entre comillas dobles, sí expande su valor.
+ * * Si la variable no se encuentra entre comillas, sí expande su valor.
+ * La función se llama de forma recursiva cuando encuentra una variable entre 
+ * comillas dobles, en ese caso expande el valor enviando 1 a la propia función
+ * para recibir el string entre comillado doble con las variables expandidas.
+ * 
+ * 
+ * @param input string con la entrada del usuario a minishell
+ * @param pipex estructura con las variables de entorno de minishell
+ * @param expand 1 si hay que expandir, 0 si no hay que expandir
+ * @return char* string con el resultado de expandir las variables en el input
+ */
 char	*ft_expandit(char *input, t_pipe *pipex, int expand)
 {
 	int		i;

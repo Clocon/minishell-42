@@ -5,7 +5,6 @@ void	ft_getline(t_pipe *pipex)
 	char	*input;
 	char	*aux;
 
-
 	while (1)
 	{
 		input = readline("\033[32;1m* \033[0mMiniShell $> ");

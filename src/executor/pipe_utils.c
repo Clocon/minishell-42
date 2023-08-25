@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-static int open_and_redir(t_pipe *pipex, t_cmd *cmd, int i)
+static int	open_and_redir(t_pipe *pipex, t_cmd *cmd, int i)
 {
 	char	*error;
 
@@ -21,7 +21,7 @@ static int open_and_redir(t_pipe *pipex, t_cmd *cmd, int i)
 int	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
 {
 	if (cmd->infile_redirect == 1)
-		if(open_and_redir(pipex, cmd, i) == 0)
+		if (open_and_redir(pipex, cmd, i) == 0)
 			return (0);
 	if (cmd->outfile_redirect == 0)
 		return (1);

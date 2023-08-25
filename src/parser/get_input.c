@@ -1,5 +1,13 @@
 #include "../../include/minishell.h"
 
+/**
+ * @brief Cuando se detecta heredoc en el input del usuario, se queda esperando
+ * la entrada de datos del usuario hasta que introduzca la palabra clave. 
+ * Guarda el input del usuario en un fichero temporal en la carpeta temporal del 
+ * sistema para posteriormente utilizarlo como infile en el comando introducido
+ * 
+ * @param cmd 
+ */
 void	ft_heredoc(t_cmd *cmd)
 {
 	int		tmp_fd;
@@ -18,7 +26,7 @@ void	ft_heredoc(t_cmd *cmd)
 	cmd->infile = HEREDOC_FILE;
 }
 
-char	*ft_getname(char *cmd, int *j)
+static char	*ft_getname(char *cmd, int *j)
 {
 	int		i;
 	int		start;
@@ -42,28 +50,7 @@ char	*ft_getname(char *cmd, int *j)
 	return (name);
 }
 
-void	ft_getfiles(t_cmd *cmd, char *str, int *i, int red)
-{
-	if (red == '>')
-		cmd->outfile_redirect = 1;
-	else if (red == '<')
-		cmd->infile_redirect = 1;
-	*i += 1;
-	while (str[*i] == '>' || str[*i] == '<' || str[*i] == ' ')
-	{
-		if (str[*i] == '>' && red == '>')
-			cmd->outfile_redirect = 2;
-		else if (str[*i] == '<' && red == '<')
-			cmd->infile_redirect = 2;
-		*i += 1;
-	}
-	if (red == '>')
-		cmd->outfile = ft_getname(&str[*i], i);
-	else if (red == '<')
-		cmd->infile = ft_getname(&str[*i], i);
-}
-
-void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
+void	ft_getdatas(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 {
 	int			i;
 	t_typetoken	type;
@@ -87,10 +74,7 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 		{
 			cmd->infile_redirect = 1;
 			if (type == RED_IN)
-			{
-				//cmd->infile_redirect = 2;
 				type = RED_HERE;
-			}
 			else
 				type = RED_IN;
 		}
@@ -107,9 +91,7 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 			else if (type == RED_OUT || type == RED_APPEND)
 			{
 				if (!cmd->outfile)
-				{
 					cmd->outfile = ft_getname(&one_cmd[i], &i);
-				}
 				else
 				{
 					close(open(cmd->outfile, O_CREAT | O_RDWR | O_TRUNC, 0644));
@@ -132,45 +114,6 @@ void	ft_getdatas_red(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 	}
 }
 
-static	char	*ft_cleanquotes(char *input)
-{
-	char	*str;
-
-	str = NULL;
-	if (input[0] == '\'')
-		str = ft_strtrim(input, "'");
-	else if (input[0] == '"')
-		str = ft_strtrim(input, "\"");
-	else
-		str = ft_strdup(input);
-	return (str);
-}
-
-void	ft_getdatas_nored(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
-{
-	int		i;
-	char	**split_sp;
-	char	*clean_quotes;
-
-	i = 0;
-	split_sp = ft_split_shell(one_cmd, ' ');
-	clean_quotes = ft_cleanquotes(split_sp[0]);
-	if (clean_quotes)
-	{
-		cmd->cmd = ft_strdup(ft_getcmd(*pipex, clean_quotes));
-		cmd->args = malloc((sizeof(char *)) * (ft_sizearray(split_sp) + 1));
-		while (split_sp[i] != 0)
-		{
-			cmd->args[i] = ft_cleanquotes(split_sp[i]);
-			free(split_sp[i]);
-			i++;
-		}
-		cmd->args[i] = 0;
-	}
-	free(split_sp);
-	free(clean_quotes);
-}
-
 t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 {
 	int		i;
@@ -188,15 +131,14 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
 		cmd[i].outfile = NULL;
 		cmd[i].args = NULL;
 		cmd[i].cmd = NULL;
-/* 		if (ft_existred(split_pi[i]) == 0)
-			ft_getdatas_nored(&cmd[i], split_pi[i], pipex);
-		else */
-			ft_getdatas_red(&cmd[i], split_pi[i], pipex);
+		ft_getdatas(&cmd[i], split_pi[i], pipex);
 		i++;
 	}
 	free_matrix(split_pi);
 	return (cmd);
 }
+
+
 
 
 

@@ -41,10 +41,9 @@ void	free_cmd_structure(t_cmd *cmd)
 	free(cmd->cmd);
 	free(cmd->infile);
 	free(cmd->outfile);
-	printf("SOY CONCHA, LIMPIO!\n");
 }
 
-void free_pipe_structure(t_pipe *pipex)
+void	free_pipe_structure(t_pipe *pipex)
 {
 	free_matrix(pipex->envp);
 	free_matrix(pipex->path);

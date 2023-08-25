@@ -1,7 +1,5 @@
 #include "../../include/minishell.h"
 
-extern int errno;
-
 static void	child(t_cmd *cmd, t_pipe *pipex)
 {
 	char	*error;
@@ -47,7 +45,7 @@ static void	dup_assignation(t_pipe *pipex, t_cmd *cmd, int i)
 	}
 }
 
-static int pipe_control(t_pipe *pipex, t_cmd *cmd, int i)
+static int	pipe_control(t_pipe *pipex, t_cmd *cmd, int i)
 {
 	pid_t	pid;
 	int		to_wait;
@@ -65,6 +63,7 @@ static int pipe_control(t_pipe *pipex, t_cmd *cmd, int i)
 	pipex->shell_exit = WEXITSTATUS(to_wait);
 	return (2);
 }
+
 void	child_generator(t_pipe *pipex, t_cmd *cmd)
 {
 	int		i;

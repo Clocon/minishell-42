@@ -1,8 +1,8 @@
 #include "../../include/minishell.h"
 
 /**
- * @brief Built-in env: Muestra por pantalla las variables de entorno de minishell 
- * almacenadas en la estructura pipex (pipex->envp)
+ * @brief Built-in env: Muestra por pantalla las variables de
+ * entorno de minishell almacenadas en la estructura pipex (pipex->envp)
  * 
  * @param pipex struct donde se almacenan las variables de entorno del programa
  */

@@ -134,10 +134,11 @@ void	ft_getdatas(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
  * @param cmd puntero a una estructura de comandos vacia
  * @return t_cmd* puntero de comandos 
  */
-t_cmd	*ft_getinput(char *input, t_pipe *pipex, t_cmd *cmd)
+t_cmd	*ft_getinput(char *input, t_pipe *pipex)
 {
 	int		i;
 	char	**split_pi;
+	t_cmd	*cmd;
 
 	i = 0;
 	split_pi = ft_split_shell(input, '|');

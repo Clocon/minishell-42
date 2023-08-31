@@ -42,12 +42,7 @@ void	ft_getpath(t_pipe *pipex)
 	if (i == ft_sizearray(pipex->envp))
 		pipex->path = 0;
 	else
-	{
-		pipex->path = ft_calloc(ft_strlen(pipex->envp[i] + 5), sizeof(char));
-		if (!pipex->path)
-			err_msg_sintax("PATH_ERROR");
 		pipex->path = ft_split(pipex->envp[i] + 5, ':');
-	}
 }
 
 /**
@@ -71,14 +66,14 @@ char	*ft_getcmd(t_pipe pipex, char *cmd)
 	ex = ft_substr(cmd, 0, i);
 	i = 0;
 	if (access(ex, X_OK) == 0)
-		return (ex);
+		return (free(cmd), ex);
 	while (pipex.path && pipex.path[i])
 	{
 		aux = ft_strjoin(pipex.path[i], "/");
 		c = ft_strjoin(aux, ex);
 		free (aux);
 		if (access(c, X_OK) == 0)
-			return (free (ex), c);
+			return (free (ex), free(cmd), c);
 		free (c);
 		i++;
 	}

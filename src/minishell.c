@@ -14,20 +14,20 @@ void	ft_getline(t_pipe *pipex)
 		add_history(input);
 		aux = ft_strtrim(input, " ");
 		if (ft_strlen(input) > 0 && ft_strlen(aux) > 0)
-			ft_checkpipe(input, pipex);
+			input = ft_checkpipe(input, pipex);
 		free(aux);
-		free(input);
+		//free(input);
 		free_matrix(pipex->path);
 	}
 }
 
-void	leaks(void)
+/* void	leaks(void)
 {
 	system("leaks -q minishell");
-}
+} */
 int	main(int argc, char **argv, char **envp)
 {
-	atexit(leaks);
+//	atexit(leaks);
 	t_pipe	pipex;
 
 	signal(SIGINT, sigint_handler);

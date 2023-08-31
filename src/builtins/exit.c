@@ -6,7 +6,7 @@
  * 
  * @param cmd estructura con el comando
  */
-void	ft_exit(t_cmd *cmd)
+void	ft_exit(t_cmd *cmd, t_pipe *pipex)
 {
 	int	i;
 
@@ -15,6 +15,7 @@ void	ft_exit(t_cmd *cmd)
 		err_msg("exit: too many arguments\n");
 	else
 	{
+		free_pipe_structure(pipex);
 		if (cmd->args[1])
 		{
 			while (cmd->args[1][i])
@@ -28,8 +29,10 @@ void	ft_exit(t_cmd *cmd)
 				}
 				i++;
 			}
+			ft_free_cmds(cmd, pipex);
 			exit(ft_atoi(cmd->args[1]));
 		}
+		ft_free_cmds(cmd, pipex);
 		exit(0);
 	}
 }

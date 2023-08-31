@@ -77,7 +77,6 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 	while (++i < pipex->n_cmd)
 	{
 		nb_controler = pipe_control(pipex, cmd, i);
-		//free_cmd_structure(&cmd[i]);
 		if (nb_controler == 0)
 			break ;
 		else if (nb_controler == 1)
@@ -88,6 +87,4 @@ void	child_generator(t_pipe *pipex, t_cmd *cmd)
 	dup2(display_fd, 1);
 	close(display_fd);
 	ft_free_cmds(cmd, pipex);
-	free(cmd);
-	//free_pipe(pipex)
 }

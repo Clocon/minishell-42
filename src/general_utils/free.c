@@ -61,5 +61,6 @@ void	ft_free_cmds(t_cmd *cmd, t_pipe *pipex)
 			free_cmd_structure(&cmd[i]);
 			i++;
 		}
+		free(cmd);
 	}
 }

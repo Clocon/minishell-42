@@ -6,3 +6,4 @@ a.out
 minishell
 Makefile
 *.h
+readline.supp

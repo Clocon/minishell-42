@@ -8,8 +8,9 @@ static int	open_and_redir(t_pipe *pipex, t_cmd *cmd, int i)
 	pipex->fd_in = open(cmd->infile, O_RDONLY);
 	if (pipex->fd_in == -1)
 	{
-		error = ft_strjoin_free(cmd->infile, ": No such file or directory\n");
+		error = ft_strjoin(cmd->infile, ": No such file or directory\n");
 		err_msg(error);
+		free(error);
 		return (0);
 	}
 	dup2(pipex->fd_in, 0);

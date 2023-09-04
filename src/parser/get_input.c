@@ -23,7 +23,7 @@ void	ft_heredoc(t_cmd *cmd)
 	}
 	close(tmp_fd);
 	free(cmd->infile);
-	cmd->infile = HEREDOC_FILE;
+	cmd->infile = ft_strdup(HEREDOC_FILE);
 }
 
 /**

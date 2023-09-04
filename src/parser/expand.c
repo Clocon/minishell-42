@@ -99,15 +99,8 @@ char	*ft_expand_value(int *i, char *input, t_pipe *pipex)
 	aux = ft_getenv(&input[*i], pipex);
 	while (input[*i] && input[*i] != ' ' && input[*i] != '\t'
 		&& input[*i] != '$' && input[*i] != '\'' && input[*i] != '"')
-	{
 		(*i)++;
-		if (input[*i] == '$' || input[*i] == '\''
-			|| input[*i] == '"' || input[*i] == ' ')
-		{
-			(*i)--;
-			break ;
-		}
-	}
+	(*i)--;
 	return (aux);
 }
 

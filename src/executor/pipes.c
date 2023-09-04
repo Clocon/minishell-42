@@ -59,8 +59,11 @@ static int	pipe_control(t_pipe *pipex, t_cmd *cmd, int i)
 	pid = fork();
 	if (!pid)
 		child(&cmd[i], pipex);
-	waitpid(pid, &to_wait, 0);
-	pipex->shell_exit = WEXITSTATUS(to_wait);
+	if (i == pipex->n_cmd - 1)
+	{
+		waitpid(pid, &to_wait, 0);
+		pipex->shell_exit = WEXITSTATUS(to_wait);
+	}
 	return (2);
 }
 

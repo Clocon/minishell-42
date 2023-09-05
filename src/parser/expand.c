@@ -62,8 +62,6 @@ char	*ft_getenv(char *var, t_pipe *pipex)
 	size = 0;
 	if (!var[0])
 		return (ft_strdup("$"));
-	if (var[0] == '$')
-		return (ft_itoa(getpid()));
 	if (var[0] && var[0] == '?')
 		return (ft_get_exit_status(var, pipex));
 	while (var[size] != ' ' && var[size] != '\t' && var[size] != '\''

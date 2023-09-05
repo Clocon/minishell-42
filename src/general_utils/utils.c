@@ -46,7 +46,7 @@ char	**ft_deleteitem(int pos, char **array)
 	i = 0;
 	if (!array || pos < 0 || pos > ft_sizearray(array))
 		return (array);
-	new_array = ft_calloc(sizeof(char *), ft_sizearray(array));
+	new_array = ft_calloc(sizeof(char *), ft_sizearray(array) + 1);
 	while (array[i])
 	{
 		if (i >= pos)

@@ -10,7 +10,10 @@ void	ft_getline(t_pipe *pipex)
 		ft_getpath(pipex);
 		input = readline("\033[32;1m* \033[0mMiniShell $> ");
 		if (!input)
+		{
+			ft_putstr_fd("exit\n", pipex->fd_out);
 			exit(0);
+		}
 		add_history(input);
 		aux = ft_strtrim(input, " ");
 		if (ft_strlen(input) > 0 && ft_strlen(aux) > 0)
@@ -42,5 +45,3 @@ int	main(int argc, char **argv, char **envp)
 	ft_getline(&pipex);
 	exit(0);
 }
-
-//	atexit(leaks);

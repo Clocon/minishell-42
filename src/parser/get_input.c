@@ -55,7 +55,7 @@ static char	*ft_getname(char *cmd, int *j)
 		free(aux);
 		i++;
 	}
-	*j += i;
+	*j += i - 1;
 	return (name);
 }
 

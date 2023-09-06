@@ -19,17 +19,6 @@ void	free_matrix(char **str)
 }
 
 /**
- * @brief Cierra las tuberias de un pipe abierto
- * 
- * @param tube 
- */
-/* void	close_pipes(int *tube)
-{
-	close(tube[0]);
-	close(tube[1]);
-} */
-
-/**
  * @brief Libera la memoria asignada a cada elemento de la structura
  * que tiene una reserva de memoria.
  * 
@@ -62,5 +51,6 @@ void	ft_free_cmds(t_cmd *cmd, t_pipe *pipex)
 			i++;
 		}
 		free(cmd);
+		cmd = NULL;
 	}
 }

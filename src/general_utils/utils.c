@@ -25,7 +25,7 @@ char	**ft_addarray(char *str, char **array)
 		i = -1;
 		while (array[++i])
 			new_array[i] = ft_strdup(array[i]);
-		new_array[i] = str;
+		new_array[i] = ft_strdup(str);
 		free_matrix(array);
 		return (new_array);
 	}
@@ -46,7 +46,7 @@ char	**ft_deleteitem(int pos, char **array)
 	i = 0;
 	if (!array || pos < 0 || pos > ft_sizearray(array))
 		return (array);
-	new_array = ft_calloc(sizeof(char *), ft_sizearray(array) + 1);
+	new_array = ft_calloc(sizeof(char *), ft_sizearray(array));
 	while (array[i])
 	{
 		if (i >= pos)

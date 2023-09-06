@@ -16,7 +16,8 @@ void	ft_export(t_cmd *cmd, t_pipe *pipex)
 	i = 0;
 	if (cmd->args[1] && ft_strchr(cmd->args[1], '='))
 	{
-		if (cmd->args[1][0] && ft_isalpha(cmd->args[1][0]) == 0)
+		if (cmd->args[1][0] && (!ft_isalpha(cmd->args[1][0])
+		&& cmd->args[1][0] != '_'))
 		{
 			err_msg("export: not a valid identifier\n");
 			return ;

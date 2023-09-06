@@ -3,7 +3,6 @@ NAME			=	minishell
 CC				=	gcc -g
 CFLAGS			=	-Wall -Werror -Wextra -I "/Users/$(USER)/.brew/opt/readline/include/" -g 
 RM				=	rm -f
-AR				=	ar -rcs
 
 SRCS			=	src/minishell.c \
 					src/executor/pipes.c \
@@ -18,6 +17,7 @@ SRCS			=	src/minishell.c \
 					src/parser/utils_checker.c \
 					src/parser/sintax_redirect.c \
 					src/parser/get_input.c \
+					src/parser/utils_getinput.c \
 					src/parser/expand.c \
 					src/builtins/built.c \
 					src/builtins/echo.c \
@@ -27,14 +27,6 @@ SRCS			=	src/minishell.c \
 					src/builtins/unset.c \
 					src/builtins/env.c \
 					src/builtins/exit.c \
-					
-
-#		COLORS		#
-CYELLOW			=\033[1;33m
-CGREEN			=\033[0;32m
-CRED			=\033[0;91m
-PURPLE			=\033[0;35m
-CRESET			=\033[0m
 
 OBJS			=	$(SRCS:.c=.o)
 
@@ -67,3 +59,10 @@ fclean:			clean
 re:				fclean all
 
 .PHONY:			all clean fclean re
+
+#		COLORS		#
+CYELLOW			=\033[1;33m
+CGREEN			=\033[0;32m
+CRED			=\033[0;91m
+PURPLE			=\033[0;35m
+CRESET			=\033[0m

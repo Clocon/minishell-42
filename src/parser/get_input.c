@@ -1,125 +1,86 @@
 #include "../../include/minishell.h"
 
-/**
- * @brief Cuando se detecta heredoc en el input del usuario, se queda esperando
- * la entrada de datos del usuario hasta que introduzca la palabra clave. 
- * Guarda el input del usuario en un fichero temporal en la carpeta temporal del 
- * sistema para posteriormente utilizarlo como infile en el comando introducido
- * 
- * @param cmd estructura con el comando introducido
- */
-void	ft_heredoc(t_cmd *cmd)
+t_typetoken	ft_redirectstatus(char current, t_cmd *cmd, t_typetoken status)
 {
-	int		tmp_fd;
-	char	*input;
-
-	tmp_fd = open(HEREDOC_FILE, O_TRUNC | O_CREAT | O_RDWR, 0644);
-	input = readline("> ");
-	while (input && ft_strncmp(input, cmd->infile, ft_strlen(cmd->infile) + 1))
+	if (current == '>')
 	{
-		write(tmp_fd, input, ft_strlen(input));
-		write(tmp_fd, "\n", 1);
-		input = readline("> ");
-	}
-	close(tmp_fd);
-	free(cmd->infile);
-	cmd->infile = ft_strdup(HEREDOC_FILE);
-}
-
-/**
- * @brief Recoge un string que forma parte de una misma "palabra", bien sea
- * el nombre de un fichero, de un comando o un argumento. Avanza el indice j
- * hasta el final de la palabra.
- * 
- * @param cmd string con el comando introducido
- * @param j indice por el que se está iterando en el string
- * @return char* string con la palabra recogida (comando, argumento, fichero)
- */
-static char	*ft_getname(char *cmd, int *j)
-{
-	int		i;
-	int		start;
-	char	*name;
-	char	*aux;
-
-	i = 0;
-	name = 0;
-	while (cmd[i] && cmd[i] != ' ' && cmd[i] != '<' && cmd[i] != '>')
-	{
-		start = i;
-		if (ft_foundquotes(cmd, &i))
-			aux = ft_substr(cmd, start + 1, (i - start) - 1);
+		cmd->outfile_redirect = 1;
+		if (status == RED_OUT)
+		{
+			cmd->outfile_redirect = 2;
+			status = RED_APPEND;
+		}
 		else
-			aux = ft_substr(cmd, start, 1);
-		name = ft_strjoin_free(name, aux);
-		free(aux);
-		i++;
+			status = RED_OUT;
 	}
-	*j += i - 1;
-	return (name);
+	else if (current == '<')
+	{
+		cmd->infile_redirect = 1;
+		if (status == RED_IN)
+			status = RED_HERE;
+		else
+			status = RED_IN;
+	}
+	return (status);
 }
 
-void	ft_getdatas(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
+static void	ft_fillcmd(char *one_cmd, int *i, t_pipe *pipex, t_cmd *cmd)
+{
+	if (!cmd->cmd)
+	{
+		cmd->cmd = ft_getname(&one_cmd[*i], i);
+		cmd->args = ft_addarray(ft_strdup(cmd->cmd), cmd->args);
+		cmd->cmd = ft_getcmd(*pipex, cmd->cmd);
+	}
+	else
+	{
+		cmd->args = ft_addarray(ft_getname(&one_cmd[*i], i), cmd->args);
+	}
+}
+
+static void	ft_fillfile(char *one_cmd, int *i, t_cmd *cmd, t_typetoken redtype)
+{
+	if (redtype == RED_IN || redtype == RED_HERE)
+	{
+		if (cmd->infile && redtype == RED_IN)
+			free(cmd->infile);
+		cmd->infile = ft_getname(&one_cmd[*i], i);
+		if (redtype == RED_HERE)
+			ft_heredoc(cmd);
+	}
+	else if (redtype == RED_OUT || redtype == RED_APPEND)
+	{
+		if (!cmd->outfile)
+			cmd->outfile = ft_getname(&one_cmd[*i], i);
+		else
+		{
+			close(open(cmd->outfile, O_CREAT | O_RDWR | O_TRUNC, 0644));
+			free(cmd->outfile);
+			cmd->outfile = ft_getname(&one_cmd[*i], i);
+		}
+	}
+}
+
+static void	ft_getdatas(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 {
 	int			i;
-	t_typetoken	type;
+	t_typetoken	status;
 
 	i = 0;
-	type = WORD;
+	status = WORD;
 	while (one_cmd[i])
 	{
-		if (one_cmd[i] == '>')
+		status = ft_redirectstatus(one_cmd[i], cmd, status);
+		if (one_cmd[i] != ' ' && one_cmd[i] != '\t' && one_cmd[i] != '<'
+			&& one_cmd[i] != '>')
 		{
-			cmd->outfile_redirect = 1;
-			if (type == RED_OUT)
-			{
-				cmd->outfile_redirect = 2;
-				type = RED_APPEND;
-			}
+			if (status == WORD)
+				ft_fillcmd(one_cmd, &i, pipex, cmd);
 			else
-				type = RED_OUT;
+				ft_fillfile(one_cmd, &i, cmd, status);
+			status = WORD;
 		}
-		else if (one_cmd[i] == '<')
-		{
-			cmd->infile_redirect = 1;
-			if (type == RED_IN)
-				type = RED_HERE;
-			else
-				type = RED_IN;
-		}
-		else if (one_cmd[i] != ' ' && one_cmd[i] != '\t')
-		{
-			if (type == RED_IN || type == RED_HERE)
-			{
-				if (cmd->infile && type == RED_IN)
-					free(cmd->infile);
-				cmd->infile = ft_getname(&one_cmd[i], &i);
-				if (type == RED_HERE)
-					ft_heredoc(cmd);
-			}
-			else if (type == RED_OUT || type == RED_APPEND)
-			{
-				if (!cmd->outfile)
-					cmd->outfile = ft_getname(&one_cmd[i], &i);
-				else
-				{
-					close(open(cmd->outfile, O_CREAT | O_RDWR | O_TRUNC, 0644));
-					free(cmd->outfile);
-					cmd->outfile = ft_getname(&one_cmd[i], &i);
-				}
-			}
-			else if (!cmd->cmd)
-			{
-				cmd->cmd = ft_getname(&one_cmd[i], &i);
-				cmd->args = ft_addarray(ft_strdup(cmd->cmd), cmd->args);
-				cmd->cmd = ft_getcmd(*pipex, cmd->cmd);
-			}
-			else
-				cmd->args = ft_addarray(ft_getname(&one_cmd[i], &i), cmd->args);
-			type = WORD;
-		}
-		if (one_cmd[i])
-			i++;
+		i++;
 	}
 }
 

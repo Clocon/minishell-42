@@ -127,6 +127,10 @@ int		ft_existred(char *input);
 /*Functions for get_input.c*/
 t_cmd	*ft_getinput(char *input, t_pipe *pipex);
 
+/*Functions for utils_getinput.c*/
+void	ft_heredoc(t_cmd *cmd);
+char	*ft_getname(char *cmd, int *j);
+
 /*Functions for expand.c*/
 char	*ft_expandit(char *cmd, t_pipe *pipex, int expand);
 char	*ft_getenv(char *var, t_pipe *pipex);

@@ -102,7 +102,6 @@ char	*ft_checkpipe(char *input, t_pipe *pipex)
 	t_cmd	*cmd;
 	char	*new_input;
 
-//	cmd = 0;
 	if (ft_checkinput(input, pipex) == 0)
 	{
 		split_pi = ft_split_shell(input, '|');

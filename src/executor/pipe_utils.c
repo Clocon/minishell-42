@@ -32,8 +32,6 @@ int	redir_check(t_pipe *pipex, t_cmd *cmd, int i)
 		pipex->fd_out = open(cmd->outfile, O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (pipex->fd_out == -1)
 		return (0);
-	if (i != pipex->n_cmd - 1)
-		pipex->fd_out = pipex->tube[1];
 	dup2(pipex->fd_out, 1);
 	close(pipex->fd_out);
 	return (1);

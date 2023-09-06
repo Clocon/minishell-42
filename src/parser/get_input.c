@@ -1,5 +1,19 @@
 #include "../../include/minishell.h"
 
+/**
+ * @brief En función del caracter en el que nos encontremos en el string de 
+ * entrada del usuario, se determina un estado actual, por defecto será WORD
+ * cuando sea necesario recoger esa palabra como comando, argumento, fichero...
+ * si encontramos un '>' cambiaremos el estado a RED_OUT o RED_APPEND dependiendo
+ * de si es simple o doble '>'. Si encontramos '<' cambiará el estado a RED_IN
+ * o RED_HERE dependiendo de si es simple o doble '<'.
+ * 
+ * @param current caracter en el que nos encontramos en la cadena de entrada
+ * @param cmd estructura en la que tipificaremos la redirección 
+ * (0 no hay, 1 simple, 2 doble)
+ * @param status estado en el que nos encontrabamos anteriormente
+ * @return t_typetoken estado actualizado
+ */
 t_typetoken	ft_redirectstatus(char current, t_cmd *cmd, t_typetoken status)
 {
 	if (current == '>')
@@ -24,6 +38,17 @@ t_typetoken	ft_redirectstatus(char current, t_cmd *cmd, t_typetoken status)
 	return (status);
 }
 
+/**
+ * @brief Se encarga de rellenar en la estructura cmd el nombre del comando
+ * encontrado y los argumentos.
+ * 
+ * @param one_cmd string que contiene la entrada del usuario
+ * @param i indice en el que nos encontramos en el input
+ * @param pipex estructura con el path en el que localizar el cmd
+ * con ruta absoluta
+ * @param cmd estructura de comando en el que rellenar los campos comando
+ * y argumentos
+ */
 static void	ft_fillcmd(char *one_cmd, int *i, t_pipe *pipex, t_cmd *cmd)
 {
 	if (!cmd->cmd)
@@ -38,6 +63,17 @@ static void	ft_fillcmd(char *one_cmd, int *i, t_pipe *pipex, t_cmd *cmd)
 	}
 }
 
+/**
+ * @brief Se encarga de rellenar en el estruct cmd el nombre del fichero
+ * correspondiente en función de si el redtype es para entrada o salida y 
+ * dependiendo de si es simple o doble redirección.
+ * 
+ * @param one_cmd string con el input del usuario
+ * @param i indice en el que iteramos en el input de usuario
+ * @param cmd estruct en el que rellenar los datos de los ficheros cuando hay 
+ * redirección
+ * @param redtype estado que indica el tipo de redirección a rellenar 
+ */
 static void	ft_fillfile(char *one_cmd, int *i, t_cmd *cmd, t_typetoken redtype)
 {
 	if (redtype == RED_IN || redtype == RED_HERE)
@@ -61,6 +97,15 @@ static void	ft_fillfile(char *one_cmd, int *i, t_cmd *cmd, t_typetoken redtype)
 	}
 }
 
+/**
+ * @brief Se encarga de recorrer el input introducido por el usuario y 
+ * rellenar la estructura cmd con los datos correspondientes en su campo
+ * 
+ * @param cmd estruct que contiene los datos del comando separados en variables
+ * @param one_cmd string con el input del usuario (se recibe sin pipes)
+ * @param pipex estruct que contiene el path para localizar la ruta absoluta
+ * del comando
+ */
 static void	ft_getdatas(t_cmd *cmd, char *one_cmd, t_pipe *pipex)
 {
 	int			i;
@@ -119,10 +164,6 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex)
 	free_matrix(split_pi);
 	return (cmd);
 }
-
-
-
-
 
 /*     	i = 0;
  	printf("ncmd = %D\n", pipex->n_cmd);

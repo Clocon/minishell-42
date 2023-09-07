@@ -6,7 +6,7 @@
 /*   By: jmerchan <jmerchan@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 16:23:22 by jmerchan          #+#    #+#             */
-/*   Updated: 2023/09/07 16:23:23 by jmerchan         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:26:30 by jmerchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	**ft_addarray(char *str, char **array)
 			new_array[i] = ft_strdup(array[i]);
 		new_array[i] = ft_strdup(str);
 		free_matrix(array);
+		free(str);
 		return (new_array);
 	}
 }

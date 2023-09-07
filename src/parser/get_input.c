@@ -6,7 +6,7 @@
 /*   By: jmerchan <jmerchan@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 16:22:14 by jmerchan          #+#    #+#             */
-/*   Updated: 2023/09/07 16:22:15 by jmerchan         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:36:50 by jmerchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,19 +176,3 @@ t_cmd	*ft_getinput(char *input, t_pipe *pipex)
 	free_matrix(split_pi);
 	return (cmd);
 }
-
-/*     	i = 0;
- 	printf("ncmd = %D\n", pipex->n_cmd);
-	 while (i < pipex->n_cmd)
-	{
-		printf("\n\n---* CMD = %s *---\n", (cmd[i]).cmd);
-		i_s = 0;
-		while ((cmd[i]).args && (cmd[i]).args[i_s])
-		{
-			printf("---* Args_%s = %s *---\n", (cmd[i]).cmd, (cmd[i]).args[i_s]);
-			i_s++;
-		}
-		printf(">Infile_name = %s\n", (cmd[i]).infile);
-		printf("<Outfile_name = %s\n", (cmd[i]).outfile);
-		i++;
-	}*/

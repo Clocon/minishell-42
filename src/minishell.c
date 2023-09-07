@@ -6,7 +6,7 @@
 /*   By: jmerchan <jmerchan@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 16:23:58 by jmerchan          #+#    #+#             */
-/*   Updated: 2023/09/07 16:23:59 by jmerchan         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:36:41 by jmerchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	leaks(void)
 
 int	main(int argc, char **argv, char **envp)
 {
-	//atexit(leaks);
 	t_pipe	pipex;
 
 	signal(SIGINT, sigint_handler);
@@ -57,9 +56,3 @@ int	main(int argc, char **argv, char **envp)
 	ft_getline(&pipex);
 	exit(0);
 }
-
-//	atexit(leaks);
-/* void	leaks(void)
-{
-	system("leaks -q minishell");
-} */

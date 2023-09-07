@@ -6,7 +6,7 @@
 /*   By: jmerchan <jmerchan@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 16:23:58 by jmerchan          #+#    #+#             */
-/*   Updated: 2023/09/07 16:36:41 by jmerchan         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:19:31 by jmerchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,11 @@ void	ft_getline(t_pipe *pipex)
 		aux = ft_strtrim(input, " ");
 		if (ft_strlen(input) > 0 && ft_strlen(aux) > 0)
 			input = ft_checkpipe(input, pipex);
+		else
+			free(input);
 		free(aux);
 		free_matrix(pipex->path);
 	}
-}
-
-void	leaks(void)
-{
-	system("leaks -q minishell");
 }
 
 int	main(int argc, char **argv, char **envp)

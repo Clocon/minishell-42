@@ -6,7 +6,7 @@
 /*   By: jmerchan <jmerchan@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 16:24:20 by jmerchan          #+#    #+#             */
-/*   Updated: 2023/09/07 16:24:21 by jmerchan         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:13:42 by jmerchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int		builting(t_cmd *cmd, t_pipe *pipex);
 void	ft_echo(t_cmd *cmd);
 void	ft_pwd(void);
 void	ft_cd(t_cmd *cmd, t_pipe *pipex);
-void	ft_export(t_cmd *cmd, t_pipe *pipex);
+void	ft_export(t_cmd *cmd, t_pipe *pipex, int i);
 void	ft_unset(t_cmd *cmd, t_pipe *pipex);
 void	ft_env(t_pipe *pipex);
 void	ft_exit(t_cmd *cmd, t_pipe *pipex);

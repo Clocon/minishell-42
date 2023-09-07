@@ -6,7 +6,7 @@
 /*   By: jmerchan <jmerchan@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 16:23:16 by jmerchan          #+#    #+#             */
-/*   Updated: 2023/09/07 17:08:26 by jmerchan         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:38:50 by jmerchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,9 @@ void	free_matrix(char **str)
 void	free_cmd_structure(t_cmd *cmd)
 {
 	free_matrix(cmd->args);
-	cmd->args = 0;
 	free(cmd->cmd);
-	cmd->cmd = 0;
 	free(cmd->infile);
-	cmd->infile = 0;
 	free(cmd->outfile);
-	cmd->outfile = 0;
 }
 
 void	free_pipe_structure(t_pipe *pipex)

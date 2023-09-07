@@ -6,7 +6,7 @@
 /*   By: jmerchan <jmerchan@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 16:22:28 by jmerchan          #+#    #+#             */
-/*   Updated: 2023/09/07 16:22:29 by jmerchan         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:13:24 by jmerchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	builting(t_cmd *cmd, t_pipe *pipex)
 	else if (!ft_strncmp(cmd->args[0], "cd", 3))
 		ft_cd(cmd, pipex);
 	else if (!ft_strncmp(cmd->args[0], "export", 7))
-		ft_export(cmd, pipex);
+		ft_export(cmd, pipex, 0);
 	else if (!ft_strncmp(cmd->args[0], "unset", 6))
 		ft_unset(cmd, pipex);
 	else if (!ft_strncmp(cmd->args[0], "env", 4))

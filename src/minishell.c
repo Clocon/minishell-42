@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmerchan <jmerchan@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/07 16:23:58 by jmerchan          #+#    #+#             */
+/*   Updated: 2023/09/07 16:23:59 by jmerchan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 void	ft_getline(t_pipe *pipex)
@@ -19,18 +31,18 @@ void	ft_getline(t_pipe *pipex)
 		if (ft_strlen(input) > 0 && ft_strlen(aux) > 0)
 			input = ft_checkpipe(input, pipex);
 		free(aux);
-		//free(input);
 		free_matrix(pipex->path);
 	}
 }
 
-/* void	leaks(void)
+void	leaks(void)
 {
 	system("leaks -q minishell");
-} */
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-//	atexit(leaks);
+	//atexit(leaks);
 	t_pipe	pipex;
 
 	signal(SIGINT, sigint_handler);
@@ -45,3 +57,9 @@ int	main(int argc, char **argv, char **envp)
 	ft_getline(&pipex);
 	exit(0);
 }
+
+//	atexit(leaks);
+/* void	leaks(void)
+{
+	system("leaks -q minishell");
+} */

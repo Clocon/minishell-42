@@ -7,3 +7,4 @@ minishell
 Makefile
 *.h
 readline.supp
+minishell.dSYM
